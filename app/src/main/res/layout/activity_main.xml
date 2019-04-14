@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".presentation.ui.activities.MainActivity"
+    android:background="@color/white">
+
+    <TextView
+        style="@style/text"
+        android:textSize="100sp"
+        android:layout_margin="30dp"
+        android:text="11"
+        android:id="@+id/temp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        />
+
+    <TextView
+        style="@style/text"
+        android:textSize="40sp"
+        android:text="℃"
+        app:layout_constraintStart_toEndOf="@id/temp"
+        app:layout_constraintTop_toTopOf="@id/temp"/>
+
+    <TextView
+        style="@style/text"
+        android:id="@+id/cityName"
+        android:textSize="20sp"
+        android:text="City Name"
+        android:layout_marginTop="10dp"
+        app:layout_constraintStart_toStartOf="@id/temp"
+        app:layout_constraintTop_toBottomOf="@id/temp" />
+
+    <TextView
+        style="@style/text"
+        android:textSize="20sp"
+        android:id="@+id/weather"
+        android:text="Weather"
+        android:layout_marginTop="10dp"
+        app:layout_constraintStart_toStartOf="@id/cityName"
+        app:layout_constraintTop_toBottomOf="@id/cityName"/>
+
+    <include layout="@layout/bottom_navigation_view" />
+
+</android.support.constraint.ConstraintLayout>
