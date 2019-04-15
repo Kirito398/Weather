@@ -1,15 +1,15 @@
 package com.bg.biozz.weatherapp.presentation.presenters
 
-import com.bg.biozz.weatherapp.domain.models.ForeCastData
 import com.bg.biozz.weatherapp.presentation.models.CityViewModel
+import com.bg.biozz.weatherapp.presentation.models.ForeCastViewModel
 
 interface MainPresenter {
-    fun getCityData()
-    fun getForeCast()
+    fun getCityData(cityName: String)
+    fun getForeCast(cityName: String)
 
     interface Callback{
         fun onLoadedCityData(cityViewModel: CityViewModel)
-        fun onLoadedForeCast(foreCastData: ForeCastData)
-        fun onError(msg: String)
+        fun onLoadedForeCast(foreCastViewModel: ForeCastViewModel)
+        fun onLoadedError(msg: String)
     }
 }

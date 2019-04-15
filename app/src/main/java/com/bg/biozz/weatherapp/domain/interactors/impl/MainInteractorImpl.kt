@@ -1,35 +1,17 @@
 package com.bg.biozz.weatherapp.domain.interactors.impl
 
 import com.bg.biozz.weatherapp.domain.interactors.MainInteractor
-import com.bg.biozz.weatherapp.domain.repositories.MainRepository
 import com.bg.biozz.weatherapp.domain.models.CityData
-import com.bg.biozz.weatherapp.domain.models.ForeCastData
+import com.bg.biozz.weatherapp.domain.models.ForeCast
+import com.bg.biozz.weatherapp.domain.repositories.MainRepository
+import io.reactivex.Single
 
-class MainInteractorImpl(mainRepository: MainRepository, callback: MainInteractor.Callback) : MainInteractor, MainRepository.Callback {
-    var mCallback = callback
-    val mMainRepository = mainRepository
-
-    init {
-        mMainRepository.initCallback(this)
+class MainInteractorImpl(private val mainRepository: MainRepository) : MainInteractor {
+    override fun getCityData(cityName: String): Single<CityData> {
+        return mainRepository.getCityData(cityName)
     }
 
-    override fun loadForeCast() {
-        mMainRepository.getForeCast()
-    }
-
-    override fun returnForeCast(foreCast: ForeCastData) {
-        mCallback.onLoadedForeCast(foreCast)
-    }
-
-    override fun loadCityData() {
-        mMainRepository.getCityData()
-    }
-
-    override fun returnCityData(cityData: CityData) {
-        mCallback.onLoadedCityData(cityData)
-    }
-
-    fun notifyError(msg: String){
-        mCallback.onError(msg)
+    override fun getForeCast(cityName: String): Single<ForeCast> {
+        return mainRepository.getForeCast(cityName)
     }
 }

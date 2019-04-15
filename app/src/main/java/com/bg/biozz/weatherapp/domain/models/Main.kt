@@ -1,8 +1,8 @@
-package com.bg.biozz.weatherapp.data.models
+package com.bg.biozz.weatherapp.domain.models
 
 import com.google.gson.annotations.SerializedName
 
-class MainModel(
+class Main(
         val temp: Float,
         val pressure: Float,
         val humidity: Int,

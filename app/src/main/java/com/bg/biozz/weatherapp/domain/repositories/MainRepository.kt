@@ -1,15 +1,10 @@
 package com.bg.biozz.weatherapp.domain.repositories
 
 import com.bg.biozz.weatherapp.domain.models.CityData
-import com.bg.biozz.weatherapp.domain.models.ForeCastData
+import com.bg.biozz.weatherapp.domain.models.ForeCast
+import io.reactivex.Single
 
 interface MainRepository {
-    fun getForeCast()
-    fun getCityData()
-    fun initCallback(callback: Callback)
-
-    interface Callback{
-        fun returnForeCast(foreCast: ForeCastData)
-        fun returnCityData(cityData: CityData)
-    }
+    fun getCityData(cityName: String): Single<CityData>
+    fun getForeCast(cityName: String): Single<ForeCast>
 }

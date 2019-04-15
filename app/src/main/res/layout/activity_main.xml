@@ -3,45 +3,136 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".presentation.ui.activities.MainActivity"
-    android:background="@color/white">
+    android:layout_height="match_parent">
 
-    <TextView
-        style="@style/text"
-        android:textSize="100sp"
-        android:layout_margin="30dp"
-        android:text="11"
-        android:id="@+id/temp"
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        />
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:background="@color/white">
 
-    <TextView
-        style="@style/text"
-        android:textSize="40sp"
-        android:text="℃"
-        app:layout_constraintStart_toEndOf="@id/temp"
-        app:layout_constraintTop_toTopOf="@id/temp"/>
+        <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:context=".presentation.ui.activities.MainActivity"
+            android:background="@color/white">
 
-    <TextView
-        style="@style/text"
-        android:id="@+id/cityName"
-        android:textSize="20sp"
-        android:text="City Name"
-        android:layout_marginTop="10dp"
-        app:layout_constraintStart_toStartOf="@id/temp"
-        app:layout_constraintTop_toBottomOf="@id/temp" />
+            <TextView
+                style="@style/text"
+                android:textSize="100sp"
+                android:layout_marginTop="30dp"
+                android:text="Tt"
+                android:id="@+id/temp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/icon"
+                />
 
-    <TextView
-        style="@style/text"
-        android:textSize="20sp"
-        android:id="@+id/weather"
-        android:text="Weather"
-        android:layout_marginTop="10dp"
-        app:layout_constraintStart_toStartOf="@id/cityName"
-        app:layout_constraintTop_toBottomOf="@id/cityName"/>
+            <TextView
+                style="@style/text"
+                android:textSize="40sp"
+                android:text="℃"
+                android:id="@+id/grad"
+                app:layout_constraintStart_toEndOf="@id/temp"
+                app:layout_constraintTop_toTopOf="@id/temp"/>
+
+            <ImageView
+                android:id="@+id/icon"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:src="@drawable/ic_na"
+                android:layout_marginStart="30dp"
+                app:layout_constraintStart_toEndOf="@id/temp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="@id/temp"/>
+
+            <TextView
+                style="@style/text"
+                android:id="@+id/cityName"
+                android:textSize="20sp"
+                android:text="City Name"
+                android:layout_marginTop="10dp"
+                app:layout_constraintStart_toStartOf="@id/temp"
+                app:layout_constraintTop_toBottomOf="@id/temp" />
+
+            <TextView
+                style="@style/text"
+                android:id="@+id/description"
+                android:textSize="20sp"
+                android:text="Description"
+                android:layout_marginTop="10dp"
+                app:layout_constraintStart_toStartOf="@id/icon"
+                app:layout_constraintEnd_toEndOf="@id/icon"
+                app:layout_constraintTop_toBottomOf="@id/icon" />
+
+            <TextView
+                style="@style/text"
+                android:textSize="20sp"
+                android:id="@+id/weather"
+                android:text="Weather"
+                android:layout_marginTop="10dp"
+                app:layout_constraintStart_toStartOf="@id/cityName"
+                app:layout_constraintTop_toBottomOf="@id/cityName"/>
+
+            <TextView
+                style="@style/text"
+                android:textSize="15sp"
+                android:id="@+id/tempMinMax"
+                android:text="Temperature:"
+                android:layout_marginTop="60dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/weather"
+                app:layout_constraintEnd_toStartOf="@id/windSpeed"/>
+
+            <TextView
+                style="@style/text"
+                android:textSize="15sp"
+                android:id="@+id/windSpeed"
+                android:text="WindSpeed:"
+                app:layout_constraintStart_toEndOf="@id/tempMinMax"
+                app:layout_constraintTop_toTopOf="@id/tempMinMax"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+            <TextView
+                style="@style/text"
+                android:textSize="15sp"
+                android:id="@+id/humidity"
+                android:text="Humidity:"
+                android:layout_marginTop="30dp"
+                app:layout_constraintStart_toStartOf="@id/tempMinMax"
+                app:layout_constraintEnd_toEndOf="@id/tempMinMax"
+                app:layout_constraintTop_toBottomOf="@id/tempMinMax"
+                />
+
+            <TextView
+                style="@style/text"
+                android:textSize="15sp"
+                android:id="@+id/pressure"
+                android:text="Pressure:"
+                android:layout_marginTop="30dp"
+                app:layout_constraintStart_toStartOf="@id/windSpeed"
+                app:layout_constraintTop_toBottomOf="@id/tempMinMax"
+                app:layout_constraintEnd_toEndOf="@id/windSpeed"/>
+
+            <LinearLayout
+                android:id="@+id/daysView"
+                android:layout_width="300dp"
+                android:layout_height="200dp"
+                android:layout_marginTop="40dp"
+                android:orientation="horizontal"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/humidity"
+                app:layout_constraintBottom_toBottomOf="parent">
+            </LinearLayout>
+
+        </android.support.constraint.ConstraintLayout>
+    </ScrollView>
 
     <include layout="@layout/bottom_navigation_view" />
-
 </android.support.constraint.ConstraintLayout>

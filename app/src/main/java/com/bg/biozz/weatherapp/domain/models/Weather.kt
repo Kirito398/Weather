@@ -1,6 +1,6 @@
-package com.bg.biozz.weatherapp.data.models
+package com.bg.biozz.weatherapp.domain.models
 
-data class WeatherModel(
+data class Weather(
         val main: String,
         val description: String,
         val icon: String

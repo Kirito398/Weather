@@ -1,14 +1,17 @@
 package com.bg.biozz.weatherapp.domain.models
 
+import java.util.*
+
 data class CityData(
-        val cityName: String,
-        val weather: String,
-        val tempMin: Float,
-        val tempMax: Float,
-        val icon: String,
-        val temp: Float,
-        val pressure: Float,
-        val humidity: Int,
-        val description: String,
-        val windSpeed: Float
-)
+        val weather: List<Weather>,
+        val main: Main,
+        val wind: Wind,
+        val dt: Long,
+        val name: String
+){
+    fun getDate(): Calendar{
+        val date = Calendar.getInstance()
+        date.timeInMillis = dt*1000
+        return date
+    }
+}

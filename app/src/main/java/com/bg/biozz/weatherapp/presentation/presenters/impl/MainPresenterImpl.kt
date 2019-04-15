@@ -1,49 +1,81 @@
 package com.bg.biozz.weatherapp.presentation.presenters.impl
 
 import android.util.Log
-import com.bg.biozz.weatherapp.data.repositories.MainRepositoryImpl
+import com.bg.biozz.weatherapp.data.utils.ConstantUtils
 import com.bg.biozz.weatherapp.domain.interactors.MainInteractor
-import com.bg.biozz.weatherapp.domain.interactors.impl.MainInteractorImpl
 import com.bg.biozz.weatherapp.domain.models.CityData
-import com.bg.biozz.weatherapp.domain.models.ForeCastData
+import com.bg.biozz.weatherapp.domain.models.ForeCast
 import com.bg.biozz.weatherapp.presentation.models.CityViewModel
+import com.bg.biozz.weatherapp.presentation.models.ForeCastViewModel
 import com.bg.biozz.weatherapp.presentation.presenters.MainPresenter
+import io.reactivex.android.schedulers.AndroidSchedulers
+import java.text.SimpleDateFormat
+import java.util.*
 
-class MainPresenterImpl(callback: MainPresenter.Callback) : MainPresenter, MainInteractor.Callback{
-    val mCallback = callback
-    private var mMainInteractor: MainInteractor = MainInteractorImpl(MainRepositoryImpl(),this)
-
-    override fun getCityData() {
-        mMainInteractor.loadCityData()
+class MainPresenterImpl(private val mainInteractor: MainInteractor, private val callback: MainPresenter.Callback) : MainPresenter{
+    override fun getCityData(cityName: String) {
+        mainInteractor.getCityData(cityName)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({
+                    result->onLoadedCityData(result)
+                },{
+                    error->onLoadedError(error, "getCityData")
+                })
     }
 
-    override fun getForeCast() {
-        mMainInteractor.loadForeCast()
+    override fun getForeCast(cityName: String) {
+        mainInteractor.getForeCast(cityName)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({
+                    result->onLoadedForeCast(result)
+                },{
+                    error->onLoadedError(error, "getForeCast")
+                })
     }
 
-    override fun onLoadedForeCast(foreCast: ForeCastData) {
-        Log.d("MainPresenterImpl", "Forecast loaded!")
-        mCallback.onLoadedForeCast(foreCast)
-    }
-
-    override fun onLoadedCityData(cityData: CityData) {
-        Log.d("MainPresenterImpl", "CityData loaded!")
+    private fun onLoadedCityData(cityData: CityData) {
         val mCityViewModel = CityViewModel(
-                cityData.cityName,
-                cityData.weather,
-                cityData.tempMin.toInt().toString(),
-                cityData.tempMax.toInt().toString(),
-                cityData.icon,
-                cityData.temp.toInt().toString(),
-                cityData.pressure.toInt().toString(),
-                cityData.humidity.toString(),
-                cityData.description,
-                cityData.windSpeed.toInt().toString()
+                cityData.name,
+                cityData.weather[0].main,
+                "Temperature: ${cityData.main.tempMin.toInt()} / ${cityData.main.tempMax.toInt()}",
+                cityData.weather[0].icon,
+                cityData.main.temp.toInt().toString(),
+                "Pressure: ${cityData.main.pressure.toInt()}",
+                "Humidity: ${cityData.main.humidity}",
+                cityData.weather[0].description,
+                "Wind Speed: ${cityData.wind.speed.toInt()}"
         )
-        mCallback.onLoadedCityData(mCityViewModel)
+
+        Log.d("MainPresenterImpl", "CityData loaded!")
+        callback.onLoadedCityData(mCityViewModel)
     }
 
-    override fun onError(msg: String) {
-        mCallback.onError(msg)
+    private fun onLoadedForeCast(foreCast: ForeCast){
+        val formatDayOfWeek = SimpleDateFormat("E")
+        val daysOfWeek = mutableListOf<String>()
+        val icons = mutableListOf<String>()
+        val temps = mutableListOf<String>()
+
+        for(day in foreCast.items) {
+            if(day.getDate().get(Calendar.HOUR_OF_DAY) == ConstantUtils.HOUR_OF_DAY) {
+                daysOfWeek.add(formatDayOfWeek.format(day.getDate().time))
+                icons.add(day.weather[0].icon)
+                temps.add(day.main.temp.toInt().toString())
+            }
+        }
+
+        val mForeCast = ForeCastViewModel(
+                daysOfWeek,
+                icons,
+                temps
+        )
+
+        Log.d("MainPresenterImpl", "ForeCast loaded!")
+        callback.onLoadedForeCast(mForeCast)
+    }
+
+    private fun onLoadedError(t: Throwable, msg: String){
+        Log.d("MainPresenterImpl", "Load Error!")
+        callback.onLoadedError("Load Error: $msg")
     }
 }

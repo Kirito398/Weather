@@ -3,8 +3,7 @@ package com.bg.biozz.weatherapp.presentation.models
 data class CityViewModel(
         val cityName: String,
         val weather: String,
-        val tempMin: String,
-        val tempMax: String,
+        val tempMinMax: String,
         val icon: String,
         val temp: String,
         val pressure: String,

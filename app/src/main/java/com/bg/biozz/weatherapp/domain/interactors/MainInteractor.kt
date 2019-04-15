@@ -1,15 +1,10 @@
 package com.bg.biozz.weatherapp.domain.interactors
 
 import com.bg.biozz.weatherapp.domain.models.CityData
-import com.bg.biozz.weatherapp.domain.models.ForeCastData
+import com.bg.biozz.weatherapp.domain.models.ForeCast
+import io.reactivex.Single
 
 interface MainInteractor {
-    fun loadForeCast()
-    fun loadCityData()
-
-    interface Callback{
-        fun onLoadedForeCast(foreCast: ForeCastData)
-        fun onLoadedCityData(cityData: CityData)
-        fun onError(msg: String)
-    }
+    fun getCityData(cityName: String): Single<CityData>
+    fun getForeCast(cityName: String): Single<ForeCast>
 }
