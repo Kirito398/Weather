@@ -5,6 +5,8 @@ import com.bg.biozz.weatherapp.domain.models.ForeCast
 import io.reactivex.Single
 
 interface MainRepository {
+
+
     fun getCityData(cityName: String): Single<CityData>
     fun getForeCast(cityName: String): Single<ForeCast>
     fun getCitiesList(): List<String>
