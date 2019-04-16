@@ -36,8 +36,8 @@ class MainActivity : BaseActivity(1), MainPresenter.Callback {
 
         mMainPresenter = MainPresenterImpl(MainInteractorImpl(MainRepositoryImpl(APIClient().getClient(), LocalDBHelper(this))), this)
 
-        mMainPresenter.getCityData(mMainPresenter.getDefaultCityList()[0])
-        mMainPresenter.getForeCast(mMainPresenter.getDefaultCityList()[0])
+        mMainPresenter.getCityData(mMainPresenter.getDefaultCitiesList()[0])
+        mMainPresenter.getForeCast(mMainPresenter.getDefaultCitiesList()[0])
     }
 
     override fun onResume(){

@@ -7,5 +7,5 @@ import io.reactivex.Single
 interface MainInteractor {
     fun getCityData(cityName: String): Single<CityData>
     fun getForeCast(cityName: String): Single<ForeCast>
-    fun getDefaultCityList(): List<String>
+    fun getDefaultCitiesList(): List<String>
 }

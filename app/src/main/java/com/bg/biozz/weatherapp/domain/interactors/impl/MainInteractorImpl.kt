@@ -7,7 +7,6 @@ import com.bg.biozz.weatherapp.domain.repositories.MainRepository
 import io.reactivex.Single
 
 class MainInteractorImpl(private val mainRepository: MainRepository) : MainInteractor {
-
     override fun getCityData(cityName: String): Single<CityData> {
         return mainRepository.getCityData(cityName)
     }
@@ -16,7 +15,7 @@ class MainInteractorImpl(private val mainRepository: MainRepository) : MainInter
         return mainRepository.getForeCast(cityName)
     }
 
-    override fun getDefaultCityList(): List<String> {
+    override fun getDefaultCitiesList(): List<String> {
         return mainRepository.getCitiesList()
     }
 }
