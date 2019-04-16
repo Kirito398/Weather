@@ -18,4 +18,8 @@ class MainInteractorImpl(private val mainRepository: MainRepository) : MainInter
     override fun getDefaultCitiesList(): List<String> {
         return mainRepository.getCitiesList()
     }
+
+    override fun addNewCity(cityName: String) {
+        mainRepository.addCityIntoDB(cityName)
+    }
 }

@@ -7,6 +7,7 @@ interface MainPresenter {
     fun getCityData(cityName: String)
     fun getForeCast(cityName: String)
     fun getDefaultCitiesList(): List<String>
+    fun addNewCity(cityName: String)
 
     interface Callback{
         fun onLoadedCityData(cityViewModel: CityViewModel)

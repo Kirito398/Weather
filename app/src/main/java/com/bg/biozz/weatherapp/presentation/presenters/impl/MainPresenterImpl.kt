@@ -78,6 +78,10 @@ class MainPresenterImpl(private val mainInteractor: MainInteractor, private val 
         return mainInteractor.getDefaultCitiesList()
     }
 
+    override fun addNewCity(cityName: String) {
+        mainInteractor.addNewCity(cityName)
+    }
+
     private fun onLoadedError(t: Throwable, msg: String){
         Log.d("MainPresenterImpl", "Load Error!")
         callback.onLoadedError("Load Error: $msg")
