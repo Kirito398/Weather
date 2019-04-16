@@ -15,6 +15,8 @@ import java.util.*
 
 class MainPresenterImpl(private val mainInteractor: MainInteractor, private val callback: MainPresenter.Callback) : MainPresenter{
     override fun getCityData(cityName: String) {
+
+
         mainInteractor.getCityData(cityName)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
