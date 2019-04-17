@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">WeatherApp</string>
+    <string name="cancel_txt">Cancel</string>
+    <string name="addCity_txt">Add City</string>
+    <string name="agreed_txt">Agreed</string>
+    <string name="enterCityName_txt">Enter City Name</string>
 </resources>

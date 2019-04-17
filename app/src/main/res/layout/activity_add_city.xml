@@ -9,6 +9,9 @@
 
     <android.support.v7.widget.Toolbar
         style="@style/toolbar"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:contentInsetStart="0dp">
         
         <android.support.constraint.ConstraintLayout
@@ -17,12 +20,12 @@
 
             <ImageView
                 style="@style/toolbar_image"
-                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                android:src="@drawable/ic_prev"
-                android:id="@+id/prev_btn"
-                android:contentDescription="Prev" />
+                android:src="@drawable/ic_cancel"
+                android:id="@+id/cancel_btn"
+                android:contentDescription="@string/cancel_txt" />
 
             <TextView
                 style="@style/toolbar_text"
@@ -30,23 +33,44 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                android:text="Add City"/>
+                android:text="@string/addCity_txt"/>
+
+            <ImageView
+                style="@style/toolbar_image"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:src="@drawable/ic_agree"
+                android:id="@+id/agreed_btn"
+                android:contentDescription="@string/agreed_txt" />
 
         </android.support.constraint.ConstraintLayout>
 
     </android.support.v7.widget.Toolbar>
 
     <TextView
-        android:id="@+id/textView"
+        style="@style/toolbar_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="MainText"
+        android:text="@string/enterCityName_txt"
+        android:labelFor="@id/cityNameEdit"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintVertical_bias="0.7"
+        app:layout_constraintBottom_toTopOf="@id/cityNameEdit"/>
+
+    <EditText
+        android:id="@+id/cityNameEdit"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:inputType="textPersonName"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.2"
+        tools:ignore="Autofill" />
     <include layout="@layout/bottom_navigation_view" />
 
 </android.support.constraint.ConstraintLayout>
