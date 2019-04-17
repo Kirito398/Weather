@@ -10,7 +10,7 @@ class ConstantUtils {
 
         //Local DB
         val DEFAULT_CITIES_LIST = listOf("Naberezhnyye Chelny", "Yelabuga", "Kazan")
-        const val DATABASE_VERSION = 1
+        const val DATABASE_VERSION = 2
         const val DATABASE_NAME = "cityDB"
         const val TABLE_CITYS = "citys"
         const val TABLE_DEFAULT_CITY = "defaultcity"
