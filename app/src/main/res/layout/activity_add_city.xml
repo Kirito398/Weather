@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".presentation.ui.activities.MainActivity"
-    android:background="@color/white">
+    android:background="@color/white"
+    android:id="@+id/addCityActivity">
 
     <android.support.v7.widget.Toolbar
         style="@style/toolbar"
@@ -71,6 +72,5 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.2"
         tools:ignore="Autofill" />
-    <include layout="@layout/bottom_navigation_view" />
 
 </android.support.constraint.ConstraintLayout>

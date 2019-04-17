@@ -8,5 +8,7 @@ interface MainRepository {
     fun getCityData(cityName: String): Single<CityData>
     fun getForeCast(cityName: String): Single<ForeCast>
     fun getCitiesList(): List<String>
+    fun getDefaultCity(): String
     fun addCityIntoDB(cityName: String)
+    fun setDefaultCity(cityName: String)
 }

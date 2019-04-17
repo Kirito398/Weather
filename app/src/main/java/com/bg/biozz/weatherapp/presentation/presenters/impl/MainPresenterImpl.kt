@@ -74,12 +74,12 @@ class MainPresenterImpl(private val mainInteractor: MainInteractor, private val 
         callback.onLoadedForeCast(mForeCast)
     }
 
-    override fun getDefaultCitiesList(): List<String> {
-        return mainInteractor.getDefaultCitiesList()
+    override fun getDefaultCity(): String {
+        return mainInteractor.getDefaultCity()
     }
 
-    override fun addNewCity(cityName: String) {
-        mainInteractor.addNewCity(cityName)
+    override fun getDefaultCitiesList(): List<String> {
+        return mainInteractor.getDefaultCitiesList()
     }
 
     private fun onLoadedError(t: Throwable, msg: String){

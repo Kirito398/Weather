@@ -15,11 +15,29 @@ class MainInteractorImpl(private val mainRepository: MainRepository) : MainInter
         return mainRepository.getForeCast(cityName)
     }
 
+    override fun getDefaultCity(): String {
+        return mainRepository.getDefaultCity()
+    }
+
     override fun getDefaultCitiesList(): List<String> {
         return mainRepository.getCitiesList()
     }
 
     override fun addNewCity(cityName: String) {
-        mainRepository.addCityIntoDB(cityName)
+        if(!isAdded(cityName)){
+            mainRepository.addCityIntoDB(cityName)
+        }
+        mainRepository.setDefaultCity(cityName)
+    }
+
+    private fun isAdded(cityName: String): Boolean{
+        val citiesList = mainRepository.getCitiesList()
+
+        for(str in citiesList){
+            if(str == cityName){
+                return true
+            }
+        }
+        return false
     }
 }

@@ -36,13 +36,13 @@ class MainActivity : BaseActivity(1), MainPresenter.Callback {
 
         mMainPresenter = MainPresenterImpl(MainInteractorImpl(MainRepositoryImpl(APIClient().getClient(), LocalDBHelper(this))), this)
 
-        mMainPresenter.getCityData(mMainPresenter.getDefaultCitiesList()[0])
-        mMainPresenter.getForeCast(mMainPresenter.getDefaultCitiesList()[0])
+        loadData()
     }
 
     override fun onResume(){
         super.onResume()
         bottom_navigation_view.menu.getItem(navNumber).isChecked = true
+        loadData()
     }
 
     override fun onLoadedCityData(cityViewModel: CityViewModel) {
@@ -87,5 +87,11 @@ class MainActivity : BaseActivity(1), MainPresenter.Callback {
 
     override fun onLoadedError(msg: String) {
         Snackbar.make(daysView, msg, Snackbar.LENGTH_LONG).show()
+    }
+
+    private fun loadData(){
+        val defaultCity = mMainPresenter.getDefaultCity()
+        mMainPresenter.getCityData(defaultCity)
+        mMainPresenter.getForeCast(defaultCity)
     }
 }
