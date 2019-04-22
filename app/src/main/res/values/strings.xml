@@ -1,3 +1,20 @@
 <resources>
     <string name="app_name">WeatherApp</string>
+    <string name="cancel_txt">Cancel</string>
+    <string name="addCity_txt">Add City</string>
+    <string name="agreed_txt">Agreed</string>
+    <string name="prev_txt">Previous</string>
+    <string name="enterCityName_txt">Enter City Name</string>
+    <string name="selectCity_txt">Select City</string>
+    <string name="errorMessage">Error message!</string>
+    <string name="tempDefault">Tt</string>
+    <string name="grad">℃</string>
+    <string name="cityName">City Name</string>
+    <string name="description">Description</string>
+    <string name="weather">Weather</string>
+    <string name="temp">Temperature:</string>
+    <string name="windSpeed">WindSpeed:</string>
+    <string name="humidity">Humidity:</string>
+    <string name="pressure">Pressure:</string>
+    <string name="weatherIcon">Weather icon</string>
 </resources>

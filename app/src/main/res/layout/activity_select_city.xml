@@ -5,12 +5,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".presentation.ui.activities.MainActivity"
-    android:background="@color/white">
+    android:background="@color/white"
+    android:id="@+id/mainView">
 
     <android.support.v7.widget.Toolbar
         style="@style/toolbar"
+        android:id="@+id/toolbar"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:contentInsetStart="0dp">
-        
+
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -22,7 +27,7 @@
                 app:layout_constraintTop_toTopOf="parent"
                 android:src="@drawable/ic_prev"
                 android:id="@+id/prev_btn"
-                android:contentDescription="Prev" />
+                android:contentDescription="@string/prev_txt" />
 
             <TextView
                 style="@style/toolbar_text"
@@ -30,22 +35,50 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                android:text="Select City"/>
+                android:text="@string/selectCity_txt"/>
 
         </android.support.constraint.ConstraintLayout>
 
     </android.support.v7.widget.Toolbar>
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="55dp"
+        android:id="@+id/itemsScrollView"
+        app:layout_constraintTop_toBottomOf="@id/toolbar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="55dp"
+        app:layout_constraintVertical_bias="0">
+
+        <LinearLayout
+            android:id="@+id/itemsLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+        </LinearLayout>
+    </ScrollView>
+
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/error_txt"
+        style="@style/toolbar_text"
+        android:textColor="@color/red"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:visibility="invisible"/>
+
+    <ProgressBar
+        android:id="@+id/progressBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="MainText"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
+        app:layout_constraintEnd_toEndOf="parent"/>
 
     <include layout="@layout/bottom_navigation_view" />
 

@@ -1,4 +1,4 @@
-package com.bg.biozz.weatherapp.presentation.models
+package com.bg.biozz.weatherapp.domain.models
 
 data class CityViewModel(
         val cityName: String,

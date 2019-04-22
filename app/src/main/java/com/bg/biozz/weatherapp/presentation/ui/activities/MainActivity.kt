@@ -5,17 +5,20 @@ import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.util.Log
 import android.view.Gravity
+import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.ProgressBar
 import android.widget.TextView
 import com.bg.biozz.weatherapp.R
 import com.bg.biozz.weatherapp.data.APIClient
+import com.bg.biozz.weatherapp.data.LocalDBHelper
 import com.bg.biozz.weatherapp.data.repositories.MainRepositoryImpl
 import com.bg.biozz.weatherapp.data.utils.ConstantUtils
 import com.bg.biozz.weatherapp.data.utils.DrawableManager
 import com.bg.biozz.weatherapp.domain.interactors.impl.MainInteractorImpl
-import com.bg.biozz.weatherapp.presentation.models.CityViewModel
-import com.bg.biozz.weatherapp.presentation.models.ForeCastViewModel
+import com.bg.biozz.weatherapp.domain.models.CityViewModel
+import com.bg.biozz.weatherapp.domain.models.ForeCastViewModel
 import com.bg.biozz.weatherapp.presentation.presenters.MainPresenter
 import com.bg.biozz.weatherapp.presentation.presenters.impl.MainPresenterImpl
 import com.bg.biozz.weatherapp.presentation.ui.BaseActivity
@@ -33,14 +36,13 @@ class MainActivity : BaseActivity(1), MainPresenter.Callback {
         setupBottomNavigation()
         Log.d(TAG, "onCreate")
 
-        mMainPresenter = MainPresenterImpl(MainInteractorImpl(MainRepositoryImpl(APIClient().getClient())), this)
-        mMainPresenter.getCityData("Yelabuga")
-        mMainPresenter.getForeCast("Yelabuga")
+        mMainPresenter = MainPresenterImpl(MainInteractorImpl(MainRepositoryImpl(APIClient().getClient(), LocalDBHelper(this))), this)
     }
 
     override fun onResume(){
         super.onResume()
         bottom_navigation_view.menu.getItem(navNumber).isChecked = true
+        loadData()
     }
 
     override fun onLoadedCityData(cityViewModel: CityViewModel) {
@@ -56,7 +58,8 @@ class MainActivity : BaseActivity(1), MainPresenter.Callback {
     }
 
     override fun onLoadedForeCast(foreCastViewModel: ForeCastViewModel) {
-        for(i in 0 .. foreCastViewModel.daysOfWeek.size - 1) {
+        daysView.removeAllViews()
+        for(i in 0 until foreCastViewModel.daysOfWeek.size) {
             val item = LinearLayout(this)
             item.layoutParams = LinearLayout.LayoutParams(ActionBar.LayoutParams.WRAP_CONTENT, ActionBar.LayoutParams.WRAP_CONTENT)
             item.orientation = LinearLayout.VERTICAL
@@ -83,7 +86,31 @@ class MainActivity : BaseActivity(1), MainPresenter.Callback {
         }
     }
 
+    override fun showMainLoadingProgressBar(show: Boolean) {
+        showProgressBar(mainProgressBar, show)
+    }
+
+    override fun showItemsLoadingProgressBar(show: Boolean) {
+        showProgressBar(itemsProgressBar, show)
+    }
+
     override fun onLoadedError(msg: String) {
         Snackbar.make(daysView, msg, Snackbar.LENGTH_LONG).show()
+    }
+
+    private fun loadData(){
+        val defaultCity = mMainPresenter.getDefaultCity()
+        mMainPresenter.getCityData(defaultCity)
+        mMainPresenter.getForeCast(defaultCity)
+    }
+
+    private fun showProgressBar(bar: ProgressBar, show: Boolean){
+        if(show){
+            mainScrollView.visibility = View.GONE
+            bar.visibility = View.VISIBLE
+        } else {
+            mainScrollView.visibility = View.VISIBLE
+            bar.visibility = View.GONE
+        }
     }
 }

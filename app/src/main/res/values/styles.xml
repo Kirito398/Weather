@@ -16,7 +16,7 @@
     </style>
 
     <dimen name="toolbar_height">50dp</dimen>
-    
+
     <style name="toolbar">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">@dimen/toolbar_height</item>

@@ -6,6 +6,7 @@
     android:layout_height="match_parent">
 
     <ScrollView
+        android:id="@+id/mainScrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -14,9 +15,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         android:background="@color/white">
 
-        <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:app="http://schemas.android.com/apk/res-auto"
-            xmlns:tools="http://schemas.android.com/tools"
+        <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             tools:context=".presentation.ui.activities.MainActivity"
@@ -26,17 +25,17 @@
                 style="@style/text"
                 android:textSize="100sp"
                 android:layout_marginTop="30dp"
-                android:text="Tt"
+                android:layout_marginStart="30dp"
+                android:text="@string/tempDefault"
                 android:id="@+id/temp"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/icon"
                 />
 
             <TextView
                 style="@style/text"
                 android:textSize="40sp"
-                android:text="℃"
+                android:text="@string/grad"
                 android:id="@+id/grad"
                 app:layout_constraintStart_toEndOf="@id/temp"
                 app:layout_constraintTop_toTopOf="@id/temp"/>
@@ -46,25 +45,27 @@
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:src="@drawable/ic_na"
-                android:layout_marginStart="30dp"
-                app:layout_constraintStart_toEndOf="@id/temp"
+                android:layout_marginEnd="30dp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintBottom_toBottomOf="@id/temp"/>
+                app:layout_constraintTop_toTopOf="@id/temp"
+                android:contentDescription="@string/weatherIcon" />
 
             <TextView
                 style="@style/text"
                 android:id="@+id/cityName"
                 android:textSize="20sp"
-                android:text="City Name"
+                android:text="@string/cityName"
                 android:layout_marginTop="10dp"
-                app:layout_constraintStart_toStartOf="@id/temp"
-                app:layout_constraintTop_toBottomOf="@id/temp" />
+                android:layout_marginEnd="30dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/temp"
+                android:layout_marginStart="30dp"/>
 
             <TextView
                 style="@style/text"
                 android:id="@+id/description"
                 android:textSize="20sp"
-                android:text="Description"
+                android:text="@string/description"
                 android:layout_marginTop="10dp"
                 app:layout_constraintStart_toStartOf="@id/icon"
                 app:layout_constraintEnd_toEndOf="@id/icon"
@@ -74,7 +75,7 @@
                 style="@style/text"
                 android:textSize="20sp"
                 android:id="@+id/weather"
-                android:text="Weather"
+                android:text="@string/weather"
                 android:layout_marginTop="10dp"
                 app:layout_constraintStart_toStartOf="@id/cityName"
                 app:layout_constraintTop_toBottomOf="@id/cityName"/>
@@ -83,7 +84,7 @@
                 style="@style/text"
                 android:textSize="15sp"
                 android:id="@+id/tempMinMax"
-                android:text="Temperature:"
+                android:text="@string/temp"
                 android:layout_marginTop="60dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/weather"
@@ -93,7 +94,7 @@
                 style="@style/text"
                 android:textSize="15sp"
                 android:id="@+id/windSpeed"
-                android:text="WindSpeed:"
+                android:text="@string/windSpeed"
                 app:layout_constraintStart_toEndOf="@id/tempMinMax"
                 app:layout_constraintTop_toTopOf="@id/tempMinMax"
                 app:layout_constraintEnd_toEndOf="parent"/>
@@ -102,7 +103,7 @@
                 style="@style/text"
                 android:textSize="15sp"
                 android:id="@+id/humidity"
-                android:text="Humidity:"
+                android:text="@string/humidity"
                 android:layout_marginTop="30dp"
                 app:layout_constraintStart_toStartOf="@id/tempMinMax"
                 app:layout_constraintEnd_toEndOf="@id/tempMinMax"
@@ -113,7 +114,7 @@
                 style="@style/text"
                 android:textSize="15sp"
                 android:id="@+id/pressure"
-                android:text="Pressure:"
+                android:text="@string/pressure"
                 android:layout_marginTop="30dp"
                 app:layout_constraintStart_toStartOf="@id/windSpeed"
                 app:layout_constraintTop_toBottomOf="@id/tempMinMax"
@@ -131,8 +132,29 @@
                 app:layout_constraintBottom_toBottomOf="parent">
             </LinearLayout>
 
+            <ProgressBar
+                android:id="@+id/itemsProgressBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                app:layout_constraintTop_toTopOf="@id/daysView"
+                app:layout_constraintBottom_toBottomOf="@id/daysView"
+                app:layout_constraintStart_toStartOf="@id/daysView"
+                app:layout_constraintEnd_toEndOf="@id/daysView"
+                />
+
         </android.support.constraint.ConstraintLayout>
     </ScrollView>
+
+    <ProgressBar
+        android:id="@+id/mainProgressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:visibility="gone"/>
 
     <include layout="@layout/bottom_navigation_view" />
 </android.support.constraint.ConstraintLayout>
