@@ -1,6 +1,5 @@
 package com.bg.biozz.weatherapp.presentation.presenters.impl
 
-import android.annotation.SuppressLint
 import android.util.Log
 import com.bg.biozz.weatherapp.data.utils.ConstantUtils
 import com.bg.biozz.weatherapp.domain.interactors.MainInteractor
@@ -15,8 +14,6 @@ import java.util.*
 
 class MainPresenterImpl(private val mainInteractor: MainInteractor, private val callback: MainPresenter.Callback) : MainPresenter{
     override fun getCityData(cityName: String) {
-
-
         mainInteractor.getCityData(cityName)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
@@ -77,8 +74,12 @@ class MainPresenterImpl(private val mainInteractor: MainInteractor, private val 
         callback.onLoadedForeCast(mForeCast)
     }
 
-    override fun getDefaultCityList(): List<String> {
-        return mainInteractor.getDefaultCityList()
+    override fun getDefaultCity(): String {
+        return mainInteractor.getDefaultCity()
+    }
+
+    override fun getDefaultCitiesList(): List<String> {
+        return mainInteractor.getDefaultCitiesList()
     }
 
     private fun onLoadedError(t: Throwable, msg: String){

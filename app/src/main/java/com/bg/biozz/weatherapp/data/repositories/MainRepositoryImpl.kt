@@ -59,4 +59,37 @@ class MainRepositoryImpl(private val webClient: API, private val localClient: Lo
         contentValue.put(ConstantUtils.KEY_NAME, cityName)
         mDb.insert(ConstantUtils.TABLE_CITYS, null, contentValue)
     }
+
+    override fun setDefaultCity(cityName: String) {
+        val mDb = localClient.writableDatabase
+        val contentValues = ContentValues()
+        contentValues.put(ConstantUtils.KEY_NAME, cityName)
+        mDb.update(ConstantUtils.TABLE_DEFAULT_CITY, contentValues, null, null)
+    }
+
+    override fun getDefaultCity(): String {
+        val mDb = localClient.readableDatabase
+        val cursor = mDb.query(
+                ConstantUtils.TABLE_DEFAULT_CITY,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null
+        )
+
+        var cityName: String
+        if(cursor.moveToFirst()){
+            do {
+                cityName = cursor.getString(cursor.getColumnIndex(ConstantUtils.KEY_NAME))
+            }while (cursor.moveToNext())
+        }else{
+            cityName = ConstantUtils.DEFAULT_CITIES_LIST[0]
+            Log.e(TAG, "0 rows")
+        }
+
+        return cityName
+    }
 }

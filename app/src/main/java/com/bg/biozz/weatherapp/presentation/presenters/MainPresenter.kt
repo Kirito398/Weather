@@ -6,7 +6,8 @@ import com.bg.biozz.weatherapp.presentation.models.ForeCastViewModel
 interface MainPresenter {
     fun getCityData(cityName: String)
     fun getForeCast(cityName: String)
-    fun getDefaultCityList(): List<String>
+    fun getDefaultCity(): String
+    fun getDefaultCitiesList(): List<String>
 
     interface Callback{
         fun onLoadedCityData(cityViewModel: CityViewModel)
