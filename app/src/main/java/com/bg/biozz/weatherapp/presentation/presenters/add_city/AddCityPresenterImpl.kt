@@ -25,7 +25,7 @@ class AddCityPresenterImpl(private val mainInteractor: MainInterface.Interactor,
     }
 
     private fun onFind(cityData: CityData){
-        mainInteractor.addNewCity(cityData.name)
+        mainInteractor.addNewCity(cityData)
         Log.d(TAG, "New city added!")
         callback.onAdded()
     }

@@ -42,7 +42,7 @@ class MainActivity : BaseActivity(1), MainInterface.View {
     override fun onResume(){
         super.onResume()
         bottom_navigation_view.menu.getItem(navNumber).isChecked = true
-        loadData()
+        mMainPresenter.loadData()
     }
 
     override fun onLoadedCityData(cityViewModel: CityViewModel) {
@@ -96,12 +96,6 @@ class MainActivity : BaseActivity(1), MainInterface.View {
 
     override fun onLoadedError() {
         Snackbar.make(daysView, getString(R.string.loadingError), Snackbar.LENGTH_LONG).show()
-    }
-
-    private fun loadData(){
-        val defaultCity = mMainPresenter.getDefaultCity()
-        mMainPresenter.getCityData(defaultCity)
-        mMainPresenter.getForeCast(defaultCity)
     }
 
     private fun showProgressBar(bar: ProgressBar, show: Boolean){

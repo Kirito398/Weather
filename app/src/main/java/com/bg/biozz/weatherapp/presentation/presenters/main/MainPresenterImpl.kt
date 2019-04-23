@@ -12,6 +12,13 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 class MainPresenterImpl(private val mainInteractor: MainInterface.Interactor, private val mainView: MainInterface.View) {
+    fun loadData(){
+        val defaultCity = getDefaultCity()
+        mainView.onLoadedCityData(mainInteractor.getCityDataFromLocalDB(defaultCity))
+        //getCityData(defaultCity)
+        //getForeCast(defaultCity)
+    }
+
     fun getCityData(cityName: String) {
         mainView.showMainLoadingProgressBar(true)
 
