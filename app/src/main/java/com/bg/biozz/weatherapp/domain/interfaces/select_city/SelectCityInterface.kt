@@ -1,12 +1,9 @@
-package com.bg.biozz.weatherapp.presentation.presenters
+package com.bg.biozz.weatherapp.domain.interfaces.select_city
 
 import com.bg.biozz.weatherapp.domain.models.CityViewModel
 
-interface SelectCityPresenter {
-    fun loadCitiesDataList()
-    fun setDefaultCity(cityName: String)
-
-    interface Callback{
+interface SelectCityInterface {
+    interface View{
         fun addCityOnTheList(cityData: CityViewModel)
         fun onError(msg: String)
         fun showProgressBar(show: Boolean)

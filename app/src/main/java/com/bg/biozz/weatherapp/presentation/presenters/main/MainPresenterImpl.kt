@@ -1,20 +1,19 @@
-package com.bg.biozz.weatherapp.presentation.presenters.impl
+package com.bg.biozz.weatherapp.presentation.presenters.main
 
 import android.util.Log
 import com.bg.biozz.weatherapp.data.utils.ConstantUtils
-import com.bg.biozz.weatherapp.domain.interactors.MainInteractor
+import com.bg.biozz.weatherapp.domain.interfaces.main.MainInterface
 import com.bg.biozz.weatherapp.domain.models.CityData
 import com.bg.biozz.weatherapp.domain.models.CityViewModel
 import com.bg.biozz.weatherapp.domain.models.ForeCast
 import com.bg.biozz.weatherapp.domain.models.ForeCastViewModel
-import com.bg.biozz.weatherapp.presentation.presenters.MainPresenter
 import io.reactivex.android.schedulers.AndroidSchedulers
 import java.text.SimpleDateFormat
 import java.util.*
 
-class MainPresenterImpl(private val mainInteractor: MainInteractor, private val callback: MainPresenter.Callback) : MainPresenter{
-    override fun getCityData(cityName: String) {
-        callback.showMainLoadingProgressBar(true)
+class MainPresenterImpl(private val mainInteractor: MainInterface.Interactor, private val mainView: MainInterface.View) {
+    fun getCityData(cityName: String) {
+        mainView.showMainLoadingProgressBar(true)
 
         mainInteractor.getCityData(cityName)
                 .observeOn(AndroidSchedulers.mainThread())
@@ -25,8 +24,8 @@ class MainPresenterImpl(private val mainInteractor: MainInteractor, private val 
                 })
     }
 
-    override fun getForeCast(cityName: String) {
-        callback.showItemsLoadingProgressBar(true)
+    fun getForeCast(cityName: String) {
+        mainView.showItemsLoadingProgressBar(true)
 
         mainInteractor.getForeCast(cityName)
                 .observeOn(AndroidSchedulers.mainThread())
@@ -41,18 +40,18 @@ class MainPresenterImpl(private val mainInteractor: MainInteractor, private val 
         val mCityViewModel = CityViewModel(
                 cityData.name,
                 cityData.weather[0].main,
-                "Temperature: ${cityData.main.tempMin.toInt()} / ${cityData.main.tempMax.toInt()}",
+                "${cityData.main.tempMin.toInt()} / ${cityData.main.tempMax.toInt()}",
                 cityData.weather[0].icon,
                 cityData.main.temp.toInt().toString(),
-                "Pressure: ${cityData.main.pressure.toInt()}",
-                "Humidity: ${cityData.main.humidity}",
+                cityData.main.pressure.toInt().toString(),
+                cityData.main.humidity.toString(),
                 cityData.weather[0].description,
-                "Wind Speed: ${cityData.wind.speed.toInt()}"
+                cityData.wind.speed.toInt().toString()
         )
 
-        callback.showMainLoadingProgressBar(false)
+        mainView.showMainLoadingProgressBar(false)
         Log.d("MainPresenterImpl", "CityData loaded!")
-        callback.onLoadedCityData(mCityViewModel)
+        mainView.onLoadedCityData(mCityViewModel)
     }
 
     private fun onLoadedForeCast(foreCast: ForeCast){
@@ -75,24 +74,20 @@ class MainPresenterImpl(private val mainInteractor: MainInteractor, private val 
                 temps
         )
 
-        callback.showItemsLoadingProgressBar(false)
+        mainView.showItemsLoadingProgressBar(false)
         Log.d("MainPresenterImpl", "ForeCast loaded!")
-        callback.onLoadedForeCast(mForeCast)
+        mainView.onLoadedForeCast(mForeCast)
     }
 
-    override fun getDefaultCity(): String {
+    fun getDefaultCity(): String {
         return mainInteractor.getDefaultCity()
     }
 
-    override fun getDefaultCitiesList(): List<String> {
-        return mainInteractor.getDefaultCitiesList()
-    }
-
     private fun onLoadedError(t: Throwable, msg: String){
-        callback.showMainLoadingProgressBar(false)
-        callback.showItemsLoadingProgressBar(false)
+        mainView.showMainLoadingProgressBar(false)
+        mainView.showItemsLoadingProgressBar(false)
 
         Log.d("MainPresenterImpl", "$msg Load Error! - ${t.localizedMessage}")
-        callback.onLoadedError("Load Error!")
+        mainView.onLoadedError()
     }
 }

@@ -12,9 +12,11 @@
     <string name="cityName">City Name</string>
     <string name="description">Description</string>
     <string name="weather">Weather</string>
-    <string name="temp">Temperature:</string>
-    <string name="windSpeed">WindSpeed:</string>
-    <string name="humidity">Humidity:</string>
-    <string name="pressure">Pressure:</string>
+    <string name="temp">Temperature: %1$s</string>
+    <string name="windSpeed">WindSpeed: %1$s</string>
+    <string name="humidity">Humidity: %1$s</string>
+    <string name="pressure">Pressure: %1$s</string>
     <string name="weatherIcon">Weather icon</string>
+    <string name="loadingError">Loading error!</string>
+    <string name="cityLoadingError">City %1$s loading error!</string>
 </resources>

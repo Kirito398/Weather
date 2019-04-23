@@ -1,20 +1,20 @@
-package com.bg.biozz.weatherapp.presentation.presenters.impl
+package com.bg.biozz.weatherapp.presentation.presenters.select_city
 
 import android.util.Log
-import com.bg.biozz.weatherapp.domain.interactors.MainInteractor
+import com.bg.biozz.weatherapp.domain.interfaces.main.MainInterface
+import com.bg.biozz.weatherapp.domain.interfaces.select_city.SelectCityInterface
 import com.bg.biozz.weatherapp.domain.models.CityData
 import com.bg.biozz.weatherapp.domain.models.CityViewModel
-import com.bg.biozz.weatherapp.presentation.presenters.SelectCityPresenter
 import io.reactivex.android.schedulers.AndroidSchedulers
 
-class SelectCityPresenterImpl(private val mainInteractor: MainInteractor, private val callback: SelectCityPresenter.Callback) : SelectCityPresenter {
+class SelectCityPresenterImpl(private val mainInteractor: MainInterface.Interactor, private val selectCityView: SelectCityInterface.View) {
     private val TAG = "SelectCityPresenterImpl"
 
-    override fun loadCitiesDataList() {
+    fun loadCitiesDataList() {
         val citiesList = mainInteractor.getDefaultCitiesList()
         Log.d(TAG, "Load default city list! ${citiesList.size}")
 
-        callback.showProgressBar(true)
+        selectCityView.showProgressBar(true)
 
         for (city in citiesList){
             mainInteractor.getCityData(city)
@@ -22,7 +22,7 @@ class SelectCityPresenterImpl(private val mainInteractor: MainInteractor, privat
                     .subscribe({
                         result -> onCityDataLoaded(result)
                     },{
-                        error -> onError(error, "City $city not found!")
+                        error -> onError(error, city)
                     })
         }
     }
@@ -34,24 +34,24 @@ class SelectCityPresenterImpl(private val mainInteractor: MainInteractor, privat
                 "${cityData.main.tempMin.toInt()} / ${cityData.main.tempMax.toInt()}",
                 cityData.weather[0].icon,
                 cityData.main.temp.toInt().toString(),
-                "Pressure: ${cityData.main.pressure.toInt()}",
-                "Humidity: ${cityData.main.humidity}",
+                cityData.main.pressure.toInt().toString(),
+                cityData.main.humidity.toString(),
                 cityData.weather[0].description,
-                "Wind Speed: ${cityData.wind.speed.toInt()}"
+                cityData.wind.speed.toInt().toString()
         )
 
-        callback.showProgressBar(false)
+        selectCityView.showProgressBar(false)
         Log.d(TAG, "CityData loaded! - ${cityData.name}")
-        callback.addCityOnTheList(mCityViewModel)
+        selectCityView.addCityOnTheList(mCityViewModel)
     }
 
-    override fun setDefaultCity(cityName: String) {
+    fun setDefaultCity(cityName: String) {
         mainInteractor.setDefaultCity(cityName)
     }
 
     private fun onError(t: Throwable, msg: String){
-        callback.showProgressBar(false)
+        selectCityView.showProgressBar(false)
         Log.d(TAG, t.localizedMessage + ": " + msg)
-        callback.onError(msg)
+        selectCityView.onError(msg)
     }
 }
