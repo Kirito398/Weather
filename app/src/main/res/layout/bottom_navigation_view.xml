@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merge xmlns:android="http://schemas.android.com/apk/res/android"
+<merge xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx
@@ -9,7 +10,8 @@
         android:elevation="4dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:menu="@menu/bottom_navigation_menu"
-        android:id="@+id/bottom_navigation_view">
+        android:id="@+id/bottom_navigation_view"
+        tools:ignore="UnusedAttribute">
     </com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx>
 
 </merge>

@@ -4,9 +4,9 @@ import android.util.Log
 import com.bg.biozz.weatherapp.data.utils.ConstantUtils
 import com.bg.biozz.weatherapp.domain.interactors.MainInteractor
 import com.bg.biozz.weatherapp.domain.models.CityData
+import com.bg.biozz.weatherapp.domain.models.CityViewModel
 import com.bg.biozz.weatherapp.domain.models.ForeCast
-import com.bg.biozz.weatherapp.presentation.models.CityViewModel
-import com.bg.biozz.weatherapp.presentation.models.ForeCastViewModel
+import com.bg.biozz.weatherapp.domain.models.ForeCastViewModel
 import com.bg.biozz.weatherapp.presentation.presenters.MainPresenter
 import io.reactivex.android.schedulers.AndroidSchedulers
 import java.text.SimpleDateFormat
@@ -14,6 +14,8 @@ import java.util.*
 
 class MainPresenterImpl(private val mainInteractor: MainInteractor, private val callback: MainPresenter.Callback) : MainPresenter{
     override fun getCityData(cityName: String) {
+        callback.showMainLoadingProgressBar(true)
+
         mainInteractor.getCityData(cityName)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
@@ -24,6 +26,8 @@ class MainPresenterImpl(private val mainInteractor: MainInteractor, private val 
     }
 
     override fun getForeCast(cityName: String) {
+        callback.showItemsLoadingProgressBar(true)
+
         mainInteractor.getForeCast(cityName)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
@@ -46,6 +50,7 @@ class MainPresenterImpl(private val mainInteractor: MainInteractor, private val 
                 "Wind Speed: ${cityData.wind.speed.toInt()}"
         )
 
+        callback.showMainLoadingProgressBar(false)
         Log.d("MainPresenterImpl", "CityData loaded!")
         callback.onLoadedCityData(mCityViewModel)
     }
@@ -70,12 +75,24 @@ class MainPresenterImpl(private val mainInteractor: MainInteractor, private val 
                 temps
         )
 
+        callback.showItemsLoadingProgressBar(false)
         Log.d("MainPresenterImpl", "ForeCast loaded!")
         callback.onLoadedForeCast(mForeCast)
     }
 
+    override fun getDefaultCity(): String {
+        return mainInteractor.getDefaultCity()
+    }
+
+    override fun getDefaultCitiesList(): List<String> {
+        return mainInteractor.getDefaultCitiesList()
+    }
+
     private fun onLoadedError(t: Throwable, msg: String){
-        Log.d("MainPresenterImpl", "Load Error!")
-        callback.onLoadedError("Load Error: $msg")
+        callback.showMainLoadingProgressBar(false)
+        callback.showItemsLoadingProgressBar(false)
+
+        Log.d("MainPresenterImpl", "$msg Load Error! - ${t.localizedMessage}")
+        callback.onLoadedError("Load Error!")
     }
 }

@@ -1,4 +1,4 @@
-package com.bg.biozz.weatherapp.presentation.models
+package com.bg.biozz.weatherapp.domain.models
 
 class ForeCastViewModel(
         val daysOfWeek: List<String>,
