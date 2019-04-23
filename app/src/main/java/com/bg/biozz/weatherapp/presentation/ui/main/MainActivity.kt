@@ -1,4 +1,4 @@
-package com.bg.biozz.weatherapp.presentation.ui.activities
+package com.bg.biozz.weatherapp.presentation.ui.main
 
 import android.app.ActionBar
 import android.os.Bundle
@@ -11,23 +11,23 @@ import android.widget.LinearLayout
 import android.widget.ProgressBar
 import android.widget.TextView
 import com.bg.biozz.weatherapp.R
-import com.bg.biozz.weatherapp.data.APIClient
-import com.bg.biozz.weatherapp.data.LocalDBHelper
+import com.bg.biozz.weatherapp.data.rest.APIClient
+import com.bg.biozz.weatherapp.data.local.LocalDBHelper
 import com.bg.biozz.weatherapp.data.repositories.MainRepositoryImpl
 import com.bg.biozz.weatherapp.data.utils.ConstantUtils
 import com.bg.biozz.weatherapp.data.utils.DrawableManager
-import com.bg.biozz.weatherapp.domain.interactors.impl.MainInteractorImpl
+import com.bg.biozz.weatherapp.domain.interactors.MainInteractorImpl
+import com.bg.biozz.weatherapp.domain.interfaces.main.MainInterface
 import com.bg.biozz.weatherapp.domain.models.CityViewModel
 import com.bg.biozz.weatherapp.domain.models.ForeCastViewModel
-import com.bg.biozz.weatherapp.presentation.presenters.MainPresenter
-import com.bg.biozz.weatherapp.presentation.presenters.impl.MainPresenterImpl
+import com.bg.biozz.weatherapp.presentation.presenters.main.MainPresenterImpl
 import com.bg.biozz.weatherapp.presentation.ui.BaseActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.bottom_navigation_view.*
 
-class MainActivity : BaseActivity(1), MainPresenter.Callback {
+class MainActivity : BaseActivity(1), MainInterface.View {
     private val TAG = "MainActivity"
-    lateinit var mMainPresenter: MainPresenter
+    lateinit var mMainPresenter: MainPresenterImpl
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,10 +50,10 @@ class MainActivity : BaseActivity(1), MainPresenter.Callback {
         cityName.text = cityViewModel.cityName
         weather.text = cityViewModel.weather
         description.text = cityViewModel.description
-        tempMinMax.text = cityViewModel.tempMinMax
-        windSpeed.text = cityViewModel.windSpeed
-        humidity.text = cityViewModel.humidity
-        pressure.text = cityViewModel.pressure
+        tempMinMax.text = getString(R.string.temp, cityViewModel.tempMinMax)
+        windSpeed.text = getString(R.string.windSpeed, cityViewModel.windSpeed)
+        humidity.text = getString(R.string.humidity, cityViewModel.humidity)
+        pressure.text = getString(R.string.pressure, cityViewModel.pressure)
         icon.setImageResource(DrawableManager().getIdDrawable(cityViewModel.icon))
     }
 
@@ -94,8 +94,8 @@ class MainActivity : BaseActivity(1), MainPresenter.Callback {
         showProgressBar(itemsProgressBar, show)
     }
 
-    override fun onLoadedError(msg: String) {
-        Snackbar.make(daysView, msg, Snackbar.LENGTH_LONG).show()
+    override fun onLoadedError() {
+        Snackbar.make(daysView, getString(R.string.loadingError), Snackbar.LENGTH_LONG).show()
     }
 
     private fun loadData(){

@@ -1,4 +1,4 @@
-package com.bg.biozz.weatherapp.data
+package com.bg.biozz.weatherapp.data.local
 
 import android.content.ContentValues
 import android.content.Context

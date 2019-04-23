@@ -3,10 +3,10 @@ package com.bg.biozz.weatherapp.presentation.ui
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
-import com.bg.biozz.weatherapp.presentation.ui.activities.AddActivity
-import com.bg.biozz.weatherapp.presentation.ui.activities.MainActivity
+import com.bg.biozz.weatherapp.presentation.ui.add_city.AddActivity
+import com.bg.biozz.weatherapp.presentation.ui.main.MainActivity
 import com.bg.biozz.weatherapp.R
-import com.bg.biozz.weatherapp.presentation.ui.activities.SelectActivity
+import com.bg.biozz.weatherapp.presentation.ui.select_city.SelectActivity
 import kotlinx.android.synthetic.main.bottom_navigation_view.*
 
 abstract class BaseActivity(val navNumber: Int) : AppCompatActivity() {

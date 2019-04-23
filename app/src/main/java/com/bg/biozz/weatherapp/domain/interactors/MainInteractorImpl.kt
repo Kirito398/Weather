@@ -1,13 +1,12 @@
-package com.bg.biozz.weatherapp.domain.interactors.impl
+package com.bg.biozz.weatherapp.domain.interactors
 
 import android.util.Log
-import com.bg.biozz.weatherapp.domain.interactors.MainInteractor
+import com.bg.biozz.weatherapp.domain.interfaces.main.MainInterface
 import com.bg.biozz.weatherapp.domain.models.CityData
 import com.bg.biozz.weatherapp.domain.models.ForeCast
-import com.bg.biozz.weatherapp.domain.repositories.MainRepository
 import io.reactivex.Single
 
-class MainInteractorImpl(private val mainRepository: MainRepository) : MainInteractor {
+class MainInteractorImpl(private val mainRepository: MainInterface.Repository) : MainInterface.Interactor {
     private val TAG = "MainInteractorImpl"
 
     override fun getCityData(cityName: String): Single<CityData> {
@@ -35,8 +34,9 @@ class MainInteractorImpl(private val mainRepository: MainRepository) : MainInter
         if(!isAdded(cityName)){
             Log.d(TAG, "City $cityName added!")
             mainRepository.addCityIntoDB(cityName)
+        }else {
+            Log.d(TAG, "City $cityName has been already added!")
         }
-        Log.d(TAG, "City $cityName has been added!")
         Log.d(TAG, "Set default city: $cityName")
         mainRepository.setDefaultCity(cityName)
     }

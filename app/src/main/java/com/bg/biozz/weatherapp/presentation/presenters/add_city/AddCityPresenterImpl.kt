@@ -1,15 +1,15 @@
-package com.bg.biozz.weatherapp.presentation.presenters.impl
+package com.bg.biozz.weatherapp.presentation.presenters.add_city
 
 import android.util.Log
-import com.bg.biozz.weatherapp.domain.interactors.MainInteractor
+import com.bg.biozz.weatherapp.domain.interfaces.add_city.AddCityInterface
+import com.bg.biozz.weatherapp.domain.interfaces.main.MainInterface
 import com.bg.biozz.weatherapp.domain.models.CityData
-import com.bg.biozz.weatherapp.presentation.presenters.AddCityPresenter
 import io.reactivex.android.schedulers.AndroidSchedulers
 
-class AddCityPresenterImpl(private val mainInteractor: MainInteractor, private val callback: AddCityPresenter.Callback) : AddCityPresenter {
+class AddCityPresenterImpl(private val mainInteractor: MainInterface.Interactor, private val callback: AddCityInterface.View) {
     val TAG = "AddCityPresenterImpl"
 
-    override fun addNewCity(cityName: String) {
+    fun addNewCity(cityName: String) {
         if(cityName == ""){
             Log.d(TAG, "Incorrect city name!")
             callback.onError("Incorrect city name: $cityName")

@@ -3,16 +3,16 @@ package com.bg.biozz.weatherapp.data.repositories
 import android.content.ContentValues
 import android.util.Log
 import com.bg.biozz.weatherapp.BuildConfig
-import com.bg.biozz.weatherapp.data.API
-import com.bg.biozz.weatherapp.data.LocalDBHelper
+import com.bg.biozz.weatherapp.data.rest.API
+import com.bg.biozz.weatherapp.data.local.LocalDBHelper
 import com.bg.biozz.weatherapp.data.utils.ConstantUtils
+import com.bg.biozz.weatherapp.domain.interfaces.main.MainInterface
 import com.bg.biozz.weatherapp.domain.models.CityData
 import com.bg.biozz.weatherapp.domain.models.ForeCast
-import com.bg.biozz.weatherapp.domain.repositories.MainRepository
 import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
 
-class MainRepositoryImpl(private val webClient: API, private val localClient: LocalDBHelper) : MainRepository{
+class MainRepositoryImpl(private val webClient: API, private val localClient: LocalDBHelper) : MainInterface.Repository{
     private val TAG = "MainRepositoryImpl"
 
     override fun getCityData(cityName: String): Single<CityData> {
@@ -89,6 +89,7 @@ class MainRepositoryImpl(private val webClient: API, private val localClient: Lo
             cityName = ConstantUtils.DEFAULT_CITIES_LIST[0]
             Log.e(TAG, "0 rows")
         }
+        cursor.close()
 
         return cityName
     }

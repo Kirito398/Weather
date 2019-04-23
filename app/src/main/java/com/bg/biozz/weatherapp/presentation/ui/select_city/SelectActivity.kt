@@ -1,4 +1,4 @@
-package com.bg.biozz.weatherapp.presentation.ui.activities
+package com.bg.biozz.weatherapp.presentation.ui.select_city
 
 import android.os.Bundle
 import android.support.design.widget.Snackbar
@@ -7,21 +7,21 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import com.bg.biozz.weatherapp.R
-import com.bg.biozz.weatherapp.data.APIClient
-import com.bg.biozz.weatherapp.data.LocalDBHelper
+import com.bg.biozz.weatherapp.data.rest.APIClient
+import com.bg.biozz.weatherapp.data.local.LocalDBHelper
 import com.bg.biozz.weatherapp.data.repositories.MainRepositoryImpl
 import com.bg.biozz.weatherapp.data.utils.DrawableManager
-import com.bg.biozz.weatherapp.domain.interactors.impl.MainInteractorImpl
+import com.bg.biozz.weatherapp.domain.interactors.MainInteractorImpl
+import com.bg.biozz.weatherapp.domain.interfaces.select_city.SelectCityInterface
 import com.bg.biozz.weatherapp.domain.models.CityViewModel
-import com.bg.biozz.weatherapp.presentation.presenters.SelectCityPresenter
-import com.bg.biozz.weatherapp.presentation.presenters.impl.SelectCityPresenterImpl
+import com.bg.biozz.weatherapp.presentation.presenters.select_city.SelectCityPresenterImpl
 import com.bg.biozz.weatherapp.presentation.ui.BaseActivity
 import kotlinx.android.synthetic.main.activity_select_city.*
 import kotlinx.android.synthetic.main.bottom_navigation_view.*
 
-class SelectActivity : BaseActivity(2), SelectCityPresenter.Callback {
+class SelectActivity : BaseActivity(2), SelectCityInterface.View {
     private val TAG = "SelectActivity"
-    private lateinit var mSelectCityPresenter: SelectCityPresenter
+    private lateinit var mSelectCityPresenter: SelectCityPresenterImpl
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -83,9 +83,9 @@ class SelectActivity : BaseActivity(2), SelectCityPresenter.Callback {
     }
 
     override fun onError(msg: String) {
-        val str = error_txt.text.toString() + msg + "\n"
+        val str = error_txt.text.toString() + getString(R.string.cityLoadingError, msg)+"\n"
         error_txt.text = str
         error_txt.visibility = View.VISIBLE
-        Snackbar.make(mainView, msg, Snackbar.LENGTH_LONG)
+        Snackbar.make(mainView, getString(R.string.cityLoadingError, msg), Snackbar.LENGTH_LONG)
     }
 }

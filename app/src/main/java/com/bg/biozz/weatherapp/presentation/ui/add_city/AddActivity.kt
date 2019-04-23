@@ -1,21 +1,21 @@
-package com.bg.biozz.weatherapp.presentation.ui.activities
+package com.bg.biozz.weatherapp.presentation.ui.add_city
 
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.util.Log
 import com.bg.biozz.weatherapp.R
-import com.bg.biozz.weatherapp.data.APIClient
-import com.bg.biozz.weatherapp.data.LocalDBHelper
+import com.bg.biozz.weatherapp.data.rest.APIClient
+import com.bg.biozz.weatherapp.data.local.LocalDBHelper
 import com.bg.biozz.weatherapp.data.repositories.MainRepositoryImpl
-import com.bg.biozz.weatherapp.domain.interactors.impl.MainInteractorImpl
-import com.bg.biozz.weatherapp.presentation.presenters.AddCityPresenter
-import com.bg.biozz.weatherapp.presentation.presenters.impl.AddCityPresenterImpl
+import com.bg.biozz.weatherapp.domain.interactors.MainInteractorImpl
+import com.bg.biozz.weatherapp.domain.interfaces.add_city.AddCityInterface
+import com.bg.biozz.weatherapp.presentation.presenters.add_city.AddCityPresenterImpl
 import com.bg.biozz.weatherapp.presentation.ui.BaseActivity
 import kotlinx.android.synthetic.main.activity_add_city.*
 
-class AddActivity : BaseActivity(0), AddCityPresenter.Callback {
+class AddActivity : BaseActivity(0), AddCityInterface.View {
     private val TAG = "AddActivity"
-    lateinit var mAddCityPresenter: AddCityPresenter
+    lateinit var mAddCityPresenter: AddCityPresenterImpl
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

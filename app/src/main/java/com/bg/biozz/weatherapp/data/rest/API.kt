@@ -1,4 +1,4 @@
-package com.bg.biozz.weatherapp.data
+package com.bg.biozz.weatherapp.data.rest
 
 import com.bg.biozz.weatherapp.domain.models.ForeCast
 import com.bg.biozz.weatherapp.domain.models.CityData
