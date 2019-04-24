@@ -44,8 +44,8 @@ class MainInteractorImpl(private val mainRepository: MainInterface.Repository) :
         mainRepository.updateCityDataInLocalDB(cityViewModel)
     }
 
-    override fun updateForeCastInLocalDB(foreCastViewModel: ForeCastViewModel) {
-        mainRepository.updateForeCastInLocalDB(foreCastViewModel)
+    override fun updateForeCastInLocalDB(foreCastViewModel: ForeCastViewModel, cityName: String) {
+        mainRepository.updateForeCastInLocalDB(foreCastViewModel, cityName)
     }
 
     override fun addNewCity(cityData: CityData) {

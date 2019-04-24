@@ -11,7 +11,9 @@ import com.bg.biozz.weatherapp.data.rest.APIClient
 import com.bg.biozz.weatherapp.data.local.LocalDBHelper
 import com.bg.biozz.weatherapp.data.repositories.MainRepositoryImpl
 import com.bg.biozz.weatherapp.data.utils.DrawableManager
+import com.bg.biozz.weatherapp.data.utils.NetworkChangeReceiver
 import com.bg.biozz.weatherapp.domain.interactors.MainInteractorImpl
+import com.bg.biozz.weatherapp.domain.interfaces.main.MainInterface
 import com.bg.biozz.weatherapp.domain.interfaces.select_city.SelectCityInterface
 import com.bg.biozz.weatherapp.domain.models.CityViewModel
 import com.bg.biozz.weatherapp.presentation.presenters.select_city.SelectCityPresenterImpl
@@ -19,9 +21,10 @@ import com.bg.biozz.weatherapp.presentation.ui.BaseActivity
 import kotlinx.android.synthetic.main.activity_select_city.*
 import kotlinx.android.synthetic.main.bottom_navigation_view.*
 
-class SelectActivity : BaseActivity(2), SelectCityInterface.View {
+class SelectActivity : BaseActivity(2), SelectCityInterface.View, MainInterface.BroadCastReceiver {
     private val TAG = "SelectActivity"
     private lateinit var mSelectCityPresenter: SelectCityPresenterImpl
+    val receiver = NetworkChangeReceiver(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,13 +43,23 @@ class SelectActivity : BaseActivity(2), SelectCityInterface.View {
 
     override fun onResume() {
         super.onResume()
-
         bottom_navigation_view.menu.getItem(navNumber).isChecked = true
-        error_txt.text = ""
-        error_txt.visibility = View.GONE
+        registerReceiver(receiver, receiver.intentFilter())
+    }
 
+    override fun onPause() {
+        super.onPause()
+        unregisterReceiver(receiver)
+    }
+
+    override fun onInternetConnectionSuccess() {
         itemsLayout.removeAllViews()
-        mSelectCityPresenter.loadCitiesDataList()
+        mSelectCityPresenter.loadCitiesDataList(true)
+    }
+
+    override fun onInternetConnectionError() {
+        itemsLayout.removeAllViews()
+        mSelectCityPresenter.loadCitiesDataList(false)
     }
 
     override fun addCityOnTheList(cityData: CityViewModel) {

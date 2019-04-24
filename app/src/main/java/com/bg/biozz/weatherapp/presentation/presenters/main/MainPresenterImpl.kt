@@ -12,12 +12,16 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 class MainPresenterImpl(private val mainInteractor: MainInterface.Interactor, private val mainView: MainInterface.View) {
-    fun loadData(){
+    fun loadData(isInternetConnectionSuccess: Boolean){
         val defaultCity = getDefaultCity()
         mainView.onLoadedCityData(mainInteractor.getCityDataFromLocalDB(defaultCity))
         mainView.onLoadedForeCast(mainInteractor.getForeCastFromLocalDB(defaultCity))
-        getCityData(defaultCity)
-        getForeCast(defaultCity)
+        mainView.showLastUpdateMessage(true)
+
+        if(isInternetConnectionSuccess) {
+            getCityData(defaultCity)
+            getForeCast(defaultCity)
+        }
     }
 
     fun getCityData(cityName: String) {
@@ -86,7 +90,7 @@ class MainPresenterImpl(private val mainInteractor: MainInterface.Interactor, pr
                 temps
         )
 
-        mainInteractor.updateForeCastInLocalDB(mForeCast)
+        mainInteractor.updateForeCastInLocalDB(mForeCast, foreCast.city.name)
         mainView.showLastUpdateMessage(false)
 
         mainView.showItemsLoadingProgressBar(false)
@@ -101,7 +105,6 @@ class MainPresenterImpl(private val mainInteractor: MainInterface.Interactor, pr
     private fun onLoadedError(t: Throwable, msg: String){
         mainView.showMainLoadingProgressBar(false)
         mainView.showItemsLoadingProgressBar(false)
-        mainView.showLastUpdateMessage(true)
 
         Log.d("MainPresenterImpl", "$msg Load Error! - ${t.localizedMessage}")
         mainView.onLoadedError()

@@ -57,16 +57,8 @@ class MainRepositoryImpl(private val webClient: API, private val localClient: Lo
 
     override fun getForeCastFromLocalDB(cityName: String): ForeCastViewModel {
         val mDb = localClient.readableDatabase
-        val cursor = mDb.query(
-                ConstantUtils.TABLE_FORECAST,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null
-        )
+        val query = "SELECT * FROM ${ConstantUtils.TABLE_FORECAST} WHERE ${ConstantUtils.KEY_NAME}=\"$cityName\""
+        val cursor = mDb.rawQuery(query, null)
 
         val daysOfWeek = mutableListOf<String>()
         val icon = mutableListOf<String>()
@@ -158,7 +150,7 @@ class MainRepositoryImpl(private val webClient: API, private val localClient: Lo
         mDb.update(ConstantUtils.TABLE_CITYS, contentValues, "${ConstantUtils.KEY_NAME}= ?", arrayOf(cityViewModel.cityName))
     }
 
-    override fun updateForeCastInLocalDB(foreCastViewModel: ForeCastViewModel) {
+    override fun updateForeCastInLocalDB(foreCastViewModel: ForeCastViewModel, cityName: String) {
         val mDb = localClient.writableDatabase
 
         for(i in 1..foreCastViewModel.daysOfWeek.size){
@@ -166,7 +158,7 @@ class MainRepositoryImpl(private val webClient: API, private val localClient: Lo
             contentValues.put(ConstantUtils.KEY_DAYS_OF_WEEK, foreCastViewModel.daysOfWeek[i-1])
             contentValues.put(ConstantUtils.KEY_ICON, foreCastViewModel.icon[i-1])
             contentValues.put(ConstantUtils.KEY_TEMP, foreCastViewModel.temp[i-1])
-            mDb.update(ConstantUtils.TABLE_FORECAST, contentValues, "${ConstantUtils.KEY_ID}= ?", arrayOf(i.toString()))
+            mDb.update(ConstantUtils.TABLE_FORECAST, contentValues, "${ConstantUtils.KEY_NUMBER_OF_DAY}= ? AND ${ConstantUtils.KEY_NAME}= ?", arrayOf(i.toString(), cityName))
         }
     }
 

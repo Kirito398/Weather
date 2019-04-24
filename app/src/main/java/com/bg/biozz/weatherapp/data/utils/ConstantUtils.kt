@@ -7,10 +7,11 @@ class ConstantUtils {
         const val ITEM_WEIGHT = 0.2f
         const val HOUR_OF_DAY = 12
         const val METRIC = "metric"
+        const val NETWORK_CHANGE_BROADCAST = "android.net.conn.CONNECTIVITY_CHANGE"
 
         //Local DB
         val DEFAULT_CITIES_LIST = listOf("Naberezhnyye Chelny", "Yelabuga", "Kazan")
-        const val DATABASE_VERSION = 5
+        const val DATABASE_VERSION = 7
         const val NA = "N/A"
         const val DATABASE_NAME = "cityDB"
         const val TABLE_CITYS = "citys"
@@ -18,6 +19,7 @@ class ConstantUtils {
         const val TABLE_FORECAST = "forecast"
         const val KEY_ID = "_id"
         const val KEY_NAME = "name"
+        const val KEY_NUMBER_OF_DAY = "numberOfDay"
         const val KEY_WEATHER = "weather"
         const val KEY_TEMP_MIN_MAX = "tempMinMax"
         const val KEY_ICON = "icon"

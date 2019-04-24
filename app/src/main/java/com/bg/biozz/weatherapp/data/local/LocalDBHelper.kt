@@ -31,6 +31,8 @@ class LocalDBHelper(context: Context) : SQLiteOpenHelper(context, ConstantUtils.
 
         db?.execSQL("CREATE TABLE ${ConstantUtils.TABLE_FORECAST} (" +
                 "${ConstantUtils.KEY_ID} INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "${ConstantUtils.KEY_NAME} TEXT, " +
+                "${ConstantUtils.KEY_NUMBER_OF_DAY} TEXT, " +
                 "${ConstantUtils.KEY_DAYS_OF_WEEK} TEXT, " +
                 "${ConstantUtils.KEY_ICON} TEXT, " +
                 "${ConstantUtils.KEY_TEMP} TEXT " +
@@ -64,6 +66,18 @@ class LocalDBHelper(context: Context) : SQLiteOpenHelper(context, ConstantUtils.
             contentValues.put(ConstantUtils.KEY_DT, ConstantUtils.NA)
 
             db?.insert(ConstantUtils.TABLE_CITYS, null, contentValues)
+        }
+
+        for(city in ConstantUtils.DEFAULT_CITIES_LIST){
+            for(i in 1 .. 5){
+                val contentValues = ContentValues()
+                contentValues.put(ConstantUtils.KEY_NAME, city)
+                contentValues.put(ConstantUtils.KEY_NUMBER_OF_DAY, i.toString())
+                contentValues.put(ConstantUtils.KEY_DAYS_OF_WEEK, ConstantUtils.NA)
+                contentValues.put(ConstantUtils.KEY_ICON, ConstantUtils.NA)
+                contentValues.put(ConstantUtils.KEY_TEMP, ConstantUtils.NA)
+                db?.insert(ConstantUtils.TABLE_FORECAST, null, contentValues)
+            }
         }
 
         val defaultCity = ContentValues()

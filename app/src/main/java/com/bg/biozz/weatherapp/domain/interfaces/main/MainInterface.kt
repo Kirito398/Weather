@@ -26,7 +26,7 @@ interface MainInterface {
         fun addNewCity(cityData: CityData)
         fun setDefaultCity(cityName: String)
         fun updateCityDataInLocalDB(cityViewModel: CityViewModel)
-        fun updateForeCastInLocalDB(foreCastViewModel: ForeCastViewModel)
+        fun updateForeCastInLocalDB(foreCastViewModel: ForeCastViewModel, cityName: String)
     }
 
     interface Repository{
@@ -39,6 +39,11 @@ interface MainInterface {
         fun addCityIntoDB(cityData: CityData)
         fun setDefaultCity(cityName: String)
         fun updateCityDataInLocalDB(cityViewModel: CityViewModel)
-        fun updateForeCastInLocalDB(foreCastViewModel: ForeCastViewModel)
+        fun updateForeCastInLocalDB(foreCastViewModel: ForeCastViewModel, cityName: String)
+    }
+
+    interface BroadCastReceiver{
+        fun onInternetConnectionSuccess()
+        fun onInternetConnectionError()
     }
 }

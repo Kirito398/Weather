@@ -61,16 +61,6 @@
         </LinearLayout>
     </ScrollView>
 
-    <TextView
-        android:id="@+id/error_txt"
-        style="@style/toolbar_text"
-        android:textColor="@color/red"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:visibility="invisible"/>
-
     <ProgressBar
         android:id="@+id/progressBar"
         android:layout_width="wrap_content"
