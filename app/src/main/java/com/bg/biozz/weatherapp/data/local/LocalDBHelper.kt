@@ -11,9 +11,9 @@ class LocalDBHelper(context: Context) : SQLiteOpenHelper(context, ConstantUtils.
     private val TAG = "LocalDBHelper"
 
     override fun onCreate(db: SQLiteDatabase?) {
-        Log.w(TAG, "Create new DB")
+        Log.d(TAG, "Create new DB")
         db?.execSQL("CREATE TABLE ${ConstantUtils.TABLE_DEFAULT_CITY} (${ConstantUtils.KEY_ID} INTEGER PRIMARY KEY AUTOINCREMENT, ${ConstantUtils.KEY_NAME} TEXT)")
-        Log.w(TAG, "New default city table created!")
+        Log.d(TAG, "New default city table created!")
 
         db?.execSQL("CREATE TABLE ${ConstantUtils.TABLE_CITYS} (" +
                 "${ConstantUtils.KEY_ID} INTEGER PRIMARY KEY AUTOINCREMENT, " +
@@ -26,6 +26,7 @@ class LocalDBHelper(context: Context) : SQLiteOpenHelper(context, ConstantUtils.
                 "${ConstantUtils.KEY_HUMIDITY} TEXT, " +
                 "${ConstantUtils.KEY_DESCRIPTION} TEXT, " +
                 "${ConstantUtils.KEY_WIND_SPEED} TEXT" +
+                "${ConstantUtils.KEY_DT} TEXT" +
                 ")")
 
         db?.execSQL("CREATE TABLE ${ConstantUtils.TABLE_FORECAST} (" +
@@ -33,15 +34,14 @@ class LocalDBHelper(context: Context) : SQLiteOpenHelper(context, ConstantUtils.
                 "${ConstantUtils.KEY_DAYS_OF_WEEK} TEXT, " +
                 "${ConstantUtils.KEY_ICON} TEXT, " +
                 "${ConstantUtils.KEY_TEMP} TEXT, " +
-                "${ConstantUtils.KEY_LAST_UPDATE} TEXT" +
                 ")")
 
         addDefaultCities(db)
-        Log.w(TAG, "New DB created!")
+        Log.d(TAG, "New DB created!")
     }
 
     override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
-        Log.w(TAG, "Update DB: old version = $oldVersion | new version = $newVersion")
+        Log.d(TAG, "Update DB: old version = $oldVersion | new version = $newVersion")
         db?.execSQL("DROP TABLE IF EXISTS " + ConstantUtils.TABLE_CITYS)
         db?.execSQL("DROP TABLE IF EXISTS " + ConstantUtils.TABLE_DEFAULT_CITY)
         db?.execSQL("DROP TABLE IF EXISTS " + ConstantUtils.TABLE_FORECAST)
@@ -61,6 +61,7 @@ class LocalDBHelper(context: Context) : SQLiteOpenHelper(context, ConstantUtils.
             contentValues.put(ConstantUtils.KEY_HUMIDITY, ConstantUtils.NA)
             contentValues.put(ConstantUtils.KEY_DESCRIPTION, ConstantUtils.NA)
             contentValues.put(ConstantUtils.KEY_WIND_SPEED, ConstantUtils.NA)
+            contentValues.put(ConstantUtils.KEY_DT, ConstantUtils.NA)
 
             db?.insert(ConstantUtils.TABLE_CITYS, null, contentValues)
         }

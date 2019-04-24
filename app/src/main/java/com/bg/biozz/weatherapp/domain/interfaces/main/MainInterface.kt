@@ -13,6 +13,7 @@ interface MainInterface {
         fun onLoadedError()
         fun showMainLoadingProgressBar(show: Boolean)
         fun showItemsLoadingProgressBar(show: Boolean)
+        fun showLastUpdateMessage(show: Boolean)
     }
 
     interface Interactor{
@@ -24,6 +25,8 @@ interface MainInterface {
         fun getDefaultCitiesList(): List<String>
         fun addNewCity(cityData: CityData)
         fun setDefaultCity(cityName: String)
+        fun updateCityDataInLocalDB(cityViewModel: CityViewModel)
+        fun updateForeCastInLocalDB(foreCastViewModel: ForeCastViewModel)
     }
 
     interface Repository{
@@ -35,5 +38,7 @@ interface MainInterface {
         fun getDefaultCity(): String
         fun addCityIntoDB(cityData: CityData)
         fun setDefaultCity(cityName: String)
+        fun updateCityDataInLocalDB(cityViewModel: CityViewModel)
+        fun updateForeCastInLocalDB(foreCastViewModel: ForeCastViewModel)
     }
 }

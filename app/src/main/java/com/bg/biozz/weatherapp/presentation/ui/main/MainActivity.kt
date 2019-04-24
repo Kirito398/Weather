@@ -55,6 +55,7 @@ class MainActivity : BaseActivity(1), MainInterface.View {
         humidity.text = getString(R.string.humidity, cityViewModel.humidity)
         pressure.text = getString(R.string.pressure, cityViewModel.pressure)
         icon.setImageResource(DrawableManager().getIdDrawable(cityViewModel.icon))
+        lastUpdateTV.text = getString(R.string.lastUpdate, cityViewModel.dt)
     }
 
     override fun onLoadedForeCast(foreCastViewModel: ForeCastViewModel) {
@@ -92,6 +93,14 @@ class MainActivity : BaseActivity(1), MainInterface.View {
 
     override fun showItemsLoadingProgressBar(show: Boolean) {
         showProgressBar(itemsProgressBar, show)
+    }
+
+    override fun showLastUpdateMessage(show: Boolean) {
+        if(show){
+            lastUpdateTV.visibility = View.VISIBLE
+        } else {
+            lastUpdateTV.visibility = View.GONE
+        }
     }
 
     override fun onLoadedError() {

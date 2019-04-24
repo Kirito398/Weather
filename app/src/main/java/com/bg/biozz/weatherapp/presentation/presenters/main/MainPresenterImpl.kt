@@ -15,6 +15,7 @@ class MainPresenterImpl(private val mainInteractor: MainInterface.Interactor, pr
     fun loadData(){
         val defaultCity = getDefaultCity()
         mainView.onLoadedCityData(mainInteractor.getCityDataFromLocalDB(defaultCity))
+        mainView.onLoadedForeCast(mainInteractor.getForeCastFromLocalDB(defaultCity))
         //getCityData(defaultCity)
         //getForeCast(defaultCity)
     }
@@ -53,8 +54,12 @@ class MainPresenterImpl(private val mainInteractor: MainInterface.Interactor, pr
                 cityData.main.pressure.toInt().toString(),
                 cityData.main.humidity.toString(),
                 cityData.weather[0].description,
-                cityData.wind.speed.toInt().toString()
+                cityData.wind.speed.toInt().toString(),
+                cityData.dt.toString()
         )
+
+        mainInteractor.updateCityDataInLocalDB(mCityViewModel)
+        mainView.showLastUpdateMessage(false)
 
         mainView.showMainLoadingProgressBar(false)
         Log.d("MainPresenterImpl", "CityData loaded!")
@@ -81,18 +86,22 @@ class MainPresenterImpl(private val mainInteractor: MainInterface.Interactor, pr
                 temps
         )
 
+        mainInteractor.updateForeCastInLocalDB(mForeCast)
+        mainView.showLastUpdateMessage(false)
+
         mainView.showItemsLoadingProgressBar(false)
         Log.d("MainPresenterImpl", "ForeCast loaded!")
         mainView.onLoadedForeCast(mForeCast)
     }
 
-    fun getDefaultCity(): String {
+    private fun getDefaultCity(): String {
         return mainInteractor.getDefaultCity()
     }
 
     private fun onLoadedError(t: Throwable, msg: String){
         mainView.showMainLoadingProgressBar(false)
         mainView.showItemsLoadingProgressBar(false)
+        mainView.showLastUpdateMessage(true)
 
         Log.d("MainPresenterImpl", "$msg Load Error! - ${t.localizedMessage}")
         mainView.onLoadedError()

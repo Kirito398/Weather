@@ -24,7 +24,7 @@ class MainInteractorImpl(private val mainRepository: MainInterface.Repository) :
     }
 
     override fun getForeCastFromLocalDB(cityName: String): ForeCastViewModel {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        return mainRepository.getForeCastFromLocalDB(cityName)
     }
 
     override fun getDefaultCity(): String {
@@ -38,6 +38,14 @@ class MainInteractorImpl(private val mainRepository: MainInterface.Repository) :
 
     override fun getDefaultCitiesList(): List<String> {
         return mainRepository.getCitiesList()
+    }
+
+    override fun updateCityDataInLocalDB(cityViewModel: CityViewModel) {
+        mainRepository.updateCityDataInLocalDB(cityViewModel)
+    }
+
+    override fun updateForeCastInLocalDB(foreCastViewModel: ForeCastViewModel) {
+        mainRepository.updateForeCastInLocalDB(foreCastViewModel)
     }
 
     override fun addNewCity(cityData: CityData) {

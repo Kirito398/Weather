@@ -13,6 +13,8 @@ import com.bg.biozz.weatherapp.domain.models.ForeCast
 import com.bg.biozz.weatherapp.domain.models.ForeCastViewModel
 import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
+import java.text.SimpleDateFormat
+import java.util.*
 
 class MainRepositoryImpl(private val webClient: API, private val localClient: LocalDBHelper) : MainInterface.Repository {
     private val TAG = "MainRepositoryImpl"
@@ -45,7 +47,8 @@ class MainRepositoryImpl(private val webClient: API, private val localClient: Lo
                 cursor.getString(cursor.getColumnIndex(ConstantUtils.KEY_PRESSURE)),
                 cursor.getString(cursor.getColumnIndex(ConstantUtils.KEY_HUMIDITY)),
                 cursor.getString(cursor.getColumnIndex(ConstantUtils.KEY_DESCRIPTION)),
-                cursor.getString(cursor.getColumnIndex(ConstantUtils.KEY_WIND_SPEED))
+                cursor.getString(cursor.getColumnIndex(ConstantUtils.KEY_WIND_SPEED)),
+                cursor.getString(cursor.getColumnIndex(ConstantUtils.KEY_DT))
         )
         cursor.close()
 
@@ -53,7 +56,33 @@ class MainRepositoryImpl(private val webClient: API, private val localClient: Lo
     }
 
     override fun getForeCastFromLocalDB(cityName: String): ForeCastViewModel {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        val mDb = localClient.readableDatabase
+        val cursor = mDb.query(
+                ConstantUtils.TABLE_FORECAST,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null
+        )
+
+        val daysOfWeek = mutableListOf<String>()
+        val icon = mutableListOf<String>()
+        val temp = mutableListOf<String>()
+        if(cursor.moveToFirst()){
+            do{
+                daysOfWeek.add(cursor.getString(cursor.getColumnIndex(ConstantUtils.KEY_DAYS_OF_WEEK)))
+                icon.add(cursor.getString(cursor.getColumnIndex(ConstantUtils.KEY_ICON)))
+                temp.add(cursor.getString(cursor.getColumnIndex(ConstantUtils.KEY_TEMP)))
+            } while (cursor.moveToNext())
+        } else {
+            Log.d(TAG, "0 rows")
+        }
+        cursor.close()
+
+        return ForeCastViewModel(daysOfWeek, icon, temp)
     }
 
     override fun getCitiesList(): List<String> {
@@ -75,7 +104,7 @@ class MainRepositoryImpl(private val webClient: API, private val localClient: Lo
                 citiesList.add(cursor.getString(cursor.getColumnIndex(ConstantUtils.KEY_NAME)))
             } while (cursor.moveToNext())
         } else {
-            Log.e(TAG, "0 rows")
+            Log.d(TAG, "0 rows")
         }
         cursor.close()
 
@@ -95,6 +124,7 @@ class MainRepositoryImpl(private val webClient: API, private val localClient: Lo
         contentValues.put(ConstantUtils.KEY_HUMIDITY, cityData.main.humidity.toString())
         contentValues.put(ConstantUtils.KEY_DESCRIPTION, cityData.weather[0].description)
         contentValues.put(ConstantUtils.KEY_WIND_SPEED, cityData.wind.speed.toInt().toString())
+        contentValues.put(ConstantUtils.KEY_DT, cityData.dt.toString())
 
         mDb.insert(ConstantUtils.TABLE_CITYS, null, contentValues)
     }
@@ -104,6 +134,40 @@ class MainRepositoryImpl(private val webClient: API, private val localClient: Lo
         val contentValues = ContentValues()
         contentValues.put(ConstantUtils.KEY_NAME, cityName)
         mDb.update(ConstantUtils.TABLE_DEFAULT_CITY, contentValues, null, null)
+    }
+
+    override fun updateCityDataInLocalDB(cityViewModel: CityViewModel) {
+        val mDb = localClient.writableDatabase
+        val formatDayOfWeek = SimpleDateFormat("dd MM yyyy")
+        val date = Calendar.getInstance()
+        date.timeInMillis = cityViewModel.dt.toLong()*1000
+        val lastUpdateDate = formatDayOfWeek.format(date.time)
+
+        val contentValues = ContentValues()
+        contentValues.put(ConstantUtils.KEY_NAME, cityViewModel.cityName)
+        contentValues.put(ConstantUtils.KEY_WEATHER, cityViewModel.weather)
+        contentValues.put(ConstantUtils.KEY_TEMP_MIN_MAX, cityViewModel.tempMinMax)
+        contentValues.put(ConstantUtils.KEY_ICON, cityViewModel.icon)
+        contentValues.put(ConstantUtils.KEY_TEMP, cityViewModel.temp)
+        contentValues.put(ConstantUtils.KEY_PRESSURE, cityViewModel.pressure)
+        contentValues.put(ConstantUtils.KEY_HUMIDITY, cityViewModel.humidity)
+        contentValues.put(ConstantUtils.KEY_DESCRIPTION, cityViewModel.description)
+        contentValues.put(ConstantUtils.KEY_WIND_SPEED, cityViewModel.windSpeed)
+        contentValues.put(ConstantUtils.KEY_DT, lastUpdateDate)
+
+        mDb.update(ConstantUtils.TABLE_CITYS, contentValues, "${ConstantUtils.KEY_NAME}= ?", arrayOf(cityViewModel.cityName))
+    }
+
+    override fun updateForeCastInLocalDB(foreCastViewModel: ForeCastViewModel) {
+        val mDb = localClient.writableDatabase
+
+        for(i in 1..foreCastViewModel.daysOfWeek.size){
+            val contentValues = ContentValues()
+            contentValues.put(ConstantUtils.KEY_DAYS_OF_WEEK, foreCastViewModel.daysOfWeek[i])
+            contentValues.put(ConstantUtils.KEY_ICON, foreCastViewModel.icon[i])
+            contentValues.put(ConstantUtils.KEY_TEMP, foreCastViewModel.temp[i])
+            mDb.update(ConstantUtils.TABLE_FORECAST, contentValues, "${ConstantUtils.KEY_ID}= ?", arrayOf(i.toString()))
+        }
     }
 
     override fun getDefaultCity(): String {
