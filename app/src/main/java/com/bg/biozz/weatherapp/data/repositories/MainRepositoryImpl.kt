@@ -138,7 +138,7 @@ class MainRepositoryImpl(private val webClient: API, private val localClient: Lo
 
     override fun updateCityDataInLocalDB(cityViewModel: CityViewModel) {
         val mDb = localClient.writableDatabase
-        val formatDayOfWeek = SimpleDateFormat("dd MM yyyy")
+        val formatDayOfWeek = SimpleDateFormat("dd.MM.yyyy")
         val date = Calendar.getInstance()
         date.timeInMillis = cityViewModel.dt.toLong()*1000
         val lastUpdateDate = formatDayOfWeek.format(date.time)
@@ -163,9 +163,9 @@ class MainRepositoryImpl(private val webClient: API, private val localClient: Lo
 
         for(i in 1..foreCastViewModel.daysOfWeek.size){
             val contentValues = ContentValues()
-            contentValues.put(ConstantUtils.KEY_DAYS_OF_WEEK, foreCastViewModel.daysOfWeek[i])
-            contentValues.put(ConstantUtils.KEY_ICON, foreCastViewModel.icon[i])
-            contentValues.put(ConstantUtils.KEY_TEMP, foreCastViewModel.temp[i])
+            contentValues.put(ConstantUtils.KEY_DAYS_OF_WEEK, foreCastViewModel.daysOfWeek[i-1])
+            contentValues.put(ConstantUtils.KEY_ICON, foreCastViewModel.icon[i-1])
+            contentValues.put(ConstantUtils.KEY_TEMP, foreCastViewModel.temp[i-1])
             mDb.update(ConstantUtils.TABLE_FORECAST, contentValues, "${ConstantUtils.KEY_ID}= ?", arrayOf(i.toString()))
         }
     }

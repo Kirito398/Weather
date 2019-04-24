@@ -16,8 +16,8 @@ class MainPresenterImpl(private val mainInteractor: MainInterface.Interactor, pr
         val defaultCity = getDefaultCity()
         mainView.onLoadedCityData(mainInteractor.getCityDataFromLocalDB(defaultCity))
         mainView.onLoadedForeCast(mainInteractor.getForeCastFromLocalDB(defaultCity))
-        //getCityData(defaultCity)
-        //getForeCast(defaultCity)
+        getCityData(defaultCity)
+        getForeCast(defaultCity)
     }
 
     fun getCityData(cityName: String) {
