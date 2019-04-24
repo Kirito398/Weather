@@ -1,0 +1,49 @@
+ext.versions = [
+        compileSDK : 27,
+        minSDK : 17,
+        targetSDK : 27,
+
+        code : 1,
+        name : '1.0',
+
+        androidGradlePlugin : '3.4.0',
+        kotlin_version : '1.3.21',
+
+        support : '27.1.1',
+        constraintLayout : '1.1.3',
+
+        junit : '4.12',
+        testRunner : '1.0.2',
+        testEspresso : '3.0.2',
+
+        bottomNavigationViewEx : '1.2.4',
+
+        retrofit : '2.3.0',
+
+        rxJava : '2.0.1'
+]
+
+ext.gradlePlugins = [
+        android : "com.android.tools.build:gradle:$versions.androidGradlePlugin",
+        kotlin : "org.jetbrains.kotlin:kotlin-gradle-plugin:$versions.kotlin_version"
+]
+
+ext.libraries = [
+        kotlinStdLib : "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$versions.kotlin_version",
+
+        supportAppCompat : "com.android.support:appcompat-v7:$versions.support",
+        supportDesign : "com.android.support:design:$versions.support",
+        supportConstraint : "com.android.support.constraint:constraint-layout:$versions.constraintLayout",
+
+        junit : "junit:junit:$versions.junit",
+        supportTestRunner : "com.android.support.test:runner:$versions.testRunner",
+        supportTestEspresso : "com.android.support.test.espresso:espresso-core:$versions.testEspresso",
+
+        bottomNavigationViewEx : "com.github.ittianyu:BottomNavigationViewEx:$versions.bottomNavigationViewEx",
+
+        retrofit : "com.squareup.retrofit2:retrofit:$versions.retrofit",
+        retrofitAdapterRxJava : "com.squareup.retrofit2:adapter-rxjava2:$versions.retrofit",
+        retrofitConverterGson : "com.squareup.retrofit2:converter-gson:$versions.retrofit",
+
+        rxAndroid : "io.reactivex.rxjava2:rxandroid:$versions.rxJava"
+]
