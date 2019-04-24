@@ -12,7 +12,7 @@ class AddCityPresenterImpl(private val mainInteractor: MainInterface.Interactor,
     fun addNewCity(cityName: String) {
         if(cityName == ""){
             Log.d(TAG, "Incorrect city name!")
-            callback.onError("Incorrect city name: $cityName")
+            callback.showIncorrectCityName(cityName)
         } else {
             mainInteractor.getCityData(cityName)
                     .observeOn(AndroidSchedulers.mainThread())
@@ -32,6 +32,6 @@ class AddCityPresenterImpl(private val mainInteractor: MainInterface.Interactor,
 
     private fun onError(t: Throwable){
         Log.d(TAG, "City not found! - ${t.localizedMessage}")
-        callback.onError("City not found! - ${t.localizedMessage}")
+        callback.onError(t.localizedMessage)
     }
 }

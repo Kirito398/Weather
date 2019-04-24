@@ -83,9 +83,6 @@ class SelectActivity : BaseActivity(2), SelectCityInterface.View {
     }
 
     override fun onError(msg: String) {
-        val str = error_txt.text.toString() + getString(R.string.cityLoadingError, msg)+"\n"
-        error_txt.text = str
-        error_txt.visibility = View.VISIBLE
-        Snackbar.make(mainView, getString(R.string.cityLoadingError, msg), Snackbar.LENGTH_LONG)
+        Snackbar.make(itemsLayout, getString(R.string.cityLoadingError, msg), Snackbar.LENGTH_SHORT)
     }
 }

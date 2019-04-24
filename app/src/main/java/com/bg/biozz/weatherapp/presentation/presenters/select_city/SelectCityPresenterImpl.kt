@@ -37,7 +37,8 @@ class SelectCityPresenterImpl(private val mainInteractor: MainInterface.Interact
                 cityData.main.pressure.toInt().toString(),
                 cityData.main.humidity.toString(),
                 cityData.weather[0].description,
-                cityData.wind.speed.toInt().toString()
+                cityData.wind.speed.toInt().toString(),
+                cityData.dt.toString()
         )
 
         selectCityView.showProgressBar(false)
@@ -50,6 +51,7 @@ class SelectCityPresenterImpl(private val mainInteractor: MainInterface.Interact
     }
 
     private fun onError(t: Throwable, msg: String){
+        selectCityView.addCityOnTheList(mainInteractor.getCityDataFromLocalDB(msg))
         selectCityView.showProgressBar(false)
         Log.d(TAG, t.localizedMessage + ": " + msg)
         selectCityView.onError(msg)

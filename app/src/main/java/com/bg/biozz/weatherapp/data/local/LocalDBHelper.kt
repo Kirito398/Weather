@@ -25,7 +25,7 @@ class LocalDBHelper(context: Context) : SQLiteOpenHelper(context, ConstantUtils.
                 "${ConstantUtils.KEY_PRESSURE} TEXT, " +
                 "${ConstantUtils.KEY_HUMIDITY} TEXT, " +
                 "${ConstantUtils.KEY_DESCRIPTION} TEXT, " +
-                "${ConstantUtils.KEY_WIND_SPEED} TEXT" +
+                "${ConstantUtils.KEY_WIND_SPEED} TEXT," +
                 "${ConstantUtils.KEY_DT} TEXT" +
                 ")")
 
@@ -33,7 +33,7 @@ class LocalDBHelper(context: Context) : SQLiteOpenHelper(context, ConstantUtils.
                 "${ConstantUtils.KEY_ID} INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "${ConstantUtils.KEY_DAYS_OF_WEEK} TEXT, " +
                 "${ConstantUtils.KEY_ICON} TEXT, " +
-                "${ConstantUtils.KEY_TEMP} TEXT, " +
+                "${ConstantUtils.KEY_TEMP} TEXT " +
                 ")")
 
         addDefaultCities(db)

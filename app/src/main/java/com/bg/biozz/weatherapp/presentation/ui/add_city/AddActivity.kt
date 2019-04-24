@@ -44,7 +44,11 @@ class AddActivity : BaseActivity(0), AddCityInterface.View {
         overridePendingTransition(0,0)
     }
 
+    override fun showIncorrectCityName(cityName: String) {
+        Snackbar.make(addCityActivity, getString(R.string.incorrectCityName, cityName), Snackbar.LENGTH_LONG).show()
+    }
+
     override fun onError(msg: String) {
-        Snackbar.make(addCityActivity, msg, Snackbar.LENGTH_LONG).show()
+        Snackbar.make(addCityActivity, getString(R.string.cityNotFound, msg), Snackbar.LENGTH_LONG).show()
     }
 }
