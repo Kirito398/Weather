@@ -130,10 +130,9 @@ class MainRepositoryImpl(private val webClient: API, private val localClient: Lo
 
     override fun updateCityDataInLocalDB(cityViewModel: CityViewModel) {
         val mDb = localClient.writableDatabase
-        val formatDayOfWeek = SimpleDateFormat("dd.MM.yyyy")
-        val date = Calendar.getInstance()
-        date.timeInMillis = cityViewModel.dt.toLong()*1000
-        val lastUpdateDate = formatDayOfWeek.format(date.time)
+        val formatDayOfWeek = SimpleDateFormat("dd.MM.yyyy HH:mm")
+        val currentDate = Date()
+        val lastUpdateDate = formatDayOfWeek.format(currentDate)
 
         val contentValues = ContentValues()
         contentValues.put(ConstantUtils.KEY_NAME, cityViewModel.cityName)
