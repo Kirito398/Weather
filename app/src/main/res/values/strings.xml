@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">WeatherApp</string>
+    <string name="app_name" translatable="false">WeatherApp</string>
     <string name="cancel_txt">Cancel</string>
     <string name="addCity_txt">Add City</string>
     <string name="agreed_txt">Agreed</string>
@@ -7,8 +7,8 @@
     <string name="enterCityName_txt">Enter City Name</string>
     <string name="selectCity_txt">Select City</string>
     <string name="errorMessage">Error message!</string>
-    <string name="tempDefault">Tt</string>
-    <string name="grad">℃</string>
+    <string name="tempDefault" translatable="false">Tt</string>
+    <string name="grad" translatable="false">℃</string>
     <string name="cityName">City Name</string>
     <string name="description">Description</string>
     <string name="weather">Weather</string>
@@ -19,7 +19,8 @@
     <string name="weatherIcon">Weather icon</string>
     <string name="loadingError">Loading error!</string>
     <string name="cityLoadingError">City %1$s loading error!</string>
-    <string name="lastUpdate">Data is out of date. Last Update: %1s</string>
+    <string name="dataOut">Data is out of date.</string>
+    <string name="lastUpdate">Last Update: %1s</string>
     <string name="incorrectCityName">Incorrect city name: %1s</string>
     <string name="cityNotFound">City not found! - %1s</string>
     <string name="internetConnectionError">Internet connection error!</string>

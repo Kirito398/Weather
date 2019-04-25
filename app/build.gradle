@@ -45,4 +45,7 @@ dependencies {
     implementation libraries.retrofitConverterGson
 
     implementation libraries.rxAndroid
+
+    implementation libraries.roomRuntime
+    annotationProcessor libraries.roomCompiler
 }

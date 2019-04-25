@@ -113,8 +113,10 @@ class MainActivity : BaseActivity(1), MainInterface.View, MainInterface.BroadCas
 
     override fun showLastUpdateMessage(show: Boolean) {
         if(show){
+            dataOutTV.visibility = View.VISIBLE
             lastUpdateTV.visibility = View.VISIBLE
         } else {
+            dataOutTV.visibility = View.GONE
             lastUpdateTV.visibility = View.GONE
         }
     }

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="cancel_txt">Отмена</string>
+    <string name="addCity_txt">Добавить город</string>
+    <string name="agreed_txt">Подтвердить</string>
+    <string name="prev_txt">Назад</string>
+    <string name="enterCityName_txt">Введите название города:</string>
+    <string name="selectCity_txt">Выбор города</string>
+    <string name="errorMessage">Сообщение об ошибке!</string>
+    <string name="cityName">Наименование города</string>
+    <string name="description">Описание</string>
+    <string name="weather">Погода</string>
+    <string name="temp">Температура: %1$s</string>
+    <string name="windSpeed">Скорость ветра: %1$s</string>
+    <string name="humidity">Влажность: %1$s</string>
+    <string name="pressure">Давление: %1$s</string>
+    <string name="weatherIcon">Иконка погоды</string>
+    <string name="loadingError">Ошибка загрузки!</string>
+    <string name="cityLoadingError">Ошибка загрузки города %1$s!</string>
+    <string name="lastUpdate">Последнее обновление: %1s</string>
+    <string name="incorrectCityName">Некорректное название города: %1s</string>
+    <string name="cityNotFound">Город не наиден! - %1s</string>
+    <string name="internetConnectionError">Ошибка интернет соединения!</string>
+    <string name="dataOut">Данные устарели.</string>
+</resources>
