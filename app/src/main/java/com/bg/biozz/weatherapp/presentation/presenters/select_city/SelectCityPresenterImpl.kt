@@ -10,21 +10,35 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 class SelectCityPresenterImpl(private val mainInteractor: MainInterface.Interactor, private val selectCityView: SelectCityInterface.View) {
     private val TAG = "SelectCityPresenterImpl"
 
-    fun loadCitiesDataList() {
+    fun loadCitiesDataListFromInternet() {
         val citiesList = mainInteractor.getDefaultCitiesList()
-        Log.d(TAG, "Load default city list! ${citiesList.size}")
 
-        selectCityView.showProgressBar(true)
-
-        for (city in citiesList){
+        selectCityView.cleanCityList()
+        for (city in citiesList) {
             mainInteractor.getCityData(city)
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe({
-                        result -> onCityDataLoaded(result)
-                    },{
-                        error -> onError(error, city)
+                    .subscribe({ result ->
+                        onCityDataLoaded(result)
+                    }, { error ->
+                        onError(error, city)
                     })
         }
+        selectCityView.showProgressBar(false)
+
+        Log.d(TAG, "Load default city list from internet! ${citiesList.size}")
+    }
+
+    fun loadCitiesDataListFromLocalDB(){
+        val citiesList = mainInteractor.getDefaultCitiesList()
+
+        selectCityView.showProgressBar(true)
+        selectCityView.cleanCityList()
+        for (city in citiesList) {
+            selectCityView.addCityOnTheList(mainInteractor.getCityDataFromLocalDB(city))
+        }
+        selectCityView.showProgressBar(false)
+
+        Log.d(TAG, "Load default city list from local DB! ${citiesList.size}")
     }
 
     private fun onCityDataLoaded(cityData: CityData){
@@ -37,10 +51,11 @@ class SelectCityPresenterImpl(private val mainInteractor: MainInterface.Interact
                 cityData.main.pressure.toInt().toString(),
                 cityData.main.humidity.toString(),
                 cityData.weather[0].description,
-                cityData.wind.speed.toInt().toString()
+                cityData.wind.speed.toInt().toString(),
+                cityData.dt.toString()
         )
 
-        selectCityView.showProgressBar(false)
+        mainInteractor.updateCityDataInLocalDB(mCityViewModel)
         Log.d(TAG, "CityData loaded! - ${cityData.name}")
         selectCityView.addCityOnTheList(mCityViewModel)
     }
@@ -50,8 +65,8 @@ class SelectCityPresenterImpl(private val mainInteractor: MainInterface.Interact
     }
 
     private fun onError(t: Throwable, msg: String){
-        selectCityView.showProgressBar(false)
         Log.d(TAG, t.localizedMessage + ": " + msg)
+        selectCityView.addCityOnTheList(mainInteractor.getCityDataFromLocalDB(msg))
         selectCityView.onError(msg)
     }
 }

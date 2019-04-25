@@ -16,6 +16,7 @@ import com.bg.biozz.weatherapp.data.local.LocalDBHelper
 import com.bg.biozz.weatherapp.data.repositories.MainRepositoryImpl
 import com.bg.biozz.weatherapp.data.utils.ConstantUtils
 import com.bg.biozz.weatherapp.data.utils.DrawableManager
+import com.bg.biozz.weatherapp.data.utils.NetworkChangeReceiver
 import com.bg.biozz.weatherapp.domain.interactors.MainInteractorImpl
 import com.bg.biozz.weatherapp.domain.interfaces.main.MainInterface
 import com.bg.biozz.weatherapp.domain.models.CityViewModel
@@ -25,9 +26,10 @@ import com.bg.biozz.weatherapp.presentation.ui.BaseActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.bottom_navigation_view.*
 
-class MainActivity : BaseActivity(1), MainInterface.View {
+class MainActivity : BaseActivity(1), MainInterface.View, MainInterface.BroadCastReceiver {
     private val TAG = "MainActivity"
     lateinit var mMainPresenter: MainPresenterImpl
+    private val receiver = NetworkChangeReceiver(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,7 +44,21 @@ class MainActivity : BaseActivity(1), MainInterface.View {
     override fun onResume(){
         super.onResume()
         bottom_navigation_view.menu.getItem(navNumber).isChecked = true
-        loadData()
+        registerReceiver(receiver, receiver.intentFilter())
+    }
+
+    override fun onPause() {
+        super.onPause()
+        unregisterReceiver(receiver)
+    }
+
+    override fun onInternetConnectionSuccess() {
+        mMainPresenter.loadData(true)
+    }
+
+    override fun onInternetConnectionError() {
+        Snackbar.make(daysView, getString(R.string.internetConnectionError), Snackbar.LENGTH_LONG).show()
+        mMainPresenter.loadData(false)
     }
 
     override fun onLoadedCityData(cityViewModel: CityViewModel) {
@@ -55,6 +71,7 @@ class MainActivity : BaseActivity(1), MainInterface.View {
         humidity.text = getString(R.string.humidity, cityViewModel.humidity)
         pressure.text = getString(R.string.pressure, cityViewModel.pressure)
         icon.setImageResource(DrawableManager().getIdDrawable(cityViewModel.icon))
+        lastUpdateTV.text = getString(R.string.lastUpdate, cityViewModel.dt)
     }
 
     override fun onLoadedForeCast(foreCastViewModel: ForeCastViewModel) {
@@ -94,14 +111,16 @@ class MainActivity : BaseActivity(1), MainInterface.View {
         showProgressBar(itemsProgressBar, show)
     }
 
-    override fun onLoadedError() {
-        Snackbar.make(daysView, getString(R.string.loadingError), Snackbar.LENGTH_LONG).show()
+    override fun showLastUpdateMessage(show: Boolean) {
+        if(show){
+            lastUpdateTV.visibility = View.VISIBLE
+        } else {
+            lastUpdateTV.visibility = View.GONE
+        }
     }
 
-    private fun loadData(){
-        val defaultCity = mMainPresenter.getDefaultCity()
-        mMainPresenter.getCityData(defaultCity)
-        mMainPresenter.getForeCast(defaultCity)
+    override fun onLoadedError() {
+        Snackbar.make(daysView, getString(R.string.loadingError), Snackbar.LENGTH_LONG).show()
     }
 
     private fun showProgressBar(bar: ProgressBar, show: Boolean){

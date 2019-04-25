@@ -12,6 +12,18 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 class MainPresenterImpl(private val mainInteractor: MainInterface.Interactor, private val mainView: MainInterface.View) {
+    fun loadData(isInternetConnectionSuccess: Boolean){
+        val defaultCity = getDefaultCity()
+        mainView.onLoadedCityData(mainInteractor.getCityDataFromLocalDB(defaultCity))
+        mainView.onLoadedForeCast(mainInteractor.getForeCastFromLocalDB(defaultCity))
+        mainView.showLastUpdateMessage(true)
+
+        if(isInternetConnectionSuccess) {
+            getCityData(defaultCity)
+            getForeCast(defaultCity)
+        }
+    }
+
     fun getCityData(cityName: String) {
         mainView.showMainLoadingProgressBar(true)
 
@@ -46,8 +58,12 @@ class MainPresenterImpl(private val mainInteractor: MainInterface.Interactor, pr
                 cityData.main.pressure.toInt().toString(),
                 cityData.main.humidity.toString(),
                 cityData.weather[0].description,
-                cityData.wind.speed.toInt().toString()
+                cityData.wind.speed.toInt().toString(),
+                cityData.dt.toString()
         )
+
+        mainInteractor.updateCityDataInLocalDB(mCityViewModel)
+        mainView.showLastUpdateMessage(false)
 
         mainView.showMainLoadingProgressBar(false)
         Log.d("MainPresenterImpl", "CityData loaded!")
@@ -74,12 +90,15 @@ class MainPresenterImpl(private val mainInteractor: MainInterface.Interactor, pr
                 temps
         )
 
+        mainInteractor.updateForeCastInLocalDB(mForeCast, foreCast.city.name)
+        mainView.showLastUpdateMessage(false)
+
         mainView.showItemsLoadingProgressBar(false)
         Log.d("MainPresenterImpl", "ForeCast loaded!")
         mainView.onLoadedForeCast(mForeCast)
     }
 
-    fun getDefaultCity(): String {
+    private fun getDefaultCity(): String {
         return mainInteractor.getDefaultCity()
     }
 

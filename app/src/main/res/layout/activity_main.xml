@@ -85,7 +85,7 @@
                 android:textSize="15sp"
                 android:id="@+id/tempMinMax"
                 android:text="@string/temp"
-                android:layout_marginTop="60dp"
+                android:layout_marginTop="40dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/weather"
                 app:layout_constraintEnd_toStartOf="@id/windSpeed"/>
@@ -123,14 +123,27 @@
             <LinearLayout
                 android:id="@+id/daysView"
                 android:layout_width="300dp"
-                android:layout_height="200dp"
+                android:layout_height="150dp"
                 android:layout_marginTop="40dp"
                 android:orientation="horizontal"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/humidity"
-                app:layout_constraintBottom_toBottomOf="parent">
+                app:layout_constraintBottom_toTopOf="@id/lastUpdateTV">
             </LinearLayout>
+
+            <TextView
+                style="@style/text"
+                android:id="@+id/lastUpdateTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="55dp"
+                android:text="@string/lastUpdate"
+                android:textColor="@color/gray"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/daysView"
+                app:layout_constraintBottom_toBottomOf="parent"/>
 
             <ProgressBar
                 android:id="@+id/itemsProgressBar"

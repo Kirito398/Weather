@@ -7,5 +7,6 @@ interface SelectCityInterface {
         fun addCityOnTheList(cityData: CityViewModel)
         fun onError(msg: String)
         fun showProgressBar(show: Boolean)
+        fun cleanCityList()
     }
 }

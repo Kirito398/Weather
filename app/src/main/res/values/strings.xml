@@ -19,4 +19,8 @@
     <string name="weatherIcon">Weather icon</string>
     <string name="loadingError">Loading error!</string>
     <string name="cityLoadingError">City %1$s loading error!</string>
+    <string name="lastUpdate">Data is out of date. Last Update: %1s</string>
+    <string name="incorrectCityName">Incorrect city name: %1s</string>
+    <string name="cityNotFound">City not found! - %1s</string>
+    <string name="internetConnectionError">Internet connection error!</string>
 </resources>

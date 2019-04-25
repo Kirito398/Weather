@@ -9,5 +9,6 @@ data class CityViewModel(
         val pressure: String,
         val humidity: String,
         val description: String,
-        val windSpeed: String
+        val windSpeed: String,
+        val dt: String
 )
