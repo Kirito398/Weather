@@ -119,6 +119,16 @@ class MainRepositoryImpl(private val webClient: API, private val localClient: Lo
         contentValues.put(ConstantUtils.KEY_DT, cityData.dt.toString())
 
         mDb.insert(ConstantUtils.TABLE_CITYS, null, contentValues)
+
+        for(i in 1 .. 5){
+            val forecastValues = ContentValues()
+            forecastValues.put(ConstantUtils.KEY_NAME, cityData.name)
+            forecastValues.put(ConstantUtils.KEY_NUMBER_OF_DAY, i.toString())
+            forecastValues.put(ConstantUtils.KEY_DAYS_OF_WEEK, ConstantUtils.NA)
+            forecastValues.put(ConstantUtils.KEY_ICON, ConstantUtils.NA)
+            forecastValues.put(ConstantUtils.KEY_TEMP, ConstantUtils.NA)
+            mDb.insert(ConstantUtils.TABLE_FORECAST, null, forecastValues)
+        }
     }
 
     override fun setDefaultCity(cityName: String) {

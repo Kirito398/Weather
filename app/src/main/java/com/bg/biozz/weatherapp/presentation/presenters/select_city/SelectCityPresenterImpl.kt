@@ -10,26 +10,35 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 class SelectCityPresenterImpl(private val mainInteractor: MainInterface.Interactor, private val selectCityView: SelectCityInterface.View) {
     private val TAG = "SelectCityPresenterImpl"
 
-    fun loadCitiesDataList(isInternetConnectionSuccess: Boolean) {
+    fun loadCitiesDataListFromInternet() {
         val citiesList = mainInteractor.getDefaultCitiesList()
 
-        selectCityView.showProgressBar(true)
+        selectCityView.cleanCityList()
         for (city in citiesList) {
-            if(isInternetConnectionSuccess) {
-                mainInteractor.getCityData(city)
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe({ result ->
-                            onCityDataLoaded(result)
-                        }, { error ->
-                            onError(error, city)
-                        })
-            }else{
-                selectCityView.addCityOnTheList(mainInteractor.getCityDataFromLocalDB(city))
-            }
+            mainInteractor.getCityData(city)
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe({ result ->
+                        onCityDataLoaded(result)
+                    }, { error ->
+                        onError(error, city)
+                    })
         }
         selectCityView.showProgressBar(false)
 
-        Log.d(TAG, "Load default city list! ${citiesList.size}")
+        Log.d(TAG, "Load default city list from internet! ${citiesList.size}")
+    }
+
+    fun loadCitiesDataListFromLocalDB(){
+        val citiesList = mainInteractor.getDefaultCitiesList()
+
+        selectCityView.showProgressBar(true)
+        selectCityView.cleanCityList()
+        for (city in citiesList) {
+            selectCityView.addCityOnTheList(mainInteractor.getCityDataFromLocalDB(city))
+        }
+        selectCityView.showProgressBar(false)
+
+        Log.d(TAG, "Load default city list from local DB! ${citiesList.size}")
     }
 
     private fun onCityDataLoaded(cityData: CityData){
@@ -57,6 +66,7 @@ class SelectCityPresenterImpl(private val mainInteractor: MainInterface.Interact
 
     private fun onError(t: Throwable, msg: String){
         Log.d(TAG, t.localizedMessage + ": " + msg)
+        selectCityView.addCityOnTheList(mainInteractor.getCityDataFromLocalDB(msg))
         selectCityView.onError(msg)
     }
 }

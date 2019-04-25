@@ -53,13 +53,15 @@ class SelectActivity : BaseActivity(2), SelectCityInterface.View, MainInterface.
     }
 
     override fun onInternetConnectionSuccess() {
-        itemsLayout.removeAllViews()
-        mSelectCityPresenter.loadCitiesDataList(true)
+        mSelectCityPresenter.loadCitiesDataListFromInternet()
     }
 
     override fun onInternetConnectionError() {
+        mSelectCityPresenter.loadCitiesDataListFromLocalDB()
+    }
+
+    override fun cleanCityList() {
         itemsLayout.removeAllViews()
-        mSelectCityPresenter.loadCitiesDataList(false)
     }
 
     override fun addCityOnTheList(cityData: CityViewModel) {
