@@ -19,11 +19,11 @@ class MainInteractorImpl(private val mainRepository: MainInterface.Repository) :
         return mainRepository.getForeCast(cityName)
     }
 
-    override fun getCityDataFromLocalDB(cityName: String): CityViewModel {
+    override fun getCityDataFromLocalDB(cityName: String): Single<CityData> {
         return mainRepository.getCityDataFromLocalDB(cityName)
     }
 
-    override fun getForeCastFromLocalDB(cityName: String): ForeCastViewModel {
+    override fun getForeCastFromLocalDB(cityName: String): Single<ForeCast> {
         return mainRepository.getForeCastFromLocalDB(cityName)
     }
 

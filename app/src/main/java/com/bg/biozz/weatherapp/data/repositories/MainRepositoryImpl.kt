@@ -5,6 +5,7 @@ import android.util.Log
 import com.bg.biozz.weatherapp.BuildConfig
 import com.bg.biozz.weatherapp.data.rest.API
 import com.bg.biozz.weatherapp.data.local.LocalDBHelper
+import com.bg.biozz.weatherapp.data.local.LocalRoomDB
 import com.bg.biozz.weatherapp.data.utils.ConstantUtils
 import com.bg.biozz.weatherapp.domain.interfaces.main.MainInterface
 import com.bg.biozz.weatherapp.domain.models.CityData
@@ -16,7 +17,7 @@ import io.reactivex.schedulers.Schedulers
 import java.text.SimpleDateFormat
 import java.util.*
 
-class MainRepositoryImpl(private val webClient: API, private val localClient: LocalDBHelper) : MainInterface.Repository {
+class MainRepositoryImpl(private val webClient: API, private val localClient: LocalDBHelper, private val localRoomClient: LocalRoomDB) : MainInterface.Repository {
     private val TAG = "MainRepositoryImpl"
 
     override fun getCityData(cityName: String): Single<CityData> {
@@ -31,8 +32,23 @@ class MainRepositoryImpl(private val webClient: API, private val localClient: Lo
                 .subscribeOn(Schedulers.io())
     }
 
-    override fun getCityDataFromLocalDB(cityName: String): CityViewModel {
-        val cityViewModel: CityViewModel
+    override fun getCityDataFromLocalDB(cityName: String): Single<CityData> {
+        return localRoomClient.cityDataDao().getCityData(cityName)
+
+        /*return CityViewModel(
+                cityData.name,
+                cityData.weather[0].main,
+                "${cityData.main.tempMin.toInt()} / ${cityData.main.tempMax.toInt()}",
+                cityData.weather[0].icon,
+                cityData.main.temp.toInt().toString(),
+                cityData.main.pressure.toInt().toString(),
+                cityData.main.humidity.toString(),
+                cityData.weather[0].description,
+                cityData.wind.speed.toInt().toString(),
+                cityData.dt.toString()
+        )*/
+
+        /*val cityViewModel: CityViewModel
         val mDb = localClient.readableDatabase
         val query = "SELECT * FROM ${ConstantUtils.TABLE_CITYS} WHERE ${ConstantUtils.KEY_NAME}=\"$cityName\""
         val cursor = mDb.rawQuery(query, null)
@@ -52,11 +68,12 @@ class MainRepositoryImpl(private val webClient: API, private val localClient: Lo
         )
         cursor.close()
 
-        return cityViewModel
+        return cityViewModel*/
     }
 
-    override fun getForeCastFromLocalDB(cityName: String): ForeCastViewModel {
-        val mDb = localClient.readableDatabase
+    override fun getForeCastFromLocalDB(cityName: String): Single<ForeCast> {
+        return localRoomClient.foreCastDao().getForeCast(cityName)
+        /*val mDb = localClient.readableDatabase
         val query = "SELECT * FROM ${ConstantUtils.TABLE_FORECAST} WHERE ${ConstantUtils.KEY_NAME}=\"$cityName\""
         val cursor = mDb.rawQuery(query, null)
 
@@ -74,7 +91,7 @@ class MainRepositoryImpl(private val webClient: API, private val localClient: Lo
         }
         cursor.close()
 
-        return ForeCastViewModel(daysOfWeek, icon, temp)
+        return ForeCastViewModel(daysOfWeek, icon, temp)*/
     }
 
     override fun getCitiesList(): List<String> {

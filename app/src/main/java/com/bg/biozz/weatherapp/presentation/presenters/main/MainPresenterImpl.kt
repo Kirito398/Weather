@@ -14,8 +14,11 @@ import java.util.*
 class MainPresenterImpl(private val mainInteractor: MainInterface.Interactor, private val mainView: MainInterface.View) {
     fun loadData(isInternetConnectionSuccess: Boolean){
         val defaultCity = getDefaultCity()
-        mainView.onLoadedCityData(mainInteractor.getCityDataFromLocalDB(defaultCity))
-        mainView.onLoadedForeCast(mainInteractor.getForeCastFromLocalDB(defaultCity))
+        //mainView.onLoadedCityData(mainInteractor.getCityDataFromLocalDB(defaultCity))
+        //mainView.onLoadedForeCast(mainInteractor.getForeCastFromLocalDB(defaultCity))
+
+        getCityDataFromLocalDB(defaultCity)
+        getForeCastFromLocalDB(defaultCity)
         mainView.showLastUpdateMessage(true)
 
         if(isInternetConnectionSuccess) {
@@ -24,7 +27,27 @@ class MainPresenterImpl(private val mainInteractor: MainInterface.Interactor, pr
         }
     }
 
-    fun getCityData(cityName: String) {
+    private fun getCityDataFromLocalDB(cityName: String){
+        mainInteractor.getCityDataFromLocalDB(cityName)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({
+                    result->onLoadedCityData(result)
+                },{
+                    error->onLoadedError(error, "getCityDataFromLocalDB")
+                })
+    }
+
+    private fun getForeCastFromLocalDB(cityName: String){
+        mainInteractor.getForeCastFromLocalDB(cityName)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({
+                    result->onLoadedForeCast(result)
+                },{
+                    error->onLoadedError(error, "getForeCastFromLocalDB")
+                })
+    }
+
+    private fun getCityData(cityName: String) {
         mainView.showMainLoadingProgressBar(true)
 
         mainInteractor.getCityData(cityName)
@@ -36,7 +59,7 @@ class MainPresenterImpl(private val mainInteractor: MainInterface.Interactor, pr
                 })
     }
 
-    fun getForeCast(cityName: String) {
+    private fun getForeCast(cityName: String) {
         mainView.showItemsLoadingProgressBar(true)
 
         mainInteractor.getForeCast(cityName)

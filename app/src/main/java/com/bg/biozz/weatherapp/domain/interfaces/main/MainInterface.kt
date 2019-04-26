@@ -19,8 +19,8 @@ interface MainInterface {
     interface Interactor{
         fun getCityData(cityName: String): Single<CityData>
         fun getForeCast(cityName: String): Single<ForeCast>
-        fun getCityDataFromLocalDB(cityName: String): CityViewModel
-        fun getForeCastFromLocalDB(cityName: String): ForeCastViewModel
+        fun getCityDataFromLocalDB(cityName: String): Single<CityData>
+        fun getForeCastFromLocalDB(cityName: String): Single<ForeCast>
         fun getDefaultCity(): String
         fun getDefaultCitiesList(): List<String>
         fun addNewCity(cityData: CityData)
@@ -32,8 +32,8 @@ interface MainInterface {
     interface Repository{
         fun getCityData(cityName: String): Single<CityData>
         fun getForeCast(cityName: String): Single<ForeCast>
-        fun getCityDataFromLocalDB(cityName: String): CityViewModel
-        fun getForeCastFromLocalDB(cityName: String): ForeCastViewModel
+        fun getCityDataFromLocalDB(cityName: String): Single<CityData>
+        fun getForeCastFromLocalDB(cityName: String): Single<ForeCast>
         fun getCitiesList(): List<String>
         fun getDefaultCity(): String
         fun addCityIntoDB(cityData: CityData)
