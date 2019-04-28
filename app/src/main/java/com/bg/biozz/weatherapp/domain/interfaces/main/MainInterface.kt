@@ -19,27 +19,31 @@ interface MainInterface {
     interface Interactor{
         fun getCityData(cityName: String): Single<CityData>
         fun getForeCast(cityName: String): Single<ForeCast>
-        fun getCityDataFromLocalDB(cityName: String): Single<CityData>
-        fun getForeCastFromLocalDB(cityName: String): Single<ForeCast>
-        fun getDefaultCity(): String
-        fun getDefaultCitiesList(): List<String>
-        fun addNewCity(cityData: CityData)
-        fun setDefaultCity(cityName: String)
+        fun getCityDataFromLocalDB(cityName: String): Single<CityViewModel>
+        fun getForeCastFromLocalDB(cityName: String): Single<ForeCastViewModel>
+        fun getDefaultCity(): Single<CityViewModel>
+        fun getDefaultCitiesList(): Single<List<CityViewModel>>
+        fun addNewCity(cityViewModel: CityViewModel): Single<Unit>
+        fun setDefaultCity(cityName: String): Single<Unit>
+        fun clearDefaultCity(cityName: String): Single<Unit>
         fun updateCityDataInLocalDB(cityViewModel: CityViewModel)
-        fun updateForeCastInLocalDB(foreCastViewModel: ForeCastViewModel, cityName: String)
+        fun updateForeCastInLocalDB(foreCastViewModel: ForeCastViewModel)
+        fun insertNAForeCastInLocalDB(cityName: String)
     }
 
     interface Repository{
         fun getCityData(cityName: String): Single<CityData>
         fun getForeCast(cityName: String): Single<ForeCast>
-        fun getCityDataFromLocalDB(cityName: String): Single<CityData>
-        fun getForeCastFromLocalDB(cityName: String): Single<ForeCast>
-        fun getCitiesList(): List<String>
-        fun getDefaultCity(): String
-        fun addCityIntoDB(cityData: CityData)
-        fun setDefaultCity(cityName: String)
+        fun getCityDataFromLocalDB(cityName: String): Single<CityViewModel>
+        fun getForeCastFromLocalDB(cityName: String): Single<ForeCastViewModel>
+        fun getCitiesList(): Single<List<CityViewModel>>
+        fun getDefaultCity(): Single<CityViewModel>
+        fun addCityIntoDB(cityViewModel: CityViewModel): Single<Unit>
+        fun setDefaultCity(cityName: String): Single<Unit>
+        fun clearDefaultCity(cityName: String): Single<Unit>
         fun updateCityDataInLocalDB(cityViewModel: CityViewModel)
-        fun updateForeCastInLocalDB(foreCastViewModel: ForeCastViewModel, cityName: String)
+        fun updateForeCastInLocalDB(foreCastViewModel: ForeCastViewModel)
+        fun insertNAForeCastInLocalDB(cityName: String)
     }
 
     interface BroadCastReceiver{

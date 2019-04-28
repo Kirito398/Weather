@@ -41,7 +41,7 @@ class MainActivity : BaseActivity(1), MainInterface.View, MainInterface.BroadCas
         setupBottomNavigation()
         Log.d(TAG, "onCreate")
 
-        mMainPresenter = MainPresenterImpl(MainInteractorImpl(MainRepositoryImpl(APIClient().getClient(), LocalDBHelper(this), LocalRoomDB.getClient(applicationContext))), this)
+        mMainPresenter = MainPresenterImpl(MainInteractorImpl(MainRepositoryImpl(APIClient().getClient(), LocalRoomDB.getClient(applicationContext))), this)
     }
 
     override fun onResume(){

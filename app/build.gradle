@@ -49,5 +49,6 @@ dependencies {
     implementation libraries.rxAndroid
 
     implementation libraries.roomRuntime
+    implementation libraries.roomRxJava
     kapt libraries.roomCompiler
 }

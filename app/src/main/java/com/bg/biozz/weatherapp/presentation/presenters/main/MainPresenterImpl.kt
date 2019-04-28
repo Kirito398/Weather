@@ -8,70 +8,88 @@ import com.bg.biozz.weatherapp.domain.models.CityViewModel
 import com.bg.biozz.weatherapp.domain.models.ForeCast
 import com.bg.biozz.weatherapp.domain.models.ForeCastViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.Disposable
 import java.text.SimpleDateFormat
 import java.util.*
 
 class MainPresenterImpl(private val mainInteractor: MainInterface.Interactor, private val mainView: MainInterface.View) {
-    fun loadData(isInternetConnectionSuccess: Boolean){
-        val defaultCity = getDefaultCity()
-        //mainView.onLoadedCityData(mainInteractor.getCityDataFromLocalDB(defaultCity))
-        //mainView.onLoadedForeCast(mainInteractor.getForeCastFromLocalDB(defaultCity))
+    private val TAG = "MainPresenterImpl"
 
-        getCityDataFromLocalDB(defaultCity)
-        getForeCastFromLocalDB(defaultCity)
+    fun loadData(isInternetConnectionSuccess: Boolean){
+        mainView.showMainLoadingProgressBar(true)
+
+        var d: Disposable? = null
+        d = mainInteractor.getDefaultCity()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({
+                    result -> loadDefaultCityData(result, isInternetConnectionSuccess, d)
+                },{
+                    error -> onLoadedError(error, "getDefaultCity", d)
+                })
+    }
+
+    private fun loadDefaultCityData(defaultCity: CityViewModel, isInternetConnectionSuccess: Boolean, d: Disposable?){
+        Log.d(TAG, "City = $defaultCity")
+        mainView.onLoadedCityData(defaultCity)
+        getForeCastFromLocalDB(defaultCity.cityName, isInternetConnectionSuccess)
         mainView.showLastUpdateMessage(true)
+        d?.dispose()
+    }
+
+    private fun getForeCastFromLocalDB(cityName: String, isInternetConnectionSuccess: Boolean){
+        mainView.showItemsLoadingProgressBar(true)
+
+        var d:Disposable? = null
+        d = mainInteractor.getForeCastFromLocalDB(cityName)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({
+                    result->onLoadedForeCastFromLocalDB(result, isInternetConnectionSuccess, d)
+                },{
+                    error->onLoadedError(error, "getForeCastFromLocalDB", d)
+                })
+    }
+
+    private fun onLoadedForeCastFromLocalDB(foreCastViewModel: ForeCastViewModel, isInternetConnectionSuccess: Boolean, d: Disposable?){
+        mainView.onLoadedForeCast(foreCastViewModel)
 
         if(isInternetConnectionSuccess) {
-            getCityData(defaultCity)
-            getForeCast(defaultCity)
+            getCityData(foreCastViewModel.cityName)
+            getForeCast(foreCastViewModel.cityName)
+        }else{
+            mainView.showMainLoadingProgressBar(false)
+            mainView.showItemsLoadingProgressBar(false)
         }
-    }
 
-    private fun getCityDataFromLocalDB(cityName: String){
-        mainInteractor.getCityDataFromLocalDB(cityName)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({
-                    result->onLoadedCityData(result)
-                },{
-                    error->onLoadedError(error, "getCityDataFromLocalDB")
-                })
-    }
-
-    private fun getForeCastFromLocalDB(cityName: String){
-        mainInteractor.getForeCastFromLocalDB(cityName)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({
-                    result->onLoadedForeCast(result)
-                },{
-                    error->onLoadedError(error, "getForeCastFromLocalDB")
-                })
+        d?.dispose()
     }
 
     private fun getCityData(cityName: String) {
-        mainView.showMainLoadingProgressBar(true)
-
-        mainInteractor.getCityData(cityName)
+        var d:Disposable? = null
+        d = mainInteractor.getCityData(cityName)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
-                    result->onLoadedCityData(result)
+                    result->onLoadedCityData(result, d)
                 },{
-                    error->onLoadedError(error, "getCityData")
+                    error->onLoadedError(error, "getCityData", d)
                 })
     }
 
     private fun getForeCast(cityName: String) {
-        mainView.showItemsLoadingProgressBar(true)
-
-        mainInteractor.getForeCast(cityName)
+        var d:Disposable? = null
+        d = mainInteractor.getForeCast(cityName)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
-                    result->onLoadedForeCast(result)
+                    result->onLoadedForeCast(result, d)
                 },{
-                    error->onLoadedError(error, "getForeCast")
+                    error->onLoadedError(error, "getForeCast", d)
                 })
     }
 
-    private fun onLoadedCityData(cityData: CityData) {
+    private fun onLoadedCityData(cityData: CityData, d: Disposable?) {
+        val formatDayOfWeek = SimpleDateFormat("dd.MM.yyyy HH:mm")
+        val currentDate = Date()
+        val lastUpdateDate = formatDayOfWeek.format(currentDate)
+
         val mCityViewModel = CityViewModel(
                 cityData.name,
                 cityData.weather[0].main,
@@ -82,18 +100,20 @@ class MainPresenterImpl(private val mainInteractor: MainInterface.Interactor, pr
                 cityData.main.humidity.toString(),
                 cityData.weather[0].description,
                 cityData.wind.speed.toInt().toString(),
-                cityData.dt.toString()
+                lastUpdateDate
         )
 
         mainInteractor.updateCityDataInLocalDB(mCityViewModel)
         mainView.showLastUpdateMessage(false)
-
         mainView.showMainLoadingProgressBar(false)
+
         Log.d("MainPresenterImpl", "CityData loaded!")
         mainView.onLoadedCityData(mCityViewModel)
+
+        d?.dispose()
     }
 
-    private fun onLoadedForeCast(foreCast: ForeCast){
+    private fun onLoadedForeCast(foreCast: ForeCast, d: Disposable?){
         val formatDayOfWeek = SimpleDateFormat("E")
         val daysOfWeek = mutableListOf<String>()
         val icons = mutableListOf<String>()
@@ -108,28 +128,29 @@ class MainPresenterImpl(private val mainInteractor: MainInterface.Interactor, pr
         }
 
         val mForeCast = ForeCastViewModel(
+                foreCast.city.name,
                 daysOfWeek,
                 icons,
                 temps
         )
 
-        mainInteractor.updateForeCastInLocalDB(mForeCast, foreCast.city.name)
+        mainInteractor.updateForeCastInLocalDB(mForeCast)
         mainView.showLastUpdateMessage(false)
-
         mainView.showItemsLoadingProgressBar(false)
-        Log.d("MainPresenterImpl", "ForeCast loaded!")
+
+        Log.d(TAG, "ForeCast loaded!")
         mainView.onLoadedForeCast(mForeCast)
+
+        d?.dispose()
     }
 
-    private fun getDefaultCity(): String {
-        return mainInteractor.getDefaultCity()
-    }
-
-    private fun onLoadedError(t: Throwable, msg: String){
+    private fun onLoadedError(t: Throwable, msg: String, d: Disposable?){
         mainView.showMainLoadingProgressBar(false)
         mainView.showItemsLoadingProgressBar(false)
 
-        Log.d("MainPresenterImpl", "$msg Load Error! - ${t.localizedMessage}")
+        d?.dispose()
+
+        Log.d(TAG, "$msg Load Error! - ${t.localizedMessage}")
         mainView.onLoadedError()
     }
 }
