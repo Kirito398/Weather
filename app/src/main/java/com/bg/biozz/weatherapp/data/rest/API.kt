@@ -2,7 +2,6 @@ package com.bg.biozz.weatherapp.data.rest
 
 import com.bg.biozz.weatherapp.domain.models.ForeCast
 import com.bg.biozz.weatherapp.domain.models.CityData
-import io.reactivex.Observable
 import io.reactivex.Single
 import retrofit2.http.GET
 import retrofit2.http.Query

@@ -19,32 +19,37 @@ class SelectCityPresenterImpl(private val mainInteractor: MainInterface.Interact
         d = mainInteractor.getDefaultCitiesList()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
-                    result -> onLoadedCitiesDataList(result, isInternetConnectionSuccess, d)
+                    onLoadedCitiesDataList(it, isInternetConnectionSuccess)
+                    d?.dispose()
                 },{
-                    error -> onError(error, "Cities list!", d)
+                    onError(it, "Cities list!")
+                    d?.dispose()
                 })
     }
 
-    private fun onLoadedCitiesDataList(citiesDataList: List<CityViewModel>, isInternetConnectionSuccess: Boolean, d:Disposable?){
+    private fun onLoadedCitiesDataList(citiesDataList: List<CityViewModel>, isInternetConnectionSuccess: Boolean){
+        loadCitiesDataListFromLocalDB(citiesDataList)
         if(isInternetConnectionSuccess){
             loadCitiesDataListFromInternet(citiesDataList)
-        }else{
-            loadCitiesDataListFromLocalDB(citiesDataList)
         }
-
-        d?.dispose()
     }
 
     private fun loadCitiesDataListFromInternet(citiesDataList: List<CityViewModel>) {
-        selectCityView.cleanCityList()
+        var isClean = false
         for (city in citiesDataList) {
             var d:Disposable? = null
             d = mainInteractor.getCityData(city.cityName)
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe({ result ->
-                        onCityDataLoaded(result, d)
-                    }, { error ->
-                        onError(error, city.cityName, d)
+                    .subscribe({
+                        if (!isClean){
+                            selectCityView.cleanCityList()
+                            isClean = true
+                        }
+                        onCityDataLoaded(it)
+                        d?.dispose()
+                    }, {
+                        onError(it, "Load from internet error: ${city.cityName}!")
+                        d?.dispose()
                     })
         }
         selectCityView.showProgressBar(false)
@@ -58,7 +63,7 @@ class SelectCityPresenterImpl(private val mainInteractor: MainInterface.Interact
         selectCityView.showProgressBar(false)
     }
 
-    private fun onCityDataLoaded(cityData: CityData, d: Disposable?){
+    private fun onCityDataLoaded(cityData: CityData){
         val formatDayOfWeek = SimpleDateFormat("dd.MM.yyyy HH:mm")
         val currentDate = Date()
         val lastUpdateDate = formatDayOfWeek.format(currentDate)
@@ -79,8 +84,6 @@ class SelectCityPresenterImpl(private val mainInteractor: MainInterface.Interact
         //mainInteractor.updateCityDataInLocalDB(mCityViewModel)
         Log.d(TAG, "CityData loaded! - ${cityData.name}")
         selectCityView.addCityOnTheList(mCityViewModel)
-
-        d?.dispose()
     }
 
     fun setDefaultCity(cityName: String) {
@@ -88,31 +91,33 @@ class SelectCityPresenterImpl(private val mainInteractor: MainInterface.Interact
         disposable = mainInteractor.clearDefaultCity(cityName)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
-                    doAfterClearDefaultCity(cityName, disposable)
+                    doAfterClearDefaultCity(cityName)
+                    disposable?.dispose()
                 },{
-                    error -> onError(error, "Error in clearing default city!", disposable)
+                    onError(it, "Error in clearing default city!")
+                    disposable?.dispose()
                 })
         mainInteractor.setDefaultCity(cityName)
     }
 
-    private fun doAfterClearDefaultCity(cityName: String, d: Disposable?){
+    private fun doAfterClearDefaultCity(cityName: String){
         Log.d(TAG, "Default cities cleared!")
-        d?.dispose()
 
         var disposable: Disposable? = null
         disposable = mainInteractor.setDefaultCity(cityName)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
                     Log.d(TAG, "City $cityName setted default!")
+                    disposable?.dispose()
                 },{
-                    error -> onError(error, "Error setted city $cityName default!", disposable)
+                    error -> onError(error, "Error setted city $cityName default!")
+                    disposable?.dispose()
                 })
     }
 
-    private fun onError(t: Throwable, msg: String, d: Disposable?){
+    private fun onError(t: Throwable, msg: String){
         Log.d(TAG, t.localizedMessage + ": " + msg)
         selectCityView.showProgressBar(false)
         selectCityView.onError(msg)
-        d?.dispose()
     }
 }

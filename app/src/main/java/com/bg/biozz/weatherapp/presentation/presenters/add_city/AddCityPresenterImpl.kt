@@ -22,14 +22,16 @@ class AddCityPresenterImpl(private val mainInteractor: MainInterface.Interactor,
             d = mainInteractor.getCityData(cityName)
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe({
-                        result -> onFind(result, d)
+                        onFind(it)
+                        d?.dispose()
                     },{
-                        error -> onError(error, d, "City not found! - ")
+                        onError(it, "City not found! - ")
+                        d?.dispose()
                     })
         }
     }
 
-    private fun onFind(cityData: CityData, d:Disposable?){
+    private fun onFind(cityData: CityData){
         val formatDayOfWeek = SimpleDateFormat("dd.MM.yyyy HH:mm")
         val currentDate = Date()
         val lastUpdateDate = formatDayOfWeek.format(currentDate)
@@ -46,21 +48,20 @@ class AddCityPresenterImpl(private val mainInteractor: MainInterface.Interactor,
                 cityData.wind.speed.toInt().toString(),
                 lastUpdateDate
         )
-        d?.dispose()
 
         var disposable: Disposable? = null
         disposable = mainInteractor.addNewCity(mCityViewModel)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
-                    clearDefaultCity(disposable, mCityViewModel.cityName, true)
+                    clearDefaultCity(mCityViewModel.cityName, true)
+                    disposable?.dispose()
                 },{
-                    clearDefaultCity(disposable, mCityViewModel.cityName, false)
+                    clearDefaultCity(mCityViewModel.cityName, false)
+                    disposable?.dispose()
                 })
     }
 
-    private fun clearDefaultCity(d: Disposable?, cityName: String, isAdded: Boolean){
-        d?.dispose()
-
+    private fun clearDefaultCity(cityName: String, isAdded: Boolean){
         if(isAdded)
             mainInteractor.insertNAForeCastInLocalDB(cityName)
 
@@ -68,35 +69,36 @@ class AddCityPresenterImpl(private val mainInteractor: MainInterface.Interactor,
         disposable = mainInteractor.clearDefaultCity(cityName)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
-                    doAfterClearDefaultCity(cityName, disposable)
+                    doAfterClearDefaultCity(cityName)
+                    disposable?.dispose()
                 },{
-                    error -> onError(error, disposable, "Error in clearing default city!")
+                    error -> onError(error, "Error in clearing default city!")
+                    disposable?.dispose()
                 })
     }
 
-    private fun doAfterClearDefaultCity(cityName: String, d: Disposable?){
+    private fun doAfterClearDefaultCity(cityName: String){
         Log.d(TAG, "Default cities cleared!")
-        d?.dispose()
 
         var disposable: Disposable? = null
         disposable = mainInteractor.setDefaultCity(cityName)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
-                    onAddedSuccess(disposable, cityName)
+                    onAddedSuccess(cityName)
+                    disposable?.dispose()
                 },{
-                    error -> onError(error, disposable, "Error setted city $cityName default!")
+                    error -> onError(error, "Error setted city $cityName default!")
+                    disposable?.dispose()
                 })
     }
 
-    private fun onAddedSuccess(d: Disposable?, cityName: String){
+    private fun onAddedSuccess(cityName: String){
         Log.d(TAG, "New city $cityName added!")
-        d?.dispose()
         callback.onAdded()
     }
 
-    private fun onError(t: Throwable, d: Disposable?, msg: String){
+    private fun onError(t: Throwable, msg: String){
         Log.d(TAG, "$msg ${t.localizedMessage}")
         callback.onError(t.localizedMessage)
-        d?.dispose()
     }
 }

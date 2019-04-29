@@ -4,7 +4,6 @@ import android.arch.persistence.db.SupportSQLiteDatabase
 import android.arch.persistence.room.Database
 import android.arch.persistence.room.Room
 import android.arch.persistence.room.RoomDatabase
-import android.content.ContentValues
 import android.content.Context
 import android.util.Log
 import com.bg.biozz.weatherapp.data.local.daos.CityDataDao

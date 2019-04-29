@@ -1,8 +1,6 @@
 package com.bg.biozz.weatherapp.presentation.ui.main
 
 import android.app.ActionBar
-import android.arch.persistence.room.Room
-import android.arch.persistence.room.RoomDatabase
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.util.Log
@@ -14,7 +12,6 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import com.bg.biozz.weatherapp.R
 import com.bg.biozz.weatherapp.data.rest.APIClient
-import com.bg.biozz.weatherapp.data.local.LocalDBHelper
 import com.bg.biozz.weatherapp.data.local.LocalRoomDB
 import com.bg.biozz.weatherapp.data.repositories.MainRepositoryImpl
 import com.bg.biozz.weatherapp.data.utils.ConstantUtils
@@ -39,9 +36,9 @@ class MainActivity : BaseActivity(1), MainInterface.View, MainInterface.BroadCas
         setContentView(R.layout.activity_main)
 
         setupBottomNavigation()
-        Log.d(TAG, "onCreate")
 
         mMainPresenter = MainPresenterImpl(MainInteractorImpl(MainRepositoryImpl(APIClient().getClient(), LocalRoomDB.getClient(applicationContext))), this)
+        Log.d(TAG, "onCreate")
     }
 
     override fun onResume(){

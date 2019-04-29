@@ -1,10 +1,8 @@
 package com.bg.biozz.weatherapp.data.repositories
 
-import android.content.ContentValues
 import android.util.Log
 import com.bg.biozz.weatherapp.BuildConfig
 import com.bg.biozz.weatherapp.data.rest.API
-import com.bg.biozz.weatherapp.data.local.LocalDBHelper
 import com.bg.biozz.weatherapp.data.local.LocalRoomDB
 import com.bg.biozz.weatherapp.data.utils.ConstantUtils
 import com.bg.biozz.weatherapp.domain.interfaces.main.MainInterface
@@ -16,8 +14,6 @@ import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
-import java.text.SimpleDateFormat
-import java.util.*
 
 class MainRepositoryImpl(private val webClient: API, private val localRoomClient: LocalRoomDB) : MainInterface.Repository {
     private val TAG = "MainRepositoryImpl"
