@@ -44,7 +44,7 @@
                 android:id="@+id/icon"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
-                android:src="@drawable/ic_na"
+                android:src="@drawable/anim_ic_na"
                 android:layout_marginEnd="30dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@id/temp"

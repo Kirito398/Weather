@@ -155,8 +155,9 @@
                         </option>
                         <option name="values">
                           <map>
-                            <entry key="outputName" value="ic_accessibility_black_24dp" />
-                            <entry key="sourceFile" value="C:\Users\SultanbekovIR" />
+                            <entry key="assetSourceType" value="FILE" />
+                            <entry key="outputName" value="ic_1" />
+                            <entry key="sourceFile" value="C:\Users\SultanbekovIR\Desktop\na\1.svg" />
                           </map>
                         </option>
                       </PersistentState>

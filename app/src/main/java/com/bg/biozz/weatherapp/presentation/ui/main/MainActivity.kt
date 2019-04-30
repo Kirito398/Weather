@@ -1,6 +1,7 @@
 package com.bg.biozz.weatherapp.presentation.ui.main
 
 import android.app.ActionBar
+import android.graphics.drawable.Animatable
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.util.Log
@@ -70,8 +71,14 @@ class MainActivity : BaseActivity(1), MainInterface.View, MainInterface.BroadCas
         windSpeed.text = getString(R.string.windSpeed, cityViewModel.windSpeed)
         humidity.text = getString(R.string.humidity, cityViewModel.humidity)
         pressure.text = getString(R.string.pressure, cityViewModel.pressure)
-        icon.setImageResource(DrawableManager().getIdDrawable(cityViewModel.icon))
+        //icon.setImageResource(DrawableManager().getIdDrawable(cityViewModel.icon))
         lastUpdateTV.text = getString(R.string.lastUpdate, cityViewModel.dt)
+
+        val anim = icon.drawable
+        if(anim is Animatable){
+            (anim as Animatable).start()
+            Log.d(TAG, "Animate: ${(anim as Animatable).isRunning}")
+        }
     }
 
     override fun onLoadedForeCast(foreCastViewModel: ForeCastViewModel) {
@@ -98,6 +105,12 @@ class MainActivity : BaseActivity(1), MainInterface.View, MainInterface.BroadCas
             temp.layoutParams = LinearLayout.LayoutParams(ActionBar.LayoutParams.MATCH_PARENT, ActionBar.LayoutParams.MATCH_PARENT)
             temp.gravity = Gravity.CENTER_HORIZONTAL
             item.addView(temp)
+
+            val anim = icon.drawable
+            if(anim is Animatable){
+                (anim as Animatable).start()
+                Log.d(TAG, "Animate: ${(anim as Animatable).isRunning}")
+            }
 
             daysView.addView(item)
         }

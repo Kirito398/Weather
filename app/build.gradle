@@ -15,6 +15,7 @@ android {
         versionCode versions.code
         versionName versions.name
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        vectorDrawables.useSupportLibrary = true
     }
     buildTypes {
         debug{
@@ -51,4 +52,7 @@ dependencies {
     implementation libraries.roomRuntime
     implementation libraries.roomRxJava
     kapt libraries.roomCompiler
+
+    implementation 'com.android.support:support-vector-drawable:27.1.1'
+    implementation 'com.android.support:animated-vector-drawable:27.1.1'
 }
