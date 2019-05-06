@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animated-vector xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt"
+    tools:ignore="NewApi">
+
+    <aapt:attr name="android:drawable">
+        <vector
+            android:height="24dp"
+            android:viewportWidth="33.86667"
+            android:viewportHeight="33.86667"
+            android:width="24dp">
+
+            <group
+                android:name="cloud1"
+                android:translateY="-263.1333">
+                <path
+                    android:pathData="M11.526079 270.03537c-0.289383 -0.002 -0.593577 0.0131 -0.907935 0.0529 -5.0204475 0.63467 -4.8658245 4.86582 -4.8658245 4.86582 -2.0562946 0.34331 -3.7375174 2.1064 -3.7375174 3.94907 0 1.84264 2.1488751 3.47485 3.9490751 3.94907 1.070823 0.28208 2.476987 0 2.476987 0 0.292505 0.50663 0.888773 0.93661 1.5954968 1.25172 0.413615 -0.73933 1.033269 -1.35904 1.824684 -1.70128 0.875569 -2.05731 2.969053 -3.85649 5.368274 -3.71107 1.759042 -0.0924 3.471677 0.79019 4.583748 2.11558 2.043584 -0.66087 5.064311 -0.14895 5.941242 2.08913 0.584379 -0.11896 1.160218 -0.074 1.701275 0.0881 0.191299 -0.0376 0.353309 -0.0824 0.48482 -0.13223 2.98229 -1.12926 2.054825 -4.66019 0.07052 -5.85309 -1.984305 -1.1929 -4.583747 -0.3526 -4.583747 -0.3526 0 0 -0.0058 -2.42714 -2.811953 -3.58766 -2.806193 -1.16055 -5.183161 1.40157 -5.183161 1.40157 0 0 -1.565228 -4.3988 -5.905983 -4.42508z">
+                    <aapt:attr
+                        name="android:fillColor">
+                        <gradient
+                            android:startX="15.95116"
+                            android:startY="266.289"
+                            android:endX="15.95116"
+                            android:endY="300.1383"
+                            android:tileMode="clamp">
+                            <item
+                                android:color="#D7D7D7"
+                                android:offset="0" />
+                            <item
+                                android:color="#808080"
+                                android:offset="1" />
+                        </gradient>
+                    </aapt:attr>
+                </path>
+            </group>
+
+            <group
+                android:name="cloud2"
+                android:translateY="-263.1333">
+                <path
+                    android:pathData="M17.414432 280.38401c-0.192833 -0.001 -0.398752 0.009 -0.608228 0.0353 -3.345431 0.42087 -3.243883 3.22625 -3.243883 3.22625 -1.370236 0.22764 -2.485802 1.39609 -2.485802 2.61803 0 1.2219 1.427258 2.30357 2.62684 2.61802 0.713556 0.18705 1.648386 0 1.648386 0 0.423572 0.73008 1.820307 1.21646 2.794324 1.21646 1.588191 0 3.220549 -0.51502 3.596479 -1.21646 0 0 6.577122 0.5144 7.942223 0 1.987286 -0.74885 1.366343 -3.08753 0.04408 -3.87855 -1.322264 -0.79103 -3.049957 -0.238 -3.049957 -0.238 0 0 -0.0076 -1.61044 -1.877573 -2.38003 -1.869938 -0.76956 -3.446626 0.93438 -3.446626 0.93438 0 0 -1.047749 -2.91793 -3.94026 -2.93536z">
+                    <aapt:attr
+                        name="android:fillColor">
+                        <gradient
+                            android:startX="15.95116"
+                            android:startY="266.289"
+                            android:endX="15.95116"
+                            android:endY="300.1382"
+                            android:tileMode="clamp">
+                            <item
+                                android:color="#D7D7D7"
+                                android:offset="0" />
+                            <item
+                                android:color="#808080"
+                                android:offset="1" />
+                        </gradient>
+                    </aapt:attr>
+                </path>
+            </group>
+        </vector>
+    </aapt:attr>
+
+    <target
+        android:name="cloud1">
+        <aapt:attr name="android:animation">
+            <objectAnimator
+                android:duration="1500"
+                android:repeatCount="infinite"
+                android:repeatMode="reverse"
+                android:propertyName="translateX"
+                android:valueFrom="-0.5"
+                android:valueTo="0.5"
+                android:valueType="floatType"
+                />
+        </aapt:attr>
+    </target>
+
+    <target
+        android:name="cloud2">
+        <aapt:attr name="android:animation">
+            <objectAnimator
+                android:duration="1500"
+                android:repeatCount="infinite"
+                android:repeatMode="reverse"
+                android:propertyName="translateX"
+                android:valueFrom="1"
+                android:valueTo="0"
+                android:valueType="floatType"
+                />
+        </aapt:attr>
+    </target>
+
+</animated-vector>
+

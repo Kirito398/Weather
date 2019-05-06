@@ -24,7 +24,7 @@ class DrawableManager {
             "13n" -> R.drawable.ic_13n
             "50d" -> R.drawable.ic_50n
             "50n" -> R.drawable.ic_50n
-            else -> R.drawable.anim_ic_na
+            else -> R.drawable.ic_11d
             //R.drawable.ic_na
         }
     }

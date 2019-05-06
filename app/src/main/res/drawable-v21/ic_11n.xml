@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animated-vector
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt">
+
+    <aapt:attr name="android:drawable">
+        <vector
+            android:height="24dp"
+            android:viewportWidth="33.86667"
+            android:viewportHeight="33.86667"
+            android:width="24dp">
+
+            <group
+                android:name="drops2"
+                android:translateY="-263.1333">
+                <path
+                    android:pathData="M7.3644695 285.15601c-0.9878087 0.96255 -2.6426663 3.90501 -1.0335287 4.34082 1.6091377 0.43581 1.509403 -3.06877 1.0335287 -4.34082zm7.3339195 0.73587c-0.987809 0.96256 -2.634398 3.90502 -1.025261 4.34082 1.609138 0.43581 1.501135 -3.06877 1.025261 -4.34082z">
+                    <aapt:attr
+                        name="android:fillColor">
+                        <gradient
+                            android:startX="17.3439"
+                            android:startY="263.3307"
+                            android:endX="17.3439"
+                            android:endY="297.3211"
+                            android:tileMode="clamp">
+                            <item
+                                android:color="#8DD3FF"
+                                android:offset="0" />
+                            <item
+                                android:color="#0081D3"
+                                android:offset="1" />
+                        </gradient>
+                    </aapt:attr>
+                </path>
+            </group>
+
+            <group
+                android:name="drops1"
+                android:translateY="-263.1333">
+                <path
+                    android:pathData="M27.109001 290.33192c-0.987809 0.96256 -2.62613 3.90502 -1.016992 4.34082 1.609137 0.43581 1.492866 -3.06877 1.016992 -4.34082zm-16.71836 0.37207c-0.9878081 0.96256 -2.6426661 3.90502 -1.0335281 4.34082 1.6091371 0.43581 1.5094031 -3.06877 1.0335281 -4.34082zm7.201628 0.68626c-0.987809 0.96256 -2.634398 3.90502 -1.02526 4.34083 1.609137 0.4358 1.501134 -3.06878 1.02526 -4.34083z">
+                    <aapt:attr
+                        name="android:fillColor">
+                        <gradient
+                            android:startX="17.3439"
+                            android:startY="263.3307"
+                            android:endX="17.3439"
+                            android:endY="297.3211"
+                            android:tileMode="clamp">
+                            <item
+                                android:color="#8DD3FF"
+                                android:offset="0" />
+                            <item
+                                android:color="#0081D3"
+                                android:offset="1" />
+                        </gradient>
+                    </aapt:attr>
+                </path>
+            </group>
+
+            <group
+                android:name="cloud"
+                android:translateY="-263.1333">
+                <path
+                    android:pathData="M11.675975 272.49815c-6.3334237 0.15672 -13.7330694 8.61407 -4.6542433 10.14588 0.6356482 1.10097 2.7341817 1.83349 4.1958713 1.83349 2.383364 0 6.514177 -0.77571 7.078327 -1.83349 0 0 9.8691 0.77571 11.917683 0 2.982274 -1.12923 2.054815 -4.66017 0.07052 -5.85306 -1.984295 -1.1929 -4.583724 -0.3526 -4.583724 -0.3526 0 0 -0.0058 -2.43591 -2.811939 -3.59646 -2.806178 -1.16051 -5.174319 1.41038 -5.174319 1.41038 -1.185501 -1.2901 -4.423773 -1.79408 -6.038176 -1.75414z">
+                    <aapt:attr
+                        name="android:fillColor">
+                        <gradient
+                            android:startX="17.34393"
+                            android:startY="263.3307"
+                            android:endX="17.34393"
+                            android:endY="297.3211"
+                            android:tileMode="clamp">
+                            <item
+                                android:color="#8D8D8D"
+                                android:offset="0" />
+                            <item
+                                android:color="#3A3A3A"
+                                android:offset="1" />
+                        </gradient>
+                    </aapt:attr>
+                </path>
+            </group>
+
+            <group
+                android:name="thunder"
+                android:translateY="-268.1333"
+                android:pivotX="16.9333333"
+                android:pivotY="280">
+                <path
+                    android:pathData="M20.059025 284.05434l-0.352594 6.27618 3.173348 -0.63467 -2.46816 5.50047 6.205658 -6.84033 -3.949055 -0.49363 3.279126 -3.52594c-1.86194 0 -3.334988 -0.14104 -5.888323 -0.28208z">
+                    <aapt:attr
+                        name="android:fillColor">
+                        <gradient
+                            android:startX="17.34405"
+                            android:startY="263.3306"
+                            android:endX="17.34405"
+                            android:endY="297.321"
+                            android:tileMode="clamp">
+                            <item
+                                android:color="#FFF9B2"
+                                android:offset="0" />
+                            <item
+                                android:color="#FFE507"
+                                android:offset="1" />
+                        </gradient>
+                    </aapt:attr>
+                </path>
+            </group>
+
+            <group
+                android:name="moon"
+                android:translateY="-263.1333">
+                <path
+                    android:pathData="M15.184405 264.59108c-5.486552 0 -10.056832 3.91625 -11.071457 9.10573 1.9912714 -1.78534 4.714869 -3.04201 7.527886 -3.11163 0.849588 -0.0209 1.902998 0.0763 3.005865 0.29971 1.132262 -2.28809 3.009312 -4.1407 5.324172 -5.22723 -1.453554 -0.68222 -3.074539 -1.06658 -4.786466 -1.06658z">
+                    <aapt:attr
+                        name="android:fillColor">
+                        <gradient
+                            android:startX="15.69512"
+                            android:startY="262.614"
+                            android:endX="15.69512"
+                            android:endY="296.8894"
+                            android:tileMode="clamp">
+                            <item
+                                android:color="#FFF7CF"
+                                android:offset="0" />
+                            <item
+                                android:color="#8F8A6F"
+                                android:offset="1" />
+                        </gradient>
+                    </aapt:attr>
+                </path>
+            </group>
+
+        </vector>
+    </aapt:attr>
+
+    <target
+        android:name="cloud">
+        <aapt:attr name="android:animation">
+            <objectAnimator
+                android:duration="1500"
+                android:repeatCount="infinite"
+                android:repeatMode="reverse"
+                android:propertyName="translateX"
+                android:valueFrom="-0.5"
+                android:valueTo="0.5"
+                android:valueType="floatType"
+                />
+        </aapt:attr>
+    </target>
+
+    <target
+        android:name="drops1">
+        <aapt:attr name="android:animation">
+            <objectAnimator
+                android:duration="500"
+                android:repeatCount="infinite"
+                android:propertyName="translateX"
+                android:valueFrom="1"
+                android:valueTo="-1"
+                android:valueType="floatType"
+                />
+        </aapt:attr>
+    </target>
+
+    <target
+        android:name="drops1">
+        <aapt:attr name="android:animation">
+            <objectAnimator
+                android:duration="500"
+                android:repeatCount="infinite"
+                android:propertyName="translateY"
+                android:valueFrom="-275.1333"
+                android:valueTo="-263.1333"
+                android:valueType="floatType"
+                />
+        </aapt:attr>
+    </target>
+
+    <target
+        android:name="drops2">
+        <aapt:attr name="android:animation">
+            <objectAnimator
+                android:startOffset="250"
+                android:duration="500"
+                android:repeatCount="infinite"
+                android:propertyName="translateX"
+                android:valueFrom="1"
+                android:valueTo="-2"
+                android:valueType="floatType"
+                />
+        </aapt:attr>
+    </target>
+
+    <target
+        android:name="drops2">
+        <aapt:attr name="android:animation">
+            <objectAnimator
+                android:startOffset="250"
+                android:duration="500"
+                android:repeatCount="infinite"
+                android:propertyName="translateY"
+                android:valueFrom="-273.1333"
+                android:valueTo="-258.1333"
+                android:valueType="floatType"
+                />
+        </aapt:attr>
+    </target>
+
+    <target
+        android:name="thunder">
+        <aapt:attr name="android:animation">
+            <objectAnimator
+                android:duration="500"
+                android:repeatCount="infinite"
+                android:repeatMode="reverse"
+                android:propertyName="scaleY"
+                android:valueFrom="1"
+                android:valueTo="1.5"
+                android:valueType="floatType"
+                />
+        </aapt:attr>
+    </target>
+
+</animated-vector>
+
