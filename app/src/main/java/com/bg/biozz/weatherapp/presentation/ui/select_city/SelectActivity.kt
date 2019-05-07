@@ -1,5 +1,6 @@
 package com.bg.biozz.weatherapp.presentation.ui.select_city
 
+import android.graphics.drawable.Animatable
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.util.Log
@@ -78,6 +79,12 @@ class SelectActivity : BaseActivity(2), SelectCityInterface.View, MainInterface.
 
         val icon = view.findViewById<ImageView>(R.id.cityIcon)
         icon.setImageResource(DrawableManager().getIdDrawable(cityData.icon))
+
+        val anim = icon.drawable
+        if(anim is Animatable){
+            (anim as Animatable).start()
+            Log.d(TAG, "Animate: ${(anim as Animatable).isRunning}")
+        }
 
         view.setOnClickListener {
             Log.d(TAG, "Item clicked! - ${cityData.cityName}")

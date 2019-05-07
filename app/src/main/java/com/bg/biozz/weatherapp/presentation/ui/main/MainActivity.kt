@@ -72,7 +72,7 @@ class MainActivity : BaseActivity(1), MainInterface.View, MainInterface.BroadCas
         windSpeed.text = getString(R.string.windSpeed, cityViewModel.windSpeed)
         humidity.text = getString(R.string.humidity, cityViewModel.humidity)
         pressure.text = getString(R.string.pressure, cityViewModel.pressure)
-        //icon.setImageResource(DrawableManager().getIdDrawable(cityViewModel.icon))
+        icon.setImageResource(DrawableManager().getIdDrawable(cityViewModel.icon))
         lastUpdateTV.text = getString(R.string.lastUpdate, cityViewModel.dt)
 
         val anim = icon.drawable
