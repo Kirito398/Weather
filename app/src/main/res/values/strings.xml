@@ -8,6 +8,7 @@
     <string name="selectCity_txt">Select City</string>
     <string name="errorMessage">Error message!</string>
     <string name="tempDefault" translatable="false">Tt</string>
+    <string name="na" translatable="false">N/A</string>
     <string name="grad" translatable="false">℃</string>
     <string name="cityName">City Name</string>
     <string name="description">Description</string>

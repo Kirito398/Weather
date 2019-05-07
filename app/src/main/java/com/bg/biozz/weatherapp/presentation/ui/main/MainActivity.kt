@@ -3,6 +3,7 @@ package com.bg.biozz.weatherapp.presentation.ui.main
 import android.app.ActionBar
 import android.graphics.drawable.Animatable
 import android.os.Bundle
+import android.support.constraint.ConstraintLayout
 import android.support.design.widget.Snackbar
 import android.util.Log
 import android.view.Gravity
@@ -138,10 +139,18 @@ class MainActivity : BaseActivity(1), MainInterface.View, MainInterface.BroadCas
         Snackbar.make(daysView, getString(R.string.loadingError), Snackbar.LENGTH_LONG).show()
     }
 
-    private fun showProgressBar(bar: ProgressBar, show: Boolean){
+    private fun showProgressBar(bar: View, show: Boolean){
         if(show){
             mainScrollView.visibility = View.GONE
             bar.visibility = View.VISIBLE
+
+            if(bar is ConstraintLayout){
+                val anim = loadIcon.drawable
+                if(anim is Animatable){
+                    (anim as Animatable).start()
+                    Log.d(TAG, "Animate: ${(anim as Animatable).isRunning}")
+                }
+            }
         } else {
             mainScrollView.visibility = View.VISIBLE
             bar.visibility = View.GONE
