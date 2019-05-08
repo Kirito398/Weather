@@ -28,23 +28,19 @@ class SelectCityPresenterImpl(private val mainInteractor: MainInterface.Interact
     }
 
     private fun onLoadedCitiesDataList(citiesDataList: List<CityViewModel>, isInternetConnectionSuccess: Boolean){
-        loadCitiesDataListFromLocalDB(citiesDataList)
         if(isInternetConnectionSuccess){
             loadCitiesDataListFromInternet(citiesDataList)
+        }else{
+            loadCitiesDataListFromLocalDB(citiesDataList)
         }
     }
 
     private fun loadCitiesDataListFromInternet(citiesDataList: List<CityViewModel>) {
-        var isClean = false
         for (city in citiesDataList) {
             var d:Disposable? = null
             d = mainInteractor.getCityData(city.cityName)
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe({
-                        if (!isClean){
-                            selectCityView.cleanCityList()
-                            isClean = true
-                        }
                         onCityDataLoaded(it)
                         d?.dispose()
                     }, {
@@ -52,7 +48,8 @@ class SelectCityPresenterImpl(private val mainInteractor: MainInterface.Interact
                         d?.dispose()
                     })
         }
-        selectCityView.showProgressBar(false)
+
+        loadCitiesDataListFromLocalDB(citiesDataList)
     }
 
     private  fun loadCitiesDataListFromLocalDB(citiesDataList: List<CityViewModel>){
@@ -81,9 +78,9 @@ class SelectCityPresenterImpl(private val mainInteractor: MainInterface.Interact
                 lastUpdateDate
         )
 
-        //mainInteractor.updateCityDataInLocalDB(mCityViewModel)
+        mainInteractor.updateCityDataInLocalDB(mCityViewModel)
         Log.d(TAG, "CityData loaded! - ${cityData.name}")
-        selectCityView.addCityOnTheList(mCityViewModel)
+        //selectCityView.addCityOnTheList(mCityViewModel)
     }
 
     fun setDefaultCity(cityName: String) {

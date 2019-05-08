@@ -12,7 +12,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".presentation.ui.main.MainActivity">
+        <activity android:name=".presentation.ui.main.MainActivity"
+            android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -20,8 +21,13 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".presentation.ui.select_city.SelectActivity"/>
-        <activity android:name=".presentation.ui.add_city.AddActivity"/>
+        <activity
+            android:name=".presentation.ui.select_city.SelectActivity"
+            android:launchMode="singleTask"/>
+
+        <activity
+            android:name=".presentation.ui.add_city.AddActivity"
+            android:launchMode="singleTask"/>
     </application>
 
 </manifest>

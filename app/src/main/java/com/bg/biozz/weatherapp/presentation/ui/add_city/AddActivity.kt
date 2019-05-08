@@ -5,7 +5,6 @@ import android.support.design.widget.Snackbar
 import android.util.Log
 import com.bg.biozz.weatherapp.R
 import com.bg.biozz.weatherapp.data.rest.APIClient
-import com.bg.biozz.weatherapp.data.local.LocalDBHelper
 import com.bg.biozz.weatherapp.data.local.LocalRoomDB
 import com.bg.biozz.weatherapp.data.repositories.MainRepositoryImpl
 import com.bg.biozz.weatherapp.domain.interactors.MainInteractorImpl

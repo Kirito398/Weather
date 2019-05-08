@@ -2,15 +2,16 @@ package com.bg.biozz.weatherapp.presentation.ui.main
 
 import android.app.ActionBar
 import android.graphics.drawable.Animatable
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.support.constraint.ConstraintLayout
 import android.support.design.widget.Snackbar
+import android.support.graphics.drawable.Animatable2Compat
 import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
-import android.widget.ProgressBar
 import android.widget.TextView
 import com.bg.biozz.weatherapp.R
 import com.bg.biozz.weatherapp.data.rest.APIClient
@@ -140,20 +141,39 @@ class MainActivity : BaseActivity(1), MainInterface.View, MainInterface.BroadCas
     }
 
     private fun showProgressBar(bar: View, show: Boolean){
+        val callback = object : Animatable2Compat.AnimationCallback(){
+            override fun onAnimationEnd(drawable: Drawable?) {
+                (drawable as Animatable2Compat).start()
+                Log.d(TAG, "Animatable2Compat")
+            }
+        }
+
         if(show){
             mainScrollView.visibility = View.GONE
             bar.visibility = View.VISIBLE
 
             if(bar is ConstraintLayout){
                 val anim = loadIcon.drawable
-                if(anim is Animatable){
-                    (anim as Animatable).start()
-                    Log.d(TAG, "Animate: ${(anim as Animatable).isRunning}")
+                if(anim is Animatable) {
+                    if(anim is Animatable2Compat){
+                        anim.registerAnimationCallback(callback)
+                    }
+                    anim.start()
                 }
             }
         } else {
             mainScrollView.visibility = View.VISIBLE
             bar.visibility = View.GONE
+
+            if(bar is ConstraintLayout){
+                val anim = loadIcon.drawable
+                if(anim is Animatable) {
+                    if(anim is Animatable2Compat){
+                        anim.unregisterAnimationCallback(callback)
+                    }
+                    anim.stop()
+                }
+            }
         }
     }
 }
