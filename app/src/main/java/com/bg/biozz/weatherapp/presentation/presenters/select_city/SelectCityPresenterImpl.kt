@@ -6,42 +6,68 @@ import com.bg.biozz.weatherapp.domain.interfaces.select_city.SelectCityInterface
 import com.bg.biozz.weatherapp.domain.models.CityData
 import com.bg.biozz.weatherapp.domain.models.CityViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.Disposable
+import java.text.SimpleDateFormat
+import java.util.*
 
 class SelectCityPresenterImpl(private val mainInteractor: MainInterface.Interactor, private val selectCityView: SelectCityInterface.View) {
     private val TAG = "SelectCityPresenterImpl"
 
-    fun loadCitiesDataListFromInternet() {
-        val citiesList = mainInteractor.getDefaultCitiesList()
+    fun loadData(isInternetConnectionSuccess: Boolean){
+        selectCityView.showProgressBar(true)
+        var d: Disposable? = null
+        d = mainInteractor.getDefaultCitiesList()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({
+                    onLoadedCitiesDataList(it, isInternetConnectionSuccess)
+                    d?.dispose()
+                },{
+                    onError(it, "Cities list!")
+                    d?.dispose()
+                })
+    }
 
-        selectCityView.cleanCityList()
-        for (city in citiesList) {
-            mainInteractor.getCityData(city)
+    private fun onLoadedCitiesDataList(citiesDataList: List<CityViewModel>, isInternetConnectionSuccess: Boolean){
+        loadCitiesDataListFromLocalDB(citiesDataList)
+        if(isInternetConnectionSuccess){
+            loadCitiesDataListFromInternet(citiesDataList)
+        }
+    }
+
+    private fun loadCitiesDataListFromInternet(citiesDataList: List<CityViewModel>) {
+        var isClean = false
+        for (city in citiesDataList) {
+            var d:Disposable? = null
+            d = mainInteractor.getCityData(city.cityName)
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe({ result ->
-                        onCityDataLoaded(result)
-                    }, { error ->
-                        onError(error, city)
+                    .subscribe({
+                        if (!isClean){
+                            selectCityView.cleanCityList()
+                            isClean = true
+                        }
+                        onCityDataLoaded(it)
+                        d?.dispose()
+                    }, {
+                        onError(it, "Load from internet error: ${city.cityName}!")
+                        d?.dispose()
                     })
         }
         selectCityView.showProgressBar(false)
-
-        Log.d(TAG, "Load default city list from internet! ${citiesList.size}")
     }
 
-    fun loadCitiesDataListFromLocalDB(){
-        val citiesList = mainInteractor.getDefaultCitiesList()
-
-        selectCityView.showProgressBar(true)
+    private  fun loadCitiesDataListFromLocalDB(citiesDataList: List<CityViewModel>){
         selectCityView.cleanCityList()
-        for (city in citiesList) {
-            selectCityView.addCityOnTheList(mainInteractor.getCityDataFromLocalDB(city))
+        for (city in citiesDataList) {
+            selectCityView.addCityOnTheList(city)
         }
         selectCityView.showProgressBar(false)
-
-        Log.d(TAG, "Load default city list from local DB! ${citiesList.size}")
     }
 
     private fun onCityDataLoaded(cityData: CityData){
+        val formatDayOfWeek = SimpleDateFormat("dd.MM.yyyy HH:mm")
+        val currentDate = Date()
+        val lastUpdateDate = formatDayOfWeek.format(currentDate)
+
         val mCityViewModel = CityViewModel(
                 cityData.name,
                 cityData.weather[0].main,
@@ -52,21 +78,46 @@ class SelectCityPresenterImpl(private val mainInteractor: MainInterface.Interact
                 cityData.main.humidity.toString(),
                 cityData.weather[0].description,
                 cityData.wind.speed.toInt().toString(),
-                cityData.dt.toString()
+                lastUpdateDate
         )
 
-        mainInteractor.updateCityDataInLocalDB(mCityViewModel)
+        //mainInteractor.updateCityDataInLocalDB(mCityViewModel)
         Log.d(TAG, "CityData loaded! - ${cityData.name}")
         selectCityView.addCityOnTheList(mCityViewModel)
     }
 
     fun setDefaultCity(cityName: String) {
+        var disposable: Disposable? = null
+        disposable = mainInteractor.clearDefaultCity(cityName)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({
+                    doAfterClearDefaultCity(cityName)
+                    disposable?.dispose()
+                },{
+                    onError(it, "Error in clearing default city!")
+                    disposable?.dispose()
+                })
         mainInteractor.setDefaultCity(cityName)
+    }
+
+    private fun doAfterClearDefaultCity(cityName: String){
+        Log.d(TAG, "Default cities cleared!")
+
+        var disposable: Disposable? = null
+        disposable = mainInteractor.setDefaultCity(cityName)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({
+                    Log.d(TAG, "City $cityName setted default!")
+                    disposable?.dispose()
+                },{
+                    error -> onError(error, "Error setted city $cityName default!")
+                    disposable?.dispose()
+                })
     }
 
     private fun onError(t: Throwable, msg: String){
         Log.d(TAG, t.localizedMessage + ": " + msg)
-        selectCityView.addCityOnTheList(mainInteractor.getCityDataFromLocalDB(msg))
+        selectCityView.showProgressBar(false)
         selectCityView.onError(msg)
     }
 }

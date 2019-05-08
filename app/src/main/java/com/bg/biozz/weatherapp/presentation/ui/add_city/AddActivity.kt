@@ -6,6 +6,7 @@ import android.util.Log
 import com.bg.biozz.weatherapp.R
 import com.bg.biozz.weatherapp.data.rest.APIClient
 import com.bg.biozz.weatherapp.data.local.LocalDBHelper
+import com.bg.biozz.weatherapp.data.local.LocalRoomDB
 import com.bg.biozz.weatherapp.data.repositories.MainRepositoryImpl
 import com.bg.biozz.weatherapp.domain.interactors.MainInteractorImpl
 import com.bg.biozz.weatherapp.domain.interfaces.add_city.AddCityInterface
@@ -21,7 +22,7 @@ class AddActivity : BaseActivity(0), AddCityInterface.View {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_city)
 
-        mAddCityPresenter = AddCityPresenterImpl(MainInteractorImpl(MainRepositoryImpl(APIClient().getClient(), LocalDBHelper(this))), this)
+        mAddCityPresenter = AddCityPresenterImpl(MainInteractorImpl(MainRepositoryImpl(APIClient().getClient(), LocalRoomDB.getClient(applicationContext))), this)
 
         Log.d(TAG, "onCreate")
 

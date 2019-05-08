@@ -34,7 +34,18 @@ abstract class BaseActivity(val navNumber: Int) : AppCompatActivity() {
                         }
                     }
 
-            if(nextActivity != null){
+            val nextNumber =
+                    when(it.itemId){
+                        R.id.nav_item_add -> 0
+                        R.id.nav_item_home -> 1
+                        R.id.nav_item_list -> 2
+                        else -> {
+                            Log.e(TAG, "Item error! $it")
+                            null
+                        }
+                    }
+
+            if(nextActivity != null && nextNumber != navNumber){
                 val intent = Intent(this, nextActivity)
                 intent.flags = Intent.FLAG_ACTIVITY_NO_ANIMATION
                 startActivity(intent)

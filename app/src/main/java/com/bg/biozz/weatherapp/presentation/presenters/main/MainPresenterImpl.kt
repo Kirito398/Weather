@@ -8,47 +8,94 @@ import com.bg.biozz.weatherapp.domain.models.CityViewModel
 import com.bg.biozz.weatherapp.domain.models.ForeCast
 import com.bg.biozz.weatherapp.domain.models.ForeCastViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.Disposable
 import java.text.SimpleDateFormat
 import java.util.*
 
 class MainPresenterImpl(private val mainInteractor: MainInterface.Interactor, private val mainView: MainInterface.View) {
+    private val TAG = "MainPresenterImpl"
+
     fun loadData(isInternetConnectionSuccess: Boolean){
-        val defaultCity = getDefaultCity()
-        mainView.onLoadedCityData(mainInteractor.getCityDataFromLocalDB(defaultCity))
-        mainView.onLoadedForeCast(mainInteractor.getForeCastFromLocalDB(defaultCity))
-        mainView.showLastUpdateMessage(true)
-
-        if(isInternetConnectionSuccess) {
-            getCityData(defaultCity)
-            getForeCast(defaultCity)
-        }
-    }
-
-    fun getCityData(cityName: String) {
         mainView.showMainLoadingProgressBar(true)
 
-        mainInteractor.getCityData(cityName)
+        Log.d(TAG, "Load Data!")
+        var d: Disposable? = null
+        d = mainInteractor.getDefaultCity()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
-                    result->onLoadedCityData(result)
+                    loadDefaultCityData(it, isInternetConnectionSuccess)
+                    d?.dispose()
                 },{
-                    error->onLoadedError(error, "getCityData")
+                    onLoadedError(it, "getDefaultCity")
+                    d?.dispose()
                 })
     }
 
-    fun getForeCast(cityName: String) {
+    private fun loadDefaultCityData(defaultCity: CityViewModel, isInternetConnectionSuccess: Boolean){
+        Log.d(TAG, "City = $defaultCity")
+        mainView.onLoadedCityData(defaultCity)
+        getForeCastFromLocalDB(defaultCity.cityName, isInternetConnectionSuccess)
+        mainView.showLastUpdateMessage(true)
+    }
+
+    private fun getForeCastFromLocalDB(cityName: String, isInternetConnectionSuccess: Boolean){
         mainView.showItemsLoadingProgressBar(true)
 
-        mainInteractor.getForeCast(cityName)
+        var d:Disposable? = null
+        d = mainInteractor.getForeCastFromLocalDB(cityName)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
-                    result->onLoadedForeCast(result)
+                    onLoadedForeCastFromLocalDB(it, isInternetConnectionSuccess)
+                    d?.dispose()
                 },{
-                    error->onLoadedError(error, "getForeCast")
+                    onLoadedError(it, "getForeCastFromLocalDB")
+                    d?.dispose()
+                })
+    }
+
+    private fun onLoadedForeCastFromLocalDB(foreCastViewModel: ForeCastViewModel, isInternetConnectionSuccess: Boolean){
+        mainView.onLoadedForeCast(foreCastViewModel)
+
+        if(isInternetConnectionSuccess) {
+            getCityData(foreCastViewModel.cityName)
+            getForeCast(foreCastViewModel.cityName)
+        }else{
+            mainView.showMainLoadingProgressBar(false)
+            mainView.showItemsLoadingProgressBar(false)
+        }
+    }
+
+    private fun getCityData(cityName: String) {
+        var d:Disposable? = null
+        d = mainInteractor.getCityData(cityName)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({
+                    onLoadedCityData(it)
+                    d?.dispose()
+                },{
+                    onLoadedError(it, "getCityData")
+                    d?.dispose()
+                })
+    }
+
+    private fun getForeCast(cityName: String) {
+        var d:Disposable? = null
+        d = mainInteractor.getForeCast(cityName)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({
+                    onLoadedForeCast(it)
+                    d?.dispose()
+                },{
+                    onLoadedError(it, "getForeCast")
+                    d?.dispose()
                 })
     }
 
     private fun onLoadedCityData(cityData: CityData) {
+        val formatDayOfWeek = SimpleDateFormat("dd.MM.yyyy HH:mm")
+        val currentDate = Date()
+        val lastUpdateDate = formatDayOfWeek.format(currentDate)
+
         val mCityViewModel = CityViewModel(
                 cityData.name,
                 cityData.weather[0].main,
@@ -59,13 +106,13 @@ class MainPresenterImpl(private val mainInteractor: MainInterface.Interactor, pr
                 cityData.main.humidity.toString(),
                 cityData.weather[0].description,
                 cityData.wind.speed.toInt().toString(),
-                cityData.dt.toString()
+                lastUpdateDate
         )
 
         mainInteractor.updateCityDataInLocalDB(mCityViewModel)
         mainView.showLastUpdateMessage(false)
-
         mainView.showMainLoadingProgressBar(false)
+
         Log.d("MainPresenterImpl", "CityData loaded!")
         mainView.onLoadedCityData(mCityViewModel)
     }
@@ -85,28 +132,25 @@ class MainPresenterImpl(private val mainInteractor: MainInterface.Interactor, pr
         }
 
         val mForeCast = ForeCastViewModel(
+                foreCast.city.name,
                 daysOfWeek,
                 icons,
                 temps
         )
 
-        mainInteractor.updateForeCastInLocalDB(mForeCast, foreCast.city.name)
+        mainInteractor.updateForeCastInLocalDB(mForeCast)
         mainView.showLastUpdateMessage(false)
-
         mainView.showItemsLoadingProgressBar(false)
-        Log.d("MainPresenterImpl", "ForeCast loaded!")
-        mainView.onLoadedForeCast(mForeCast)
-    }
 
-    private fun getDefaultCity(): String {
-        return mainInteractor.getDefaultCity()
+        Log.d(TAG, "ForeCast loaded!")
+        mainView.onLoadedForeCast(mForeCast)
     }
 
     private fun onLoadedError(t: Throwable, msg: String){
         mainView.showMainLoadingProgressBar(false)
         mainView.showItemsLoadingProgressBar(false)
 
-        Log.d("MainPresenterImpl", "$msg Load Error! - ${t.localizedMessage}")
+        Log.d(TAG, "$msg Load Error! - ${t.localizedMessage}")
         mainView.onLoadedError()
     }
 }

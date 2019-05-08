@@ -1,6 +1,5 @@
 package com.bg.biozz.weatherapp.domain.interactors
 
-import android.util.Log
 import com.bg.biozz.weatherapp.domain.interfaces.main.MainInterface
 import com.bg.biozz.weatherapp.domain.models.CityData
 import com.bg.biozz.weatherapp.domain.models.CityViewModel
@@ -19,24 +18,23 @@ class MainInteractorImpl(private val mainRepository: MainInterface.Repository) :
         return mainRepository.getForeCast(cityName)
     }
 
-    override fun getCityDataFromLocalDB(cityName: String): CityViewModel {
+    override fun getCityDataFromLocalDB(cityName: String): Single<CityViewModel> {
         return mainRepository.getCityDataFromLocalDB(cityName)
     }
 
-    override fun getForeCastFromLocalDB(cityName: String): ForeCastViewModel {
+    override fun getForeCastFromLocalDB(cityName: String): Single<ForeCastViewModel> {
         return mainRepository.getForeCastFromLocalDB(cityName)
     }
 
-    override fun getDefaultCity(): String {
+    override fun getDefaultCity(): Single<CityViewModel> {
         return mainRepository.getDefaultCity()
     }
 
-
-    override fun setDefaultCity(cityName: String) {
-        mainRepository.setDefaultCity(cityName)
+    override fun setDefaultCity(cityName: String): Single<Unit> {
+        return mainRepository.setDefaultCity(cityName)
     }
 
-    override fun getDefaultCitiesList(): List<String> {
+    override fun getDefaultCitiesList(): Single<List<CityViewModel>> {
         return mainRepository.getCitiesList()
     }
 
@@ -44,32 +42,19 @@ class MainInteractorImpl(private val mainRepository: MainInterface.Repository) :
         mainRepository.updateCityDataInLocalDB(cityViewModel)
     }
 
-    override fun updateForeCastInLocalDB(foreCastViewModel: ForeCastViewModel, cityName: String) {
-        mainRepository.updateForeCastInLocalDB(foreCastViewModel, cityName)
+    override fun updateForeCastInLocalDB(foreCastViewModel: ForeCastViewModel) {
+        mainRepository.updateForeCastInLocalDB(foreCastViewModel)
     }
 
-    override fun addNewCity(cityData: CityData) {
-        val cityName = cityData.name
-
-        if(!isAdded(cityName)){
-            Log.d(TAG, "City $cityName added!")
-            mainRepository.addCityIntoDB(cityData)
-        }else {
-            Log.d(TAG, "City $cityName has been already added!")
-        }
-
-        Log.d(TAG, "Set default city: $cityName")
-        mainRepository.setDefaultCity(cityName)
+    override fun addNewCity(cityViewModel: CityViewModel) : Single<Unit> {
+        return mainRepository.addCityIntoDB(cityViewModel)
     }
 
-    private fun isAdded(cityName: String): Boolean{
-        val citiesList = mainRepository.getCitiesList()
+    override fun insertNAForeCastInLocalDB(cityName: String) {
+        mainRepository.insertNAForeCastInLocalDB(cityName)
+    }
 
-        for(str in citiesList){
-            if(str == cityName){
-                return true
-            }
-        }
-        return false
+    override fun clearDefaultCity(cityName: String): Single<Unit> {
+        return mainRepository.clearDefaultCity(cityName)
     }
 }

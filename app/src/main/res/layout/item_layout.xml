@@ -21,7 +21,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             android:padding="5dp"
-            android:src="@drawable/ic_na"
+            app:srcCompat="@drawable/ic_na"
             android:contentDescription="@string/weatherIcon" />
 
         <TextView

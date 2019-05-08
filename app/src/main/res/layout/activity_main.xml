@@ -40,11 +40,11 @@
                 app:layout_constraintStart_toEndOf="@id/temp"
                 app:layout_constraintTop_toTopOf="@id/temp"/>
 
-            <ImageView
+            <android.support.v7.widget.AppCompatImageView
                 android:id="@+id/icon"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
-                android:src="@drawable/ic_na"
+                app:srcCompat="@drawable/ic_na"
                 android:layout_marginEnd="30dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@id/temp"
@@ -122,27 +122,50 @@
 
             <LinearLayout
                 android:id="@+id/daysView"
-                android:layout_width="300dp"
-                android:layout_height="150dp"
+                android:layout_width="320dp"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="40dp"
                 android:orientation="horizontal"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/humidity"
-                app:layout_constraintBottom_toTopOf="@id/lastUpdateTV">
+                app:layout_constraintBottom_toTopOf="@id/dataOutTV"
+                android:elevation="2dp"
+                android:background="@drawable/layout_days"
+                tools:ignore="UnusedAttribute"
+                android:padding="10dp"
+                >
+
+                <include layout="@layout/day_view" android:id="@+id/day1"/>
+                <include layout="@layout/day_view" android:id="@+id/day2"/>
+                <include layout="@layout/day_view" android:id="@+id/day3"/>
+                <include layout="@layout/day_view" android:id="@+id/day4"/>
+                <include layout="@layout/day_view" android:id="@+id/day5"/>
             </LinearLayout>
+
+            <TextView
+                style="@style/text"
+                android:id="@+id/dataOutTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/dataOut"
+                android:textColor="@color/gray"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/daysView"
+                app:layout_constraintBottom_toBottomOf="@id/lastUpdateTV"/>
 
             <TextView
                 style="@style/text"
                 android:id="@+id/lastUpdateTV"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="55dp"
+                android:layout_marginBottom="60dp"
                 android:text="@string/lastUpdate"
                 android:textColor="@color/gray"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/daysView"
+                app:layout_constraintTop_toBottomOf="@id/dataOutTV"
                 app:layout_constraintBottom_toBottomOf="parent"/>
 
             <ProgressBar
@@ -155,11 +178,10 @@
                 app:layout_constraintStart_toStartOf="@id/daysView"
                 app:layout_constraintEnd_toEndOf="@id/daysView"
                 />
-
         </android.support.constraint.ConstraintLayout>
     </ScrollView>
 
-    <ProgressBar
+    <android.support.constraint.ConstraintLayout
         android:id="@+id/mainProgressBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -167,7 +189,31 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:visibility="gone"/>
+        android:visibility="gone">
+
+        <android.support.v7.widget.AppCompatImageView
+            android:id="@+id/loadIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/appName"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:srcCompat="@drawable/ic_load"/>
+
+        <TextView
+            android:id="@+id/appName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/loadIcon"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:text="@string/app_name"
+            android:textSize="50sp"
+            android:textColor="@color/colorAccent"/>
+
+    </android.support.constraint.ConstraintLayout>
 
     <include layout="@layout/bottom_navigation_view" />
 </android.support.constraint.ConstraintLayout>

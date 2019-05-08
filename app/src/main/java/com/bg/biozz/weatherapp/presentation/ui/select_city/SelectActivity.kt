@@ -1,5 +1,6 @@
 package com.bg.biozz.weatherapp.presentation.ui.select_city
 
+import android.graphics.drawable.Animatable
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.util.Log
@@ -8,7 +9,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.bg.biozz.weatherapp.R
 import com.bg.biozz.weatherapp.data.rest.APIClient
-import com.bg.biozz.weatherapp.data.local.LocalDBHelper
+import com.bg.biozz.weatherapp.data.local.LocalRoomDB
 import com.bg.biozz.weatherapp.data.repositories.MainRepositoryImpl
 import com.bg.biozz.weatherapp.data.utils.DrawableManager
 import com.bg.biozz.weatherapp.data.utils.NetworkChangeReceiver
@@ -33,7 +34,7 @@ class SelectActivity : BaseActivity(2), SelectCityInterface.View, MainInterface.
         setupBottomNavigation()
         Log.d(TAG, "onCreate")
 
-        mSelectCityPresenter = SelectCityPresenterImpl(MainInteractorImpl(MainRepositoryImpl(APIClient().getClient(), LocalDBHelper(this))), this)
+        mSelectCityPresenter = SelectCityPresenterImpl(MainInteractorImpl(MainRepositoryImpl(APIClient().getClient(), LocalRoomDB.getClient(applicationContext))), this)
 
         prev_btn.setOnClickListener {
             finish()
@@ -53,11 +54,11 @@ class SelectActivity : BaseActivity(2), SelectCityInterface.View, MainInterface.
     }
 
     override fun onInternetConnectionSuccess() {
-        mSelectCityPresenter.loadCitiesDataListFromInternet()
+        mSelectCityPresenter.loadData(true)
     }
 
     override fun onInternetConnectionError() {
-        mSelectCityPresenter.loadCitiesDataListFromLocalDB()
+        mSelectCityPresenter.loadData(false)
     }
 
     override fun cleanCityList() {
@@ -78,6 +79,12 @@ class SelectActivity : BaseActivity(2), SelectCityInterface.View, MainInterface.
 
         val icon = view.findViewById<ImageView>(R.id.cityIcon)
         icon.setImageResource(DrawableManager().getIdDrawable(cityData.icon))
+
+        val anim = icon.drawable
+        if(anim is Animatable){
+            (anim as Animatable).start()
+            Log.d(TAG, "Animate: ${(anim as Animatable).isRunning}")
+        }
 
         view.setOnClickListener {
             Log.d(TAG, "Item clicked! - ${cityData.cityName}")

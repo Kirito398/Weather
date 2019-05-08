@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animated-vector
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt">
+
+    <aapt:attr name="android:drawable">
+        <vector
+            android:height="24dp"
+            android:viewportWidth="33.86667"
+            android:viewportHeight="33.86667"
+            android:width="24dp">
+
+            <group
+                android:name="moon"
+                android:translateY="-263.1333">
+                <path
+                    android:pathData="M16.565948 268.3605c-6.231436 0 -11.2830125 5.05158 -11.2830125 11.28301 0 2.47217 0.7935992 4.76093 2.1420096 6.61995 0.3841104 -0.94176 1.0802807 -1.75462 2.0450463 -2.16845 0.8822406 -2.05295 2.9785456 -3.86754 5.3858756 -3.73749 0.01173 -0.00056 0.02352 0.00055 0.03526 0 -0.01478 -0.23646 -0.01763 -0.47382 -0.01763 -0.71401 0 -4.5164 2.654594 -8.40483 6.487733 -10.2076 -1.455577 -0.68457 -3.080247 -1.07541 -4.795283 -1.07541z">
+                    <aapt:attr
+                        name="android:fillColor">
+                        <gradient
+                            android:startX="11.94711"
+                            android:startY="262.719"
+                            android:endX="11.94711"
+                            android:endY="296.5683"
+                            android:tileMode="clamp">
+                            <item
+                                android:color="#FFF7CF"
+                                android:offset="0" />
+                            <item
+                                android:color="#8F8A6F"
+                                android:offset="1" />
+                        </gradient>
+                    </aapt:attr>
+                </path>
+            </group>
+
+            <group
+                android:name="cloud"
+                android:translateY="-263.1333">
+                <path
+                    android:pathData="M15.041084 282.05891c-0.192832 0 -0.39875 0.009 -0.608225 0.0353 -3.345413 0.42086 -3.243866 3.22624 -3.243866 3.22624 -1.3702287 0.22759 -2.4857887 1.39603 -2.4857887 2.61795 0 1.2219 1.4272497 2.30357 2.6268267 2.61803 0.713551 0.18704 1.648377 0 1.648377 0 0.42357 0.73007 1.820297 1.21645 2.794309 1.21645 1.588183 0 3.220533 -0.51501 3.596461 -1.21645 0 0 6.577088 0.51439 7.942183 0 1.987275 -0.74885 1.366334 -3.08751 0.04408 -3.87854 -1.322257 -0.79102 -3.04994 -0.23801 -3.04994 -0.23801 0 0 -0.0076 -1.61043 -1.877564 -2.38001 -1.869928 -0.76956 -3.446608 0.93437 -3.446608 0.93437 0 0 -1.047743 -2.9179 -3.94024 -2.93533z">
+                    <aapt:attr
+                        name="android:fillColor">
+                        <gradient
+                            android:startX="11.94722"
+                            android:startY="262.7191"
+                            android:endX="11.94722"
+                            android:endY="296.5685"
+                            android:tileMode="clamp">
+                            <item
+                                android:color="#D7D7D7"
+                                android:offset="0" />
+                            <item
+                                android:color="#808080"
+                                android:offset="1" />
+                        </gradient>
+                    </aapt:attr>
+                </path>
+            </group>
+        </vector>
+    </aapt:attr>
+
+    <target
+        android:name="cloud">
+        <aapt:attr name="android:animation">
+            <objectAnimator
+                android:duration="1000"
+                android:repeatCount="infinite"
+                android:repeatMode="reverse"
+                android:propertyName="translateX"
+                android:valueFrom="-0.5"
+                android:valueTo="1"
+                android:valueType="floatType"
+                />
+        </aapt:attr>
+    </target>
+
+</animated-vector>
+

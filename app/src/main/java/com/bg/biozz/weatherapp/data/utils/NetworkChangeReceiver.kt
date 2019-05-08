@@ -29,7 +29,9 @@ class NetworkChangeReceiver(val view: MainInterface.BroadCastReceiver) : Broadca
                 val mobile = mConnectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE)
 
                 if (wifi.isAvailable || mobile.isAvailable) {
-                    view.updateData()
+                    view.onInternetConnectionSuccess()
+                }else{
+                    view.onInternetConnectionError()
                 }*/
             }
         }

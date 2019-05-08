@@ -19,8 +19,8 @@ ext.versions = [
         bottomNavigationViewEx : '1.2.4',
 
         retrofit : '2.3.0',
-
-        rxJava : '2.0.1'
+        rxJava : '2.0.1',
+        room : '1.1.0'
 ]
 
 ext.gradlePlugins = [
@@ -45,5 +45,9 @@ ext.libraries = [
         retrofitAdapterRxJava : "com.squareup.retrofit2:adapter-rxjava2:$versions.retrofit",
         retrofitConverterGson : "com.squareup.retrofit2:converter-gson:$versions.retrofit",
 
-        rxAndroid : "io.reactivex.rxjava2:rxandroid:$versions.rxJava"
+        rxAndroid : "io.reactivex.rxjava2:rxandroid:$versions.rxJava",
+
+        roomRuntime : "android.arch.persistence.room:runtime:$versions.room",
+        roomCompiler : "android.arch.persistence.room:compiler:$versions.room",
+        roomRxJava : "android.arch.persistence.room:rxjava2:$versions.room"
 ]

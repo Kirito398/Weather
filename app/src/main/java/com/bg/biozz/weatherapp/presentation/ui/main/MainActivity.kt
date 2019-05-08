@@ -1,7 +1,9 @@
 package com.bg.biozz.weatherapp.presentation.ui.main
 
 import android.app.ActionBar
+import android.graphics.drawable.Animatable
 import android.os.Bundle
+import android.support.constraint.ConstraintLayout
 import android.support.design.widget.Snackbar
 import android.util.Log
 import android.view.Gravity
@@ -12,7 +14,7 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import com.bg.biozz.weatherapp.R
 import com.bg.biozz.weatherapp.data.rest.APIClient
-import com.bg.biozz.weatherapp.data.local.LocalDBHelper
+import com.bg.biozz.weatherapp.data.local.LocalRoomDB
 import com.bg.biozz.weatherapp.data.repositories.MainRepositoryImpl
 import com.bg.biozz.weatherapp.data.utils.ConstantUtils
 import com.bg.biozz.weatherapp.data.utils.DrawableManager
@@ -36,9 +38,9 @@ class MainActivity : BaseActivity(1), MainInterface.View, MainInterface.BroadCas
         setContentView(R.layout.activity_main)
 
         setupBottomNavigation()
-        Log.d(TAG, "onCreate")
 
-        mMainPresenter = MainPresenterImpl(MainInteractorImpl(MainRepositoryImpl(APIClient().getClient(), LocalDBHelper(this))), this)
+        mMainPresenter = MainPresenterImpl(MainInteractorImpl(MainRepositoryImpl(APIClient().getClient(), LocalRoomDB.getClient(applicationContext))), this)
+        Log.d(TAG, "onCreate")
     }
 
     override fun onResume(){
@@ -72,6 +74,12 @@ class MainActivity : BaseActivity(1), MainInterface.View, MainInterface.BroadCas
         pressure.text = getString(R.string.pressure, cityViewModel.pressure)
         icon.setImageResource(DrawableManager().getIdDrawable(cityViewModel.icon))
         lastUpdateTV.text = getString(R.string.lastUpdate, cityViewModel.dt)
+
+        val anim = icon.drawable
+        if(anim is Animatable){
+            (anim as Animatable).start()
+            Log.d(TAG, "Animate: ${(anim as Animatable).isRunning}")
+        }
     }
 
     override fun onLoadedForeCast(foreCastViewModel: ForeCastViewModel) {
@@ -99,6 +107,12 @@ class MainActivity : BaseActivity(1), MainInterface.View, MainInterface.BroadCas
             temp.gravity = Gravity.CENTER_HORIZONTAL
             item.addView(temp)
 
+            val anim = icon.drawable
+            if(anim is Animatable){
+                (anim as Animatable).start()
+                Log.d(TAG, "Animate: ${(anim as Animatable).isRunning}")
+            }
+
             daysView.addView(item)
         }
     }
@@ -113,8 +127,10 @@ class MainActivity : BaseActivity(1), MainInterface.View, MainInterface.BroadCas
 
     override fun showLastUpdateMessage(show: Boolean) {
         if(show){
+            dataOutTV.visibility = View.VISIBLE
             lastUpdateTV.visibility = View.VISIBLE
         } else {
+            dataOutTV.visibility = View.GONE
             lastUpdateTV.visibility = View.GONE
         }
     }
@@ -123,10 +139,18 @@ class MainActivity : BaseActivity(1), MainInterface.View, MainInterface.BroadCas
         Snackbar.make(daysView, getString(R.string.loadingError), Snackbar.LENGTH_LONG).show()
     }
 
-    private fun showProgressBar(bar: ProgressBar, show: Boolean){
+    private fun showProgressBar(bar: View, show: Boolean){
         if(show){
             mainScrollView.visibility = View.GONE
             bar.visibility = View.VISIBLE
+
+            if(bar is ConstraintLayout){
+                val anim = loadIcon.drawable
+                if(anim is Animatable){
+                    (anim as Animatable).start()
+                    Log.d(TAG, "Animate: ${(anim as Animatable).isRunning}")
+                }
+            }
         } else {
             mainScrollView.visibility = View.VISIBLE
             bar.visibility = View.GONE

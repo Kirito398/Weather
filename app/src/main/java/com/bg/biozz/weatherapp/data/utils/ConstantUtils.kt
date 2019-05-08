@@ -10,8 +10,9 @@ class ConstantUtils {
         const val NETWORK_CHANGE_BROADCAST = "android.net.conn.CONNECTIVITY_CHANGE"
 
         //Local DB
-        val DEFAULT_CITIES_LIST = listOf("Naberezhnyye Chelny", "Yelabuga", "Kazan")
+        val DEFAULT_CITIES_LIST = listOf("Yelabuga", "Naberezhnyye Chelny", "Kazan")
         const val DATABASE_VERSION = 7
+        const val ROOM_DATABASE_VERSION = 1
         const val NA = "N/A"
         const val DATABASE_NAME = "cityDB"
         const val TABLE_CITYS = "citys"
@@ -29,6 +30,7 @@ class ConstantUtils {
         const val KEY_DESCRIPTION = "description"
         const val KEY_WIND_SPEED = "windSpeed"
         const val KEY_DAYS_OF_WEEK = "daysOfWeek"
+        const val KEY_DEFAULT_CITY = "defaultCity"
         const val KEY_DT = "lastUpdate"
     }
 }

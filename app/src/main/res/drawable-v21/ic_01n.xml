@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animated-vector
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt">
+
+    <aapt:attr name="android:drawable">
+        <vector
+            android:height="24dp"
+            android:viewportWidth="33.86667"
+            android:viewportHeight="33.86667"
+            android:width="24dp">
+
+            <group
+                android:name="moon"
+                android:pivotX="16.9333333"
+                android:pivotY="280"
+                android:translateY="-263.1333"
+                android:rotation="-20">
+                <path
+                    android:pathData="M20.18148 268.78352c-6.231436 0 -11.2830132 5.05158 -11.2830132 11.28301 0 6.23145 5.0515772 11.28302 11.2830132 11.28302 1.711927 0 3.332912 -0.38435 4.786466 -1.06661 -3.837401 -1.80111 -6.496547 -5.69691 -6.496547 -10.21641 0 -4.51951 2.659146 -8.41529 6.496547 -10.21641 -1.453554 -0.68224 -3.074539 -1.0666 -4.786466 -1.0666z">
+                    <aapt:attr
+                        name="android:fillColor">
+                        <gradient
+                            android:startX="16.79217"
+                            android:startY="263.142"
+                            android:endX="16.79217"
+                            android:endY="297.1324"
+                            android:tileMode="clamp">
+                            <item
+                                android:color="#FFF7CF"
+                                android:offset="0" />
+                            <item
+                                android:color="#8F8A6F"
+                                android:offset="1" />
+                        </gradient>
+                    </aapt:attr>
+                </path>
+            </group>
+        </vector>
+    </aapt:attr>
+
+    <target
+        android:name="moon">
+        <aapt:attr name="android:animation">
+            <objectAnimator
+                android:duration="1000"
+                android:repeatCount="infinite"
+                android:repeatMode="reverse"
+                android:propertyName="translateY"
+                android:valueFrom="-262.1333"
+                android:valueTo="-264.1333"
+                android:valueType="floatType"
+                />
+        </aapt:attr>
+    </target>
+
+</animated-vector>
+
